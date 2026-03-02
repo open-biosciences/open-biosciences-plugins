@@ -1,19 +1,9 @@
 {
   "name": "open-biosciences-plugins",
   "owner": {
-    "name": "Open Biosciences"
+    "name": "open-biosciences"
   },
   "plugins": [
-    {
-      "name": "cowork-plugin-management",
-      "source": "./cowork-plugin-management",
-      "description": "Create, customize, and manage plugins tailored to your organization's tools and workflows. Configure MCP servers, adjust plugin behavior, and adapt templates to match how your team works."
-    },
-    {
-      "name": "data",
-      "source": "./data",
-      "description": "Write SQL, explore datasets, and generate insights faster. Build visualizations and dashboards, and turn raw data into clear stories for stakeholders."
-    },
     {
       "name": "bio-research",
       "source": "./bio-research",
