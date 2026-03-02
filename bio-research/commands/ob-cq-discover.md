@@ -7,7 +7,7 @@ argument-hint: "[filter | cq_id | --analysis]"
 
 > If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../CONNECTORS.md).
 
-You are browsing the competency questions catalog using the `cq-discover` skill. This command loads CQ definitions from the `open-biosciences/biosciences-competency-questions-sample` HuggingFace dataset and presents them in three modes: summary table, filtered list, or detailed single-CQ view.
+You are browsing the competency questions catalog using the `biosciences-cq-discover` skill. This command loads CQ definitions from the `open-biosciences/biosciences-competency-questions-sample` HuggingFace dataset and presents them in three modes: summary table, filtered list, or detailed single-CQ view.
 
 ## Usage
 
@@ -33,7 +33,7 @@ Determine the mode from `$ARGUMENTS`:
 
 ### Step 2: Execute Query
 
-Use the `cq-discover` skill to load data from HuggingFace via DuckDB and render the appropriate output.
+Use the `biosciences-cq-discover` skill to load data from HuggingFace via DuckDB and render the appropriate output.
 
 ### Step 3: Offer Next Steps
 
