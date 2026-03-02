@@ -13,23 +13,7 @@ This plugin consolidates MCP server integrations, domain-specific biosciences sk
 | Provider | What It Does | Category/Placeholder |
 |----------|-------------|---------------------|
 | Open Biosciences | 34-tool gateway spanning HGNC, UniProt, STRING, BioGRID, ChEMBL, Open Targets, PubChem, IUPHAR, WikiPathways, ClinicalTrials.gov, Ensembl, Entrez | `biosciences-mcp` |
-| U.S. National Library of Medicine | Search biomedical literature and research articles | `~~literature` |
-| deepsense.ai | Access preprints from bioRxiv and medRxiv | `~~literature` |
-| John Wiley & Sons | Access academic research and publications | `~~journal access` |
 | Sage Bionetworks | Collaborative research data management | `~~data repository` |
-| deepsense.ai | Bioactive drug-like compound database | `~~chemical database` |
-| OpenTargets | Drug target discovery and prioritization | `~~drug targets` |
-| deepsense.ai | NIH/NLM clinical trial registry | `~~clinical trials` |
-| BioRender | Scientific illustration creation | `~~scientific illustration` |
-| Owkin | AI for biology — histopathology and drug discovery | `~~AI research` |
-| Benchling\* | Lab data management platform | `~~lab platform` |
-
-### Optional Binary MCP Servers
-
-These require a separate binary download:
-
-- **10X Genomics txg-mcp** (`~~genomics platform`) — Cloud analysis data and workflows ([GitHub](https://github.com/10XGenomics/txg-mcp/releases))
-- **ToolUniverse** (`~~tool database`) — AI tools for scientific discovery from Harvard MIMS ([GitHub](https://github.com/mims-harvard/ToolUniverse/releases))
 
 ### Skills (Analysis & Research Workflows)
 
@@ -49,29 +33,10 @@ Nine skills for structured research using life sciences APIs. These follow a LOC
 | **biosciences-reporting-quality-review** | 10-dimension quality assessment for reports |
 | **biosciences-publication-pipeline** | Publication outputs: report, KG JSON, Synapse grounding, quality review, BioRxiv draft |
 
-#### Single-Cell RNA QC
-Automated quality control for scRNA-seq data following scverse best practices. Supports `.h5ad` and `.h5` files with MAD-based filtering and comprehensive visualizations.
-
-#### scvi-tools
-Deep learning toolkit for single-cell omics. Covers scVI, scANVI, totalVI, PeakVI, MultiVI, DestVI, veloVI, and sysVI models for integration, batch correction, label transfer, and multi-modal analysis.
-
-#### Nextflow Pipelines
-Run nf-core bioinformatics pipelines on local or public GEO/SRA sequencing data:
-- **rnaseq** — Gene expression and differential expression
-- **sarek** — Germline and somatic variant calling (WGS/WES)
-- **atacseq** — Chromatin accessibility analysis
-
-#### Instrument Data to Allotrope
-Convert laboratory instrument output files (PDF, CSV, Excel, TXT) to Allotrope Simple Model (ASM) format. Supports 40+ instrument types including cell counters, spectrophotometers, plate readers, qPCR, and chromatography systems.
-
-#### Scientific Problem Selection
-Systematic framework for research problem selection based on Fischbach & Walsh's framework. Includes 9 skills covering ideation, risk assessment, optimization, decision trees, adversity planning, and synthesis.
-
 ### Commands
 
 | Command | What It Does |
 |---------|-------------|
-| `/start` | Check connected tools and survey available skills |
 | `/ob-research` | Run structured research on a competency question — entity resolution, network expansion, drug/trial discovery |
 | `/ob-report` | Format findings as a report with evidence grading |
 | `/ob-review` | Quality review against 10 evaluation dimensions |
@@ -81,7 +46,7 @@ Systematic framework for research problem selection based on Fischbach & Walsh's
 
 ```bash
 # Install the plugin
-/install anthropics/knowledge-work-plugins bio-research
+/install open-biosciences/open-biosciences-plugins bio-research
 
 # Run the start command to see available tools
 /start

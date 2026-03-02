@@ -4,21 +4,9 @@
       "type": "http",
       "url": "https://pubmed.mcp.claude.com/mcp"
     },
-    "biorender": {
-      "type": "http",
-      "url": "https://mcp.services.biorender.com/mcp"
-    },
     "biorxiv": {
       "type": "http",
       "url": "https://mcp.deepsense.ai/biorxiv/mcp"
-    },
-    "c-trials": {
-      "type": "http",
-      "url": "https://mcp.deepsense.ai/clinical_trials/mcp"
-    },
-    "chembl": {
-      "type": "http",
-      "url": "https://mcp.deepsense.ai/chembl/mcp"
     },
     "biosciences-mcp": {
       "type": "http",
@@ -27,22 +15,6 @@
     "synapse": {
       "type": "http",
       "url": "https://mcp.synapse.org/mcp"
-    },
-    "wiley": {
-      "type": "http",
-      "url": "https://connector.scholargateway.ai/mcp"
-    },
-    "owkin": {
-      "type": "http",
-      "url": "https://mcp.k.owkin.com/mcp"
-    },
-    "ot": {
-      "type": "http",
-      "url": "https://mcp.platform.opentargets.org/mcp"
-    },
-    "benchling": {
-      "type": "http",
-      "url": ""
     }
   }
 }
