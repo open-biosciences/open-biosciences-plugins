@@ -75,15 +75,25 @@ curl -s -X POST "https://api.platform.opentargets.org/api/v4/graphql" \
 
 **Note**: Requires Ensembl Gene ID (ENSG...). Get this from HGNC cross-references or Ensembl lookup.
 
-### ChEMBL: Drug Mechanisms (Critical for Graph Edges) — curl only
+### ChEMBL: Drug Mechanisms (Critical for Graph Edges)
 
 **RETRIEVE**: Get mechanism for drug (Drug → Target edge)
+
+PRIMARY (MCP tool):
+```
+Call `get_mechanism` with: {"chembl_id": "CHEMBL:3137309"}
+→ Claude Code name: mcp__biosciences-mcp-edge__get_mechanism
+→ Returns: PaginationEnvelope with MechanismResult items (mechanism_of_action, target_name, action_type, max_phase)
+→ Accepts CURIE format (CHEMBL:NNNNN) or raw format (CHEMBLNNNNN)
+```
+
+FALLBACK (curl):
 ```bash
 curl -s "https://www.ebi.ac.uk/chembl/api/data/mechanism?molecule_chembl_id=CHEMBL3137309&format=json" \
   | jq '.mechanisms[] | {action: .action_type, mechanism: .mechanism_of_action, target_id: .target_chembl_id}'
 ```
 
-**RETRIEVE**: Find all drugs for target (Target → Drugs edge)
+**RETRIEVE**: Find all drugs for target (Target → Drugs edge) — curl only
 ```bash
 curl -s "https://www.ebi.ac.uk/chembl/api/data/mechanism?target_chembl_id=CHEMBL4860&format=json" \
   | jq '.mechanisms[] | {drug_id: .molecule_chembl_id, action: .action_type, mechanism: .mechanism_of_action}'
@@ -205,8 +215,14 @@ curl -s "https://api.drugbank.com/v1/drugs?q=venetoclax" \
 
 ## Drug Repurposing Workflow (LOCATE → RETRIEVE Chain)
 
+```
+# Step 1: LOCATE — Find target for known drug (MCP — preferred)
+mcp__biosciences-mcp-edge__get_mechanism(chembl_id="CHEMBL:3137309")
+→ target_chembl_id from first MechanismResult item
+```
+
+Fallback (curl):
 ```bash
-# Step 1: LOCATE — Find target for known drug (curl — mechanism endpoint)
 TARGET=$(curl -s "https://www.ebi.ac.uk/chembl/api/data/mechanism?molecule_chembl_id=CHEMBL3137309&format=json" \
   | jq -r '.mechanisms[0].target_chembl_id')
 
@@ -225,7 +241,7 @@ curl -s "https://www.ebi.ac.uk/chembl/api/data/drug_indication?molecule_chembl_i
 |------|---------|-------------------|--------------------------|
 | Search compounds | LOCATE | `chembl_search_compounds` | ChEMBL `/molecule/search` |
 | Get compound | RETRIEVE | `chembl_get_compound` | ChEMBL `/molecule/{id}` |
-| Drug mechanism | RETRIEVE | (curl only) | ChEMBL `/mechanism` |
+| Drug mechanism | RETRIEVE | `get_mechanism` (edge) | ChEMBL `/mechanism` |
 | Drug indications | RETRIEVE | (curl only) | ChEMBL `/drug_indication` |
 | Bioactivity data | RETRIEVE | (curl only) | ChEMBL `/activity` |
 | Find drugs for target | LOCATE | `opentargets_get_target` | Open Targets GraphQL `knownDrugs` |
@@ -247,7 +263,8 @@ curl -s "https://www.ebi.ac.uk/chembl/api/data/drug_indication?molecule_chembl_i
 |---------|----------|----------------|
 | ChEMBL `chembl_get_compound` (detail) | Open Targets `opentargets_get_target` | On HTTP 500 (common for detail endpoints) |
 | ChEMBL `chembl_search_compounds` (search) | (generally reliable — uses Elasticsearch) | Retry once, then report failure |
-| ChEMBL `/mechanism` | Open Targets `mechanismOfAction` field | On HTTP 500 |
+| `get_mechanism` (edge MCP) | `curl ChEMBL /mechanism` | Edge server unavailable |
+| `curl ChEMBL /mechanism` | Open Targets `mechanismOfAction` field | On HTTP 500 |
 
 **Critical**: ChEMBL **detail endpoints** (`/molecule/{id}`) frequently return 500 errors (EBI server issues). ChEMBL **search endpoints** (`/molecule/search?q=...`) are generally reliable because they use Elasticsearch. When detail fails, use Open Targets as primary drug discovery source.
 
