@@ -1,5 +1,17 @@
 {
   "mcpServers": {
+    "biosciences-mcp": {
+      "type": "http",
+      "url": "https://biosciences-mcp.fastmcp.app/mcp"
+    },
+    "biosciences-mcp-edge": {
+      "type": "http",
+      "url": "https://biosciences-mcp-edge.fastmcp.app/mcp"
+    },
+    "synapse": {
+      "type": "http",
+      "url": "https://mcp.synapse.org/mcp"
+    },
     "pubmed": {
       "type": "http",
       "url": "https://pubmed.mcp.claude.com/mcp"
@@ -7,19 +19,6 @@
     "biorxiv": {
       "type": "http",
       "url": "https://mcp.deepsense.ai/biorxiv/mcp"
-    },
-    "biosciences-mcp": {
-      "type": "http",
-      "url": "https://biosciences-mcp.fastmcp.app/mcp"
-    },
-    "synapse": {
-      "type": "http",
-      "url": "https://mcp.synapse.org/mcp"
-    },
-    "biosciences-mcp-edge": {
-      "type": "stdio",
-      "command": "uv",
-      "args": ["run", "--directory", "/home/donbr/open-biosciences/biosciences-mcp-edge", "fastmcp", "run", "src/biosciences_mcp_edge/server.py"]
     }
   }
 }
