@@ -821,11 +821,10 @@ Possible causes:
   2. Dataset not found -- verify the dataset name on huggingface.co
   3. Private dataset -- set HF_TOKEN with read access
 
-Falling back to local CQ catalog at:
-  /home/donbr/open-biosciences/biosciences-research/docs/competency-questions-catalog.md
+Falling back to local CQ catalog...
 ```
 
-**Action**: If HuggingFace load fails, fall back to parsing the local `competency-questions-catalog.md` file. The local catalog contains the same CQ definitions in a less structured format. Parse the workflow steps, key entities, and gold standard paths from the markdown.
+**Action**: If HuggingFace load fails, fall back to parsing a local `competency-questions-catalog.md` file if one exists in the working directory or a `biosciences-research/docs/` directory relative to the workspace root. The local catalog contains the same CQ definitions in a less structured format. Parse the workflow steps, key entities, and gold standard paths from the markdown.
 
 ### CQ ID Not Found
 

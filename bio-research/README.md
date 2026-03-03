@@ -1,4 +1,4 @@
-# Bio-Research Plugin
+# Open Biosciences Research Plugin
 
 Connect to preclinical research tools and databases (literature search, genomics analysis, target prioritization) to accelerate early-stage life sciences R&D. Use with [Cowork](https://claude.com/product/cowork) or install directly in Claude Code.
 
@@ -20,7 +20,7 @@ This plugin consolidates MCP server integrations, domain-specific biosciences sk
 
 #### Biosciences Domain Skills
 
-Nine skills for structured research using life sciences APIs. These follow a LOCATE→RETRIEVE discipline where entities are resolved through search endpoints before strict lookup by canonical ID. See [references/fuzzy-to-fact.md](references/fuzzy-to-fact.md) for details.
+Eleven skills for structured research using life sciences APIs (9 core + 2 beta competency-question skills). These follow a LOCATE→RETRIEVE discipline where entities are resolved through search endpoints before strict lookup by canonical ID. See [references/fuzzy-to-fact.md](references/fuzzy-to-fact.md) for details.
 
 | Skill | What It Does |
 |-------|-------------|
@@ -33,6 +33,8 @@ Nine skills for structured research using life sciences APIs. These follow a LOC
 | **biosciences-reporting** | Template-based report formatting with evidence grading |
 | **biosciences-reporting-quality-review** | 10-dimension quality assessment for reports |
 | **biosciences-publication-pipeline** | Publication outputs: report, KG JSON, Synapse grounding, quality review, BioRxiv draft |
+| **biosciences-cq-discover** | (beta) Discover and review competency questions from Hugging Face datasets |
+| **biosciences-cq-runner** | (beta) Execute competency question research and validation pipelines |
 
 ### Commands
 
@@ -42,36 +44,26 @@ Nine skills for structured research using life sciences APIs. These follow a LOC
 | `/ob-report` | Format findings as a report with evidence grading |
 | `/ob-review` | Quality review against 10 evaluation dimensions |
 | `/ob-publish` | Generate publication files: report, KG JSON, Synapse grounding, quality review, BioRxiv draft |
+| `/ob-cq-discover` | (beta) Review competency questions in Hugging Face `open-biosciences` community |
+| `/ob-cq-run` | (beta) Wrapper to do competency question driven research and validation |
 
 ## Getting Started
 
-```bash
-# Install the plugin
-/install open-biosciences/open-biosciences-plugins bio-research
+```
+# Add the marketplace
+/plugin marketplace add open-biosciences/open-biosciences-plugins
 
-# Run the start command to see available tools
-/start
+# Install the plugin
+/plugin install bio-research@open-biosciences-plugins
 ```
 
 ## Common Workflows
-
-**Literature Review**
-Search ~~literature database for papers, access full-text through ~~journal access, and create figures with ~~scientific illustration.
-
-**Single-Cell Analysis**
-Run QC on scRNA-seq data, then use scvi-tools for integration, batch correction, and cell type annotation.
-
-**Sequencing Pipeline**
-Download public data from GEO/SRA, run nf-core pipelines (RNA-seq, variant calling, ATAC-seq), and verify outputs.
 
 **Drug Discovery**
 Search ~~chemical database for bioactive compounds, use ~~drug targets for target prioritization, and review clinical trial data. For structured multi-database research, try `/ob-research` with a specific question.
 
 **Graph-Based Research**
 Ask a competency question with `/ob-research` to resolve entities across databases, build interaction networks, and discover drug candidates and clinical trials. Format results with `/ob-report`, review with `/ob-review`, or generate publication files with `/ob-publish`.
-
-**Research Strategy**
-Pitch a new idea, troubleshoot a stuck project, or evaluate strategic decisions using the scientific problem selection framework.
 
 ## License
 

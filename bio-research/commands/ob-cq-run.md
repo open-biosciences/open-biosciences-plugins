@@ -65,7 +65,7 @@ ds = load_dataset("open-biosciences/biosciences-competency-questions-sample", sp
 cq = [row for row in ds if row["cq_id"] == cq_id][0]
 ```
 
-If the dataset load fails, fall back to parsing `biosciences-research/docs/competency-questions-catalog.md`.
+If the dataset load fails, fall back to parsing a local `competency-questions-catalog.md` if one exists in the working directory or a `biosciences-research/docs/` directory relative to the workspace root.
 
 ### Step 3: Preflight Checks
 

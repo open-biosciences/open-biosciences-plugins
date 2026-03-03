@@ -194,7 +194,7 @@ See [references/biogrid-orcs-validation.md](references/biogrid-orcs-validation.m
 
 ## Python Code Patterns
 
-For programmatic access, use these patterns from `kg_rememberall/notebooks/biogrid_orcs_api.ipynb`:
+For programmatic access, use these patterns:
 
 ### Query Gene Essentiality
 
