@@ -5,16 +5,16 @@ description: "Validates synthetic lethality claims from CRISPR knockout screens 
 
 # CRISPR Essentiality & Synthetic Lethality Validation
 
-Validate synthetic lethality hypotheses using BioGRID ORCS CRISPR screen data via curl.
+Validate synthetic lethality hypotheses using BioGRID ORCS CRISPR screen data via the `get_orcs_essentiality` MCP tool (primary) or curl (fallback).
 
 ## Quick Reference
 
-| Task | Endpoint | Key Parameters |
-|------|----------|----------------|
-| Get essential screens only | `/gene/{entrez_id}?hit=yes` | `hit=yes` filters to essential |
-| Get all gene screens | `/gene/{entrez_id}` | Returns all screens |
-| Get screen annotations | `/screens/?screenID=1\|2\|3` | Pipe-separated IDs |
-| Find cell line screens | `/screens/?cellLine={name}` | Cell line name |
+| Task | Primary (MCP) | Fallback (curl) |
+|------|---------------|-----------------|
+| Get essential screens only | `mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=N, hit_only=true)` | `/gene/{entrez_id}?hit=yes` |
+| Get all gene screens | `mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=N, hit_only=false)` | `/gene/{entrez_id}` |
+| Get screen annotations | (curl only) | `/screens/?screenID=1\|2\|3` |
+| Find cell line screens | (curl only) | `/screens/?cellLine={name}` |
 
 ## BioGRID ORCS API
 
@@ -73,8 +73,14 @@ Use Life Sciences MCPs to get Entrez IDs:
 
 ### Phase 2: Query ORCS for Essential Screens Only
 
-**CRITICAL: Always use `hit=yes` to filter to essential screens:**
+**PRIMARY (MCP tool):**
+```
+Call `get_orcs_essentiality` with: {"entrez_id": 7298, "hit_only": true}
+→ Claude Code name: mcp__biosciences-mcp-edge__get_orcs_essentiality
+→ Returns: PaginationEnvelope with OrcsScreenResult items (screen_id, score, hit)
+```
 
+**FALLBACK (curl):**
 ```bash
 # Get ONLY screens where gene is essential (hit=yes)
 curl -s "https://orcsws.thebiogrid.org/gene/7298?accesskey=${BIOGRID_API_KEY}&hit=yes&format=json" > gene_essential.json
@@ -85,8 +91,8 @@ cat gene_essential.json | jq '. | length'
 ```
 
 **Why this matters:**
-- Without `hit=yes`: Returns ALL screens (~1,400 records)
-- With `hit=yes`: Returns only screens where gene is essential (~300-400 records)
+- Without `hit=yes` / `hit_only=false`: Returns ALL screens (~1,400 records)
+- With `hit=yes` / `hit_only=true`: Returns only screens where gene is essential (~300-400 records)
 - Reduces data volume by 75% and focuses on biologically meaningful results
 
 ### Phase 3: Get Screen Annotations (Cell Lines & PubMed)
@@ -274,18 +280,23 @@ print(f"TYMS: {essential}/{total} screens ({rate:.1f}%) show essentiality")
 
 **Workflow:**
 1. Use HGNC or Entrez MCP to resolve gene symbols to Entrez IDs
-2. Query ORCS for essentiality data using Entrez IDs
+2. Query ORCS for essentiality data using `get_orcs_essentiality` MCP tool (or curl fallback)
 3. Analyze dependency scores across cell lines
 4. Validate synthetic lethality hypotheses
 
-**Example:**
-```python
-# Phase 1: Use MCP to get Entrez ID
-hgnc_result = await client.call_tool("hgnc_search_genes", {"query": "DHODH"})
-gene = await client.call_tool("hgnc_get_gene", {"hgnc_id": hgnc_result["items"][0]["id"]})
-entrez_id = gene["cross_references"]["entrez"]  # "1723"
+**Example (MCP-first workflow):**
+```
+# Phase 1: Resolve gene symbol to Entrez ID
+mcp__biosciences-mcp__hgnc_search_genes(query="DHODH")
+→ hgnc_id = "HGNC:2867"
+mcp__biosciences-mcp__hgnc_get_gene(hgnc_id="HGNC:2867")
+→ cross_references.entrez = "1723"
 
-# Phase 2-5: Use curl with ORCS (see workflow above)
+# Phase 2: Query ORCS essentiality (MCP — preferred)
+mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=1723, hit_only=true)
+→ PaginationEnvelope with OrcsScreenResult items
+
+# Phase 3-5: Screen annotations still require curl (see workflow above)
 ```
 
 ## References

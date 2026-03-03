@@ -169,7 +169,17 @@ awk 'BEGIN{FS="\t"} {print "Screen " $1 ": score=" $6 ", FDR=" $18}'
 6. **Validate with multiple lines** - Single cell line isn't sufficient for strong claims
 7. **Consider biological context** - Synthetic lethality can be context-dependent
 
-## Command Summary
+## MCP Tool Alternative (Preferred)
+
+The `get_orcs_essentiality` tool in the `biosciences-mcp-edge` server provides a structured MCP interface for ORCS queries, eliminating the need for curl + manual parsing:
+
+```
+mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=1723, hit_only=true)
+```
+
+This returns a `PaginationEnvelope[OrcsScreenResult]` with typed fields (`screen_id`, `score`, `hit`). Use this as the primary method for CQ validation; fall back to curl only if the edge server is unavailable.
+
+## Command Summary (curl fallback)
 
 ```bash
 # 1. Get gene identifiers (using Life Sciences MCPs)

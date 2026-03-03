@@ -271,7 +271,9 @@ Map each workflow step's `tool` field to the correct MCP call:
 | `clinicaltrials_search_trials` | `mcp__biosciences-mcp__clinicaltrials_search_trials` |
 | `clinicaltrials_get_trial` | `mcp__biosciences-mcp__clinicaltrials_get_trial` |
 | `clinicaltrials_get_trial_locations` | `mcp__biosciences-mcp__clinicaltrials_get_trial_locations` |
-| `curl` | Execute via bash (for ChEMBL /mechanism, Open Targets GraphQL, STRING enrichment) |
+| `biogrid_get_orcs_essentiality` | `mcp__biosciences-mcp-edge__get_orcs_essentiality` |
+| `chembl_get_mechanism` | `mcp__biosciences-mcp-edge__get_mechanism` |
+| `curl` | Execute via bash (for Open Targets GraphQL, STRING enrichment) |
 
 ### Chaining Step Outputs
 
@@ -309,10 +311,12 @@ The validation report will show which steps succeeded and which did not.
 
 ### Fallback Patterns
 
-| Primary (MCP) | Fallback (curl) | Trigger |
-|---------------|-----------------|---------|
+| Primary (MCP) | Fallback | Trigger |
+|---------------|----------|---------|
 | `chembl_get_compound` | `curl ChEMBL /molecule/{ID}` | 500 error (common) |
 | `chembl_search_compounds` | `curl ChEMBL /molecule/search?q={query}` | Gateway unavailable |
+| `chembl_get_mechanism` (edge) | `curl ChEMBL /mechanism.json?molecule_chembl_id={ID}` | Edge server unavailable |
+| `biogrid_get_orcs_essentiality` (edge) | `curl https://orcsws.thebiogrid.org/gene/{entrez_id}?accesskey=$BIOGRID_API_KEY&format=json` | Edge server unavailable |
 | `opentargets_get_associations` | Open Targets GraphQL `associatedDiseases` | MCP error |
 | `clinicaltrials_search_trials` | `curl ClinicalTrials.gov /v2/studies` | Cloudflare block |
 | `string_get_interactions` | `biogrid_get_interactions` | < 3 interactions returned |

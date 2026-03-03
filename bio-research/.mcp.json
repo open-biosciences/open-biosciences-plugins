@@ -15,6 +15,11 @@
     "synapse": {
       "type": "http",
       "url": "https://mcp.synapse.org/mcp"
+    },
+    "biosciences-mcp-edge": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--directory", "/home/donbr/open-biosciences/biosciences-mcp-edge", "fastmcp", "run", "src/biosciences_mcp_edge/server.py"]
     }
   }
 }
