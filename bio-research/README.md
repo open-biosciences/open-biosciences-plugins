@@ -13,6 +13,7 @@ This plugin consolidates MCP server integrations, domain-specific biosciences sk
 | Provider | What It Does | Category/Placeholder |
 |----------|-------------|---------------------|
 | Open Biosciences | 34-tool gateway spanning HGNC, UniProt, STRING, BioGRID, ChEMBL, Open Targets, PubChem, IUPHAR, WikiPathways, ClinicalTrials.gov, Ensembl, Entrez | `biosciences-mcp` |
+| Open Biosciences | Edge tools: ORCS CRISPR essentiality, ChEMBL mechanism-of-action | `biosciences-mcp-edge` |
 | Sage Bionetworks | Collaborative research data management | `~~data repository` |
 
 ### Skills (Analysis & Research Workflows)

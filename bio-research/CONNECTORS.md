@@ -6,7 +6,7 @@ Plugin files use `~~category` as a placeholder for whatever tool the user connec
 
 Plugins are **tool-agnostic** — they describe workflows in terms of categories (literature, clinical trials, chemical database, etc.) rather than specific products. The `.mcp.json` pre-configures specific MCP servers, but any MCP server in that category works.
 
-The `biosciences-mcp` gateway is an exception — it provides a unified API across 12 life sciences databases (HGNC, UniProt, STRING, BioGRID, ChEMBL, Open Targets, PubChem, IUPHAR, WikiPathways, ClinicalTrials.gov, Ensembl, Entrez) and is referenced by name rather than by placeholder. The biosciences domain skills use this gateway alongside the partner connectors listed below.
+The `biosciences-mcp` gateway is an exception — it provides a unified API across 12 life sciences databases (HGNC, UniProt, STRING, BioGRID, ChEMBL, Open Targets, PubChem, IUPHAR, WikiPathways, ClinicalTrials.gov, Ensembl, Entrez) and is referenced by name rather than by placeholder. The `biosciences-mcp-edge` server extends the gateway with additional tools (ORCS CRISPR essentiality, ChEMBL mechanism-of-action) and is also referenced by name. The biosciences domain skills use these servers alongside the partner connectors listed below.
 
 ## Connectors for this plugin
 
