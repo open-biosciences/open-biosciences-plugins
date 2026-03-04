@@ -59,9 +59,6 @@ Eleven skills for structured research using life sciences APIs (9 core + 2 beta 
 
 ## Common Workflows
 
-**Drug Discovery**
-Search ~~chemical database for bioactive compounds, use ~~drug targets for target prioritization, and review clinical trial data. For structured multi-database research, try `/ob-research` with a specific question.
-
 **Graph-Based Research**
 Ask a competency question with `/ob-research` to resolve entities across databases, build interaction networks, and discover drug candidates and clinical trials. Format results with `/ob-report`, review with `/ob-review`, or generate publication files with `/ob-publish`.
 
