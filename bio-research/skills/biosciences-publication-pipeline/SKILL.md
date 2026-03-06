@@ -177,6 +177,8 @@ Synapse.org has uneven disease domain coverage. Check the matrix below and add f
 
 If the disease domain has Low or Very Low coverage, document this in the grounding report's Limitations section and note which fallback sources would provide better coverage. The grounding agent should still search Synapse exhaustively but set expectations for low coverage.
 
+**Token Budget Rule**: Always set `limit=5` on `search_synapse` calls. The default (20) returns 50KB+ responses that exhaust context budget. Synapse searches come *after* entity resolution — use the precise CURIEs and resolved terms from Phases 1-2, not raw natural language. This mirrors the `slim=true` discipline used throughout the pipeline: minimize retrieval in discovery phases, maximize precision in grounding phases.
+
 **Search Query Construction** (build from entity labels in the KG, **compound queries first**):
 
 | Priority | Entity Type | Query Pattern | Example |
