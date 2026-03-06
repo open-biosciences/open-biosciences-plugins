@@ -1,7 +1,7 @@
 {
   "name": "bio-research",
   "version": "1.0.0",
-  "description": "Connect to preclinical research tools and databases (literature search, genomics analysis, target prioritization) to accelerate early-stage life sciences R&D",
+  "description": "Investigate biological targets, map protein interactions, and evaluate drug candidates using 12 curated life sciences APIs. Generate evidence-graded reports and BioRxiv-ready manuscripts from a single research question.",
   "license": "Apache-2.0",
   "author": {
     "name": "open-biosciences"
