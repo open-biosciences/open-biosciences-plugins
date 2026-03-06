@@ -1,6 +1,6 @@
 ---
 name: biosciences-pharmacology
-description: "Queries pharmacology databases (ChEMBL, PubChem, DrugBank, IUPHAR, Open Targets) via MCP tools for drug mechanisms, target identification, bioactivity profiling, and indication discovery. Falls back to curl when MCP is unavailable. This skill should be used when the user asks to \"find drug mechanisms\", \"identify drug targets\", \"analyze bioactivity data\", \"discover drug indications\", or mentions ChEMBL IDs, mechanisms of action, IC50/Ki values, drug-target relationships, or compound similarity searches."
+description: "Find drug mechanisms, identify drug targets, profile bioactivity, and discover indications across ChEMBL, PubChem, IUPHAR, and Open Targets. Use this skill whenever the user mentions drug mechanisms, drug targets, bioactivity data, ChEMBL IDs, mechanisms of action, IC50/Ki values, drug-target relationships, compound searches, or pharmacology lookups."
 ---
 
 # Biosciences Pharmacology API Skills

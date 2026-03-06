@@ -1,6 +1,6 @@
 ---
 name: biosciences-graph-builder
-description: "Orchestrates life sciences APIs to build knowledge graphs using the Fuzzy-to-Fact protocol, combining MCP tools for entity resolution and curl for edge discovery, then persisting to Graphiti. This skill should be used when the user asks to \"build knowledge graphs\", \"find biological connections\", \"explore drug repurposing\", \"validate drug targets\", or mentions traversing gene→protein→pathway→drug→disease paths, multi-API orchestration, or graph persistence workflows."
+description: "Build knowledge graphs from research questions by resolving entities, discovering interactions, finding drugs and trials, and persisting validated results. Use this skill whenever the user mentions building knowledge graphs, biological connections, drug repurposing, gene-protein-pathway-drug-disease paths, multi-API research pipelines, or the Fuzzy-to-Fact protocol."
 ---
 
 # Biosciences Graph Builder

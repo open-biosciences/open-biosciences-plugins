@@ -1,6 +1,6 @@
 ---
 name: biosciences-reporting-quality-review
-description: "Structured quality review framework for Fuzzy-to-Fact life sciences reports. Evaluates reports against protocol requirements using template-specific criteria, distinguishes presentation failures from protocol failures, and applies consistent standards for paraphrasing vs hallucination. Use when the user asks to 'review this report', 'evaluate report quality', 'check protocol compliance', 'validate CQ report', or similar quality assessment requests."
+description: "Review and score research reports against 10 quality dimensions, distinguishing protocol failures from presentation issues. Use this skill whenever the user asks to review a report, evaluate report quality, check protocol compliance, validate a CQ report, assess evidence grading, or run a quality assessment on pipeline output."
 ---
 
 # Report Quality Review Skill

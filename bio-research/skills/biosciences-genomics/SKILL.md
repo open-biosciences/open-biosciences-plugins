@@ -1,6 +1,6 @@
 ---
 name: biosciences-genomics
-description: "Queries genomic databases (Ensembl, NCBI, HGNC) via MCP tools for gene lookup, variant annotation, orthology, and cross-database ID resolution. Falls back to curl when MCP is unavailable. This skill should be used when the user asks to \"annotate variants\", \"find orthologs\", \"map gene IDs\", \"analyze linkage disequilibrium\", or mentions gene symbols, ENSG IDs, HGNC identifiers, VEP annotation, LD analysis, HGVS notation, or DNA sequences."
+description: "Look up genes, annotate variants, find orthologs, and resolve IDs across HGNC, Ensembl, and NCBI Entrez. Use this skill whenever the user mentions gene symbols, ENSG IDs, HGNC identifiers, VEP annotation, LD analysis, HGVS notation, variant annotation, ortholog mapping, or cross-database gene ID resolution."
 ---
 
 # Biosciences Genomics API Skills
