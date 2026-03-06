@@ -1,6 +1,6 @@
 ---
 name: biosciences-cq-discover
-description: "Browse, filter, and search the Open Biosciences competency questions catalog from HuggingFace. No API keys required. This skill should be used when the user asks to \"find competency questions\", \"browse CQs\", \"discover research questions\", \"list competency questions\", \"search CQs\", \"explore CQ catalog\", \"what questions can I research\", \"show me CQs about [topic]\", \"which CQs use [API]\", or mentions competency question discovery, CQ filtering, or research question browsing."
+description: "Browse, filter, and search 15 competency questions from the Open Biosciences HuggingFace catalog — no API keys required. Use this skill whenever the user mentions competency questions, CQs, research questions, CQ discovery, browsing CQs, filtering by topic or API, or asks what questions they can research."
 ---
 
 # CQ Discover

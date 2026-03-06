@@ -1,6 +1,6 @@
 ---
 name: biosciences-cq-runner
-description: "Loads structured competency question (CQ) definitions from a HuggingFace dataset, executes each workflow step against live MCP servers following the Fuzzy-to-Fact protocol, validates results against gold standard paths and biolink edges, persists results locally, and generates a validation report. This skill should be used when the user asks to \"run a competency question\", \"execute a CQ\", \"validate a CQ\", \"test cq1\", \"run cq14\", or mentions competency question execution, CQ validation, gold standard comparison, or automated graph-builder testing."
+description: "Execute a competency question end-to-end against live MCP servers, validate results against gold standard paths, and generate a validation report. Use this skill whenever the user asks to run a CQ, execute a competency question, validate a CQ, test cq1, run cq14, or mentions CQ execution, gold standard comparison, or automated graph-builder testing."
 ---
 
 # Biosciences CQ Runner

@@ -1,6 +1,6 @@
 ---
 name: biosciences-publication-pipeline
-description: "Produces publication-quality outputs from completed Fuzzy-to-Fact pipeline data: formatted report, knowledge graph JSON with Synapse grounding, quality review, and BioRxiv preprint draft. Use when the user asks to 'publish results', 'create publication outputs', 'generate biorxiv draft', 'run publication pipeline', 'format for publication', or mentions producing manuscript-ready files from pipeline output."
+description: "Produce 5 publication-quality files from pipeline data: formatted report, knowledge graph JSON, Synapse grounding, quality review, and BioRxiv preprint draft. Use this skill whenever the user asks to publish results, create publication outputs, generate a BioRxiv draft, run the publication pipeline, format for publication, or produce manuscript-ready files."
 ---
 
 # Biosciences Publication Pipeline

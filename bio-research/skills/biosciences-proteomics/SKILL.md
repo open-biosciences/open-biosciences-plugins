@@ -1,6 +1,6 @@
 ---
 name: biosciences-proteomics
-description: "Queries protein databases (UniProt, STRING, BioGRID) via MCP tools for protein lookups, protein-protein interactions, functional enrichment analysis, and cross-database ID mapping. Falls back to curl when MCP is unavailable. This skill should be used when the user asks to \"find protein interactions\", \"analyze interaction networks\", \"perform GO enrichment\", \"map protein IDs\", or mentions PPI networks, UniProt accessions, STRING scores, BioGRID interactions, or protein ID conversion between databases."
+description: "Find protein interactions, analyze PPI networks, and map protein IDs across UniProt, STRING, and BioGRID. Use this skill whenever the user mentions protein interactions, interaction networks, GO enrichment, UniProt accessions, STRING scores, BioGRID interactions, PPI analysis, or protein ID conversion between databases."
 ---
 
 # Biosciences Proteomics API Skills

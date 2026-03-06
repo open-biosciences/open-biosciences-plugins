@@ -1,6 +1,6 @@
 ---
 name: biosciences-reporting
-description: "Formats professional reports from Fuzzy-to-Fact pipeline output using domain-specific templates, claim-level evidence grading, and standardized citations. This skill should be used when the user asks to \"format a report\", \"summarize findings\", \"grade evidence\", \"write up results\", or mentions report templates, confidence scoring, evidence levels, or presentation of pipeline output."
+description: "Format professional research reports with evidence grading, domain-specific templates, and standardized citations from pipeline output. Use this skill whenever the user asks to format a report, summarize findings, grade evidence, write up results, or mentions report templates, confidence scoring, evidence levels, or presenting research output."
 ---
 
 # Biosciences Reporting

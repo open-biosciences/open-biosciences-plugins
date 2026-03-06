@@ -1,6 +1,6 @@
 ---
 name: biosciences-clinical
-description: "Queries clinical databases (Open Targets, ClinicalTrials.gov) via MCP tools for target-disease associations, target tractability assessment, and clinical trial discovery. Falls back to curl when MCP is unavailable. This skill should be used when the user asks to \"validate drug targets\", \"find clinical trials\", \"assess target tractability\", \"discover disease associations\", or mentions Open Targets scores, NCT identifiers, target-disease evidence, druggability assessment, or translational research workflows."
+description: "Validate drug targets, find clinical trials, and assess target tractability using Open Targets and ClinicalTrials.gov. Use this skill whenever the user mentions target validation, clinical trials, disease associations, Open Targets scores, NCT identifiers, druggability assessment, target tractability, or translational research."
 ---
 
 # Biosciences Clinical & Translational API Skills
