@@ -1,10 +1,15 @@
-# Open Biosciences Research Plugin
+# Open Biosciences Plugins
 
-Connect to preclinical research tools and databases (literature search, genomics analysis, target prioritization) to accelerate early-stage life sciences R&D. Use with [Cowork](https://claude.com/product/cowork) or install directly in Claude Code.
+Connect to structured research workflows, domain-specific skills, and MCP-backed data sources. Use with [Cowork](https://claude.com/product/cowork) or install directly in Claude Code.
 
-This plugin consolidates MCP server integrations, domain-specific biosciences skills, and analysis workflows into a single package for life science researchers.
+This marketplace contains reusable research plugins:
 
-## What's Included
+| Plugin | What It Does |
+|--------|--------------|
+| **bio-research** | Connects to preclinical research tools and databases for life sciences R&D |
+| **psychology-research** | Runs evidence-grounded psychology research and therapist/provider fit assessment |
+
+## Bio Research
 
 ### MCP Servers (Data Sources & Tools)
 
@@ -17,8 +22,6 @@ This plugin consolidates MCP server integrations, domain-specific biosciences sk
 | Sage Bionetworks | Collaborative research data management | `~~data repository` |
 
 ### Skills (Analysis & Research Workflows)
-
-#### Biosciences Domain Skills
 
 Eleven skills for structured research using life sciences APIs (9 core + 2 beta competency-question skills). These follow a LOCATE→RETRIEVE discipline where entities are resolved through search endpoints before strict lookup by canonical ID. See [bio-research/references/fuzzy-to-fact.md](bio-research/references/fuzzy-to-fact.md) for details.
 
@@ -61,6 +64,38 @@ Eleven skills for structured research using life sciences APIs (9 core + 2 beta 
 
 **Graph-Based Research**
 Ask a competency question with `/ob-research` to resolve entities across databases, build interaction networks, and discover drug candidates and clinical trials. Format results with `/ob-report`, review with `/ob-review`, or generate publication files with `/ob-publish`.
+
+## Psychology Research
+
+`psychology-research` adapts the same grounding discipline to psychology, therapy, and provider-fit workflows. It is a Markdown-only v1: commands, skills, and references, with no bundled MCP servers or runtime services.
+
+### Skills
+
+| Skill | What It Does |
+|-------|--------------|
+| **psychology-evidence-builder** | Builds evidence packets for psychology and therapy research using `LOCATE -> RETRIEVE -> EXTRACT -> CLASSIFY -> SYNTHESIZE` |
+| **psychology-provider-fit** | Verifies provider fit, licensure, credentials, modality claims, geography, telehealth, and gaps |
+| **psychology-reporting** | Formats sourced reports with evidence labels and safety language |
+| **psychology-quality-review** | Reviews reports for source attribution, overclaiming, clinical safety, provider verification, and hallucination risk |
+
+### Commands
+
+| Command | What It Does |
+|---------|--------------|
+| `/psy-research` | Run evidence-grounded psychology research from a question or document |
+| `/psy-provider` | Verify therapist/provider fit, credentials, modality claims, and gaps |
+| `/psy-report` | Format a sourced report from an evidence packet |
+| `/psy-review` | Quality-review a report and evidence packet |
+
+### Safety
+
+Psychology Research is research support, not therapy, not diagnosis, and not medical advice. It does not diagnose, prescribe, rank a clinician as clinically best, or simulate real clinicians. Crisis/self-harm content routes to 988 and pauses analysis.
+
+### Install
+
+```
+/plugin install psychology-research@open-biosciences-plugins
+```
 
 ## License
 

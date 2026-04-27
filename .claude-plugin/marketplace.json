@@ -3,11 +3,19 @@
   "owner": {
     "name": "open-biosciences"
   },
+  "metadata": {
+    "description": "Research plugins for evidence-grounded life sciences, psychology, therapy, and provider-fit workflows."
+  },
   "plugins": [
     {
       "name": "bio-research",
       "source": "./bio-research",
       "description": "Investigate biological targets, map protein interactions, and evaluate drug candidates using 12 curated life sciences APIs. Generate evidence-graded reports and BioRxiv-ready manuscripts from a single research question."
+    },
+    {
+      "name": "psychology-research",
+      "source": "./psychology-research",
+      "description": "Run evidence-grounded psychology research and therapist/provider fit assessment with source hierarchy, claim provenance, clinical-safety guardrails, and evidence-graded reporting."
     }
   ]
 }
