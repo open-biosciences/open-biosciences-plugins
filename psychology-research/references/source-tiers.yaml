@@ -1,0 +1,45 @@
+## Tier 1 — primary / official / peer-reviewed
+pubmed.ncbi.nlm.nih.gov: 1
+ncbi.nlm.nih.gov/pmc: 1
+cochranelibrary.com: 1
+apa.org: 1
+nice.org.uk: 1
+nimh.nih.gov: 1
+nih.gov: 1
+who.int: 1
+
+## Tier 2 — modality-institute / certifying-body
+aasect.org: 2
+iceeft.com: 2
+aedpinstitute.org: 2
+traumahealing.org: 2
+emdria.org: 2
+selfleadership.org: 2
+gottman.com: 2
+thepactinstitute.com: 2
+isst-d.org: 2
+aamft.org: 2
+
+## Tier 1 guidelines
+samhsa.gov: 1
+va.gov/healthpartnerships/clinical-practice-guidelines: 1
+healthquality.va.gov: 1
+
+## Tier 4 — directories / commercial
+psychologytoday.com: 4
+therapyden.com: 4
+zencare.co: 4
+growtherapy.com: 4
+goodtherapy.org: 4
+
+## Tier 5 — commentary / blogs / consumer media
+substack.com: 5
+medium.com: 5
+podcasts.apple.com: 5
+chadd.org: 5
+additudemag.com: 5
+
+## Tier 6 — unverified / structurally rejected
+scribd.com: 6
+academia.edu: 6
+researchgate.net: 6
