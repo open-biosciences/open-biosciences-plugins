@@ -24,7 +24,8 @@ clinicians or generate in-character therapist responses from provider profiles.
 
 ## Safety Preflight
 
-- If acute self-harm, suicide risk, active abuse, or psychiatric crisis appears, name 988 and pause analysis.
+{{include: ../../references/crisis-resources.md}}
+
 - If jurisdiction is not clear, ask for it before verifying license facts.
 - Default to California only when the input or local HCI docs imply California.
 

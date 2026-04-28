@@ -15,6 +15,10 @@ from presentation gaps. This is not diagnosis, not therapy, and not medical
 advice. Do not simulate real clinicians.
 ```
 
+## Safety Preflight
+
+{{include: ../../references/crisis-resources.md}}
+
 ## Required Reads
 
 1. Evidence packet

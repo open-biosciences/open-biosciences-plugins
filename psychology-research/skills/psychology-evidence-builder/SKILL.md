@@ -31,8 +31,9 @@ not medical advice, and not a substitute for a licensed clinician.
 
 ## Safety Preflight
 
+{{include: ../../references/crisis-resources.md}}
+
 Before doing research:
-- If acute self-harm, suicide risk, active abuse, or psychiatric crisis appears, name 988 and pause analysis.
 - Do not diagnose or prescribe.
 - Do not rank a clinician as clinically best.
 - Do not simulate real clinicians.

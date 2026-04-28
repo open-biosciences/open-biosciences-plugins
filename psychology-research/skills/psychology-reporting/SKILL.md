@@ -15,6 +15,10 @@ missing claims, diagnose, prescribe, or make clinical recommendations. Missing
 evidence remains UNRESOLVED.
 ```
 
+## Safety Preflight
+
+{{include: ../../references/crisis-resources.md}}
+
 ## Required Input
 
 Evidence packet fields:
