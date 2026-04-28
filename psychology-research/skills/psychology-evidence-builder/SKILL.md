@@ -1,6 +1,11 @@
 ---
 name: psychology-evidence-builder
 description: "Run evidence-grounded psychology, therapy, sex therapy, family-systems, or narrative-psychology research using LOCATE -> RETRIEVE -> EXTRACT -> CLASSIFY -> SYNTHESIZE. Use when the user asks to research a psychology concept, modality, clinical-adjacent thesis, or document with source provenance."
+bindings:
+  literature: []                          # Tier-2 wires [pubmed, semantic-scholar, ~~web]
+  certifying-body: [~~certifying-body]    # Tier-3 wires real adapters
+  licensing-board: [~~licensing-board]    # Tier-3 wires real adapters
+  clinical-guidelines: [~~clinical-guidelines]   # Tier-4 wires
 ---
 
 # Psychology Evidence Builder
@@ -15,6 +20,16 @@ knowledge. Use retrieved sources, local user-provided context, or mark the claim
 UNRESOLVED. This skill provides research support only: not therapy, not diagnosis,
 not medical advice, and not a substitute for a licensed clinician.
 ```
+
+## Resolution
+
+Use the bindings declared in this file's frontmatter, in priority order. If a higher-priority binding returns no usable result, fall back to the next.
+
+During Tier-1a (current version), `literature: []` is empty. Literature claims fall through to `~~web` only and are tier-capped at SUPPORTED at the CLASSIFY step.
+
+Once Tier-2 wires `[pubmed, semantic-scholar, ~~web]`: PubMed is appropriate primary for biomedical, psychiatric, and RCT-shaped claims. For modality theory, qualitative practice literature, or book-form canon, prefer Semantic Scholar or note the paradigm fit explicitly. Consult `references/modality-canon.md` to identify the claim's paradigm before choosing the source.
+
+If a claim is grounded only in `~~web`, the resulting claim cannot be labeled `VERIFIED` regardless of the URL's apparent authority — see CLASSIFY for the demotion rule.
 
 ## When To Use
 
