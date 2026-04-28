@@ -116,4 +116,4 @@ limits: |
 
 ## Tier-1a EFT schema-validation result
 
-The Emotionally Focused Therapy schema-validation sketch was performed during Tier-1a to test the schema against a modality with substantial PubMed-indexed RCT presence. Result: [TO BE FILLED IN BY TASK 5 — schema validates cleanly OR schema reworks here].
+The Emotionally Focused Therapy schema-validation sketch was performed during Tier-1a to test the schema against a modality with substantial PubMed-indexed RCT presence. Result: schema validates cleanly. The `preferred_databases` field's list-of-strings shape and the `paradigm_notes` free-text field together accommodate EFT's PubMed-primary-for-efficacy / book-canon-primary-for-theory split without modification. The schema is committed for Tier-1b canon expansion.
