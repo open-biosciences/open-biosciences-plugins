@@ -60,3 +60,19 @@ Include:
 ### Step 4: Preserve Limits
 
 Do not add new facts during reporting. Use only the evidence packet. If the report needs missing data, mark it `UNRESOLVED`.
+
+## Required output preamble and footer
+
+Every `/psy-report` output begins with the **Tier-1a banner**:
+
+> `PLUGIN VERSION NOTICE: literature MCP not yet wired; claims grounded in web search and local context only. Citation tiers above SUPPORTED unavailable for literature claims.`
+
+Every `/psy-report` output ends with the **unvalidated-draft watermark**:
+
+> `STATUS: UNVALIDATED DRAFT — citation tiers, evidence labels, and language filters not yet checked. Run /psy-publish to validate and persist.`
+
+Both lines are emitted verbatim. The Tier-1a banner is removed in a future plugin version once the `~~literature` MCP wiring lands; the watermark footer remains in all versions.
+
+If the report's primary modality is identified during analysis and is **not** present in `references/modality-canon.md`, also emit the **Tier-1b banner** before the watermark footer:
+
+> `PARADIGM ROUTING NOTICE: modality '<name>' is not yet mapped in modality-canon. Preferred-source guidance unavailable; literature retrieval will use general defaults and may surface paradigm-mismatched results.`

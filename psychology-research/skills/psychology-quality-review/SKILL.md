@@ -1,6 +1,11 @@
 ---
 name: psychology-quality-review
 description: "Review psychology research, therapy/provider-fit, or narrative-psychology reports for source attribution, evidence labels, provider verification, clinical-safety language, stale current facts, overclaiming, and hallucination risk."
+bindings:
+  literature: []    # Quality review may consult literature for cross-checking; populated at Tier-2.
+  certifying-body: [~~certifying-body]
+  licensing-board: [~~licensing-board]
+  clinical-guidelines: [~~clinical-guidelines]
 ---
 
 # Psychology Quality Review
@@ -14,6 +19,16 @@ Read the evidence packet before judging the report. Distinguish missing evidence
 from presentation gaps. This is not diagnosis, not therapy, and not medical
 advice. Do not simulate real clinicians.
 ```
+
+## Resolution
+
+Quality review may invoke the same bindings as `psychology-evidence-builder` to cross-check claims (literature spot-checks, credential re-verification). Use the bindings in priority order with the same fall-through semantics.
+
+Quality review's primary outputs are reviewer findings — these are exempt from the publish-gate validators when the review is itself the artifact being produced. When the review's findings reference report claims with citations, follow the same evidence-label coverage discipline.
+
+## Safety Preflight
+
+{{include: ../../references/crisis-resources.md}}
 
 ## Required Reads
 

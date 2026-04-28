@@ -1,0 +1,30 @@
+name: Marker check (psychology-research)
+
+on:
+  pull_request:
+    paths:
+      - 'psychology-research/**'
+  push:
+    branches: [main]
+    paths:
+      - 'psychology-research/**'
+
+jobs:
+  marker-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Expand and check
+        working-directory: psychology-research
+        run: |
+          set -euo pipefail
+          # Make a working copy so the source tree is preserved.
+          cp -r . /tmp/psy-expanded
+          python3 -m scripts.sync_expand expand /tmp/psy-expanded
+          python3 -m scripts.sync_expand --check /tmp/psy-expanded

@@ -1,6 +1,11 @@
 ---
 name: psychology-provider-fit
 description: "Verify therapist or provider fit by checking licensure, credential claims, modality claims, telehealth/geography, source quality, and fit gaps. Use when the user mentions therapist search, provider fit, AASECT, ICEEFT, AEDP, licensing, clinician candidates, or provider profile review."
+bindings:
+  literature: []
+  certifying-body: [~~certifying-body]
+  licensing-board: [~~licensing-board]
+  clinical-guidelines: [~~clinical-guidelines]
 ---
 
 # Psychology Provider Fit
@@ -15,6 +20,14 @@ diagnosis. Do not rank a clinician as clinically best. Do not simulate real
 clinicians or generate in-character therapist responses from provider profiles.
 ```
 
+## Resolution
+
+Use the bindings declared in this file's frontmatter, in priority order. If a higher-priority binding returns no usable result, fall back to the next.
+
+During Tier-1a (current version), `certifying-body` and `licensing-board` are unbound (`~~category` placeholders). Provider verification claims that depend on these categories must be labeled `UNRESOLVED` rather than guessed; the Tier-1a banner notice should accompany any provider-fit output that hits this state.
+
+Once Tier-3 wires real adapters, this section gains the cert-body / licensing-board priority text. Until then, treat all certification and licensure claims as `SELF_REPORTED` unless the user supplies an official verification source manually.
+
 ## When To Use
 
 - Reviewing a provider name, provider website, or local provider profile
@@ -24,7 +37,8 @@ clinicians or generate in-character therapist responses from provider profiles.
 
 ## Safety Preflight
 
-- If acute self-harm, suicide risk, active abuse, or psychiatric crisis appears, name 988 and pause analysis.
+{{include: ../../references/crisis-resources.md}}
+
 - If jurisdiction is not clear, ask for it before verifying license facts.
 - Default to California only when the input or local HCI docs imply California.
 
