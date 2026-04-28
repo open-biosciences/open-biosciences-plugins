@@ -3,8 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.publish import run_gate, BundlePaths
-from scripts.validators import REGISTRY, Severity
+from scripts.publish import run_gate
+from scripts.validators import REGISTRY
 
 
 FIXTURE = Path(__file__).parent / "fixtures" / "minimal_report.md"

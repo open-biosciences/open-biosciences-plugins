@@ -19,7 +19,7 @@ import hashlib
 import json
 import shutil
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
