@@ -1,6 +1,7 @@
 ---
 name: psychology-reporting
 description: "Format sourced psychology research and provider-fit reports from evidence packets. Use when the user asks for a report, summary, writeup, fit matrix, evidence grading, or sourced synthesis after psychology/provider research."
+bindings: {}    # Reporting consumes only the supplied evidence packet; no MCP retrieval at this stage.
 ---
 
 # Psychology Reporting
@@ -14,6 +15,12 @@ The report consumes an evidence packet. It does not retrieve new facts, invent
 missing claims, diagnose, prescribe, or make clinical recommendations. Missing
 evidence remains UNRESOLVED.
 ```
+
+## Resolution
+
+This skill consumes only the evidence packet handed to it from `/psy-research` or `psychology-evidence-builder`. It does **not** perform retrieval and does not invoke MCP servers. Bindings are intentionally empty.
+
+Output must conform to the publish-gate template (see `commands/psy-publish.md` and `scripts/validators/template_conformance.py`): the sections **Answer**, **Evidence Packet Summary**, **Local Context vs External Evidence**, **Gaps**, **Sources** must appear in that canonical order. Every body claim sentence with a `[S\d+]` marker must carry an evidence label or the `(local synthesis)` annotation.
 
 ## Safety Preflight
 
