@@ -82,7 +82,7 @@ Provider mode adds:
 | Primary/official | State licensing boards, certifying bodies, professional organizations, clinical guidelines, peer-reviewed papers | Required for current provider/license facts and high-stakes clinical claims |
 | Secondary/self-reported | Provider websites, Psychology Today, TherapyDen, Zencare, practice pages | Useful for modality claims, style, logistics, and first-contact questions; label `SELF_REPORTED` unless independently verified |
 | Tertiary/contextual | Blogs, news, Reddit, marketing pages, summaries | Context only; never sufficient for high-stakes claims |
-| Local context | User docs, local memory files, project concepts | User-provided thesis/context; not external evidence |
+| Local context | User docs, local memory files, project concepts, graph-memory fragments | User-provided thesis/context; not external evidence. Graph fragments follow `references/graph-memory-contract.md`. |
 
 ## Provider Verification Rules
 
