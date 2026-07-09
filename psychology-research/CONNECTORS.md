@@ -15,7 +15,15 @@ The plugin is tool-agnostic. It describes workflows in terms of source categorie
 | Licensing board | `~~licensing-board` | (Tier-3: per-state adapters) | State license lookup and disciplinary-status verification |
 | Certifying body | `~~certifying-body` | (Tier-3: AASECT, ICEEFT, AEDP, SE, EMDRIA, IFS, Gottman, PACT adapters) | AASECT, ICEEFT, AEDP Institute, SE International, EMDRIA, IFS Institute, and similar credential checks |
 | Guidelines | `~~clinical-guidelines` | (Tier-4: NICE, VA-CPG, SAMHSA + non-biomedical block) | Professional guidelines, consensus statements, and official clinical resources |
-| Local knowledge graph | `~~graph-memory` | (optional, user-configured) | Optional Graphiti/Neo4j persistence or prior evidence-packet retrieval |
+| Local knowledge graph | `~~graph-memory` | (optional, user-configured) | Optional Graphiti/Neo4j persistence, prior evidence-packet retrieval, or a `local_context` graph fragment file (see `references/graph-memory-contract.md`) |
+
+### Graph-memory fragment input
+
+A `~~graph-memory` source may supply context as a **fragment file** — a JSON document
+conforming to `references/graph-memory-contract.md`. Its entries enter the evidence packet
+as `source_tier: local_context` and can never be labeled `VERIFIED`: a graph-sourced claim
+is context local to this effort, not external evidence. Validate a fragment file with
+`scripts/validators/graph_memory_fragment.py` before ingestion.
 
 ## Current-Information Rule
 
