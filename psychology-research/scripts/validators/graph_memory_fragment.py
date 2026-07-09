@@ -5,6 +5,10 @@ Validates a graph-memory fragment file against the local_context contract
 type 'local_context', carries the required edge fields, and is NEVER labeled
 VERIFIED — a graph-sourced claim can only ever be context local to this effort,
 not external evidence.
+
+Runnable directly (validates one fragment file, exits non-zero on BLOCK):
+
+  python3 scripts/validators/graph_memory_fragment.py <fragment.json>
 """
 
 from __future__ import annotations
@@ -12,7 +16,16 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from scripts.validators import Severity, ValidatorResult
+try:
+    from scripts.validators import Severity, ValidatorResult
+except ModuleNotFoundError:
+    # Allow direct execution from the plugin root:
+    # `python3 scripts/validators/graph_memory_fragment.py <file>`.
+    # parents[2] == the plugin root (psychology-research/).
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.validators import Severity, ValidatorResult
 
 _REQUIRED_FIELDS = ("source", "target", "edge_type", "valid_at", "fact")
 _FORBIDDEN_STATUS = "VERIFIED"
@@ -55,3 +68,25 @@ def validate_graph_memory_fragment(fragment_path: Path) -> ValidatorResult:
 
     severity = Severity.BLOCK if findings else Severity.PASS
     return ValidatorResult(name=_NAME, severity=severity, findings=findings)
+
+
+def _main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Validate a graph-memory fragment file against the local_context contract."
+    )
+    parser.add_argument("fragment", type=Path, help="path to the fragment JSON file")
+    args = parser.parse_args(argv)
+
+    result = validate_graph_memory_fragment(args.fragment)
+    for finding in result.findings:
+        print(f"- {finding}")
+    print(f"{result.name}: {result.severity.value}")
+    return 1 if result.severity is Severity.BLOCK else 0
+
+
+if __name__ == "__main__":
+    import sys
+
+    raise SystemExit(_main(sys.argv[1:]))

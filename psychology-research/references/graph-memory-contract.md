@@ -46,7 +46,13 @@ literature is labeled at the **weaker** of the two.
 `scripts/validators/graph_memory_fragment.py` enforces this contract (BLOCK on violation):
 `fragments` is a list; each fragment `type == "local_context"`; required fields present and
 non-empty; `status` never `VERIFIED`. Run it before feeding a fragment file into a research
-run.
+run:
+
+```bash
+python3 scripts/validators/graph_memory_fragment.py <fragment.json>
+```
+
+It prints any findings and exits non-zero when the fragment is BLOCK.
 
 ## Direction
 
