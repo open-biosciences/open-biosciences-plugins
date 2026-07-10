@@ -64,6 +64,17 @@ class TestGraphMemoryFragment(unittest.TestCase):
         r = validate_graph_memory_fragment(Path(f.name))
         self.assertEqual(r.severity, Severity.BLOCK)
 
+    def test_main_returns_zero_for_valid(self):
+        from scripts.validators.graph_memory_fragment import _main
+        path = _temp_json({"fragments": [_GOOD_FRAGMENT]})
+        self.assertEqual(_main([str(path)]), 0)
+
+    def test_main_returns_one_for_block(self):
+        from scripts.validators.graph_memory_fragment import _main
+        frag = dict(_GOOD_FRAGMENT, status="VERIFIED")
+        path = _temp_json({"fragments": [frag]})
+        self.assertEqual(_main([str(path)]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
