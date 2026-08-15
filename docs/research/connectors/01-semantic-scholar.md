@@ -123,7 +123,9 @@ pattern independently, so this is a recurring class, not a per-connector quirk.
 
 ## 4. Measured coverage — BLOCKED, NOT MEASURED
 
-**Cells recorded: 0 of 12.** `probe/results/semantic-scholar.json` is `[]`.
+**Coverage cells recorded: 0 of 10.** `probe/results/semantic-scholar.json` contains
+**one** record — C1, the positive control — which per `README.md` is scored separately
+and **contributes nothing to any coverage figure**.
 
 Per-query status is **not uniform**, and the distinction matters — "attempted and
 throttled" is a different claim from "never attempted". Full receipt:
@@ -131,7 +133,7 @@ throttled" is a different claim from "never attempted". Full receipt:
 
 | Query | Status | Detail |
 |---|---|---|
-| C1 | **fetched, not scored** | One genuine 200 (`total: 16523`) captured as the fixture. Not recorded as a cell — a single observation outside a completed run is not a scored result |
+| C1 | **fetched and recorded** | Genuine 200 at 21:15:38Z (`total: 16523`), top result on-target. Recorded as a cell, `result: hit`. It is the positive control, so it is scored separately and adds nothing to coverage — but it is real data and is not discarded |
 | Q1 | attempted, **429** | 1 initial + 3 retries (20s/40s/70s) exhausted |
 | Q2 | attempted, **429** | 1 initial + 3 retries exhausted |
 | Q3 | interrupted | Request in flight when the run was stopped; no partial recorded |
