@@ -183,24 +183,35 @@ Semantic Scholar as equivalent-but-slower.
 
 ---
 
-## 9. `publisher` is not universally available — Crossref may be the only source
+## 9. `publisher` availability — CORRECTED against the aggregate
 
-From the Semantic Scholar C1 fixture: `publicationVenue.publisher` is **`None` on every
-one of the five records**, while `venue` and `issn` are populated. Europe PMC likewise
-returns `journalTitle` but no publisher field.
+> **This note was wrong when first written and is corrected here.** The original claim —
+> *"publisher may be Crossref-only"* — was extrapolated from the Semantic Scholar fixture
+> (publisher `None` on all 5 records) plus Europe PMC's field list, **before the
+> full matrix was aggregated**. It does not survive the aggregate. Recorded rather than
+> deleted, because the error is instructive: a per-connector observation generalised
+> without checking the others is exactly the failure the cross-connector view exists to
+> catch.
 
-Spec §6.2 classifies venue class from *"the item's own registered `type`, venue, and
-publisher"*. If publisher is only reliably available from Crossref, then either:
+Actual availability, counted from all 49 cells:
 
-- the classifier must work from `type` + venue alone for non-Crossref sources, or
-- Crossref becomes a mandatory second lookup for any DOI-bearing record — which
-  contradicts the "zero marginal cost" retraction finding only insofar as it applies to
-  *records Crossref already returned*, not to records surfaced by another connector.
+| Connector | `publisher` returned |
+|---|---|
+| OpenAlex | **12 / 12** |
+| Crossref | **12 / 12** |
+| Europe PMC | 2 / 12 |
+| Semantic Scholar | 0 / 1 |
+| PsyArXiv/OSF | 0 / 12 (no results at all) |
 
-`institute-publication` is the class most dependent on publisher (it is defined by *who
-published it*, not what type it is). That class was already flagged unresolvable from
-Crossref's `type` vocabulary alone; this note says it may be unresolvable from any
-connector's metadata without a publisher-string heuristic at Layer 4.
+So publisher is **reliably available from two connectors**, not one. The classifier is
+not forced into a mandatory Crossref round-trip for publisher alone.
+
+**What does survive:** Semantic Scholar never supplies it (`publicationVenue.publisher`
+is null on every observed record), and Europe PMC supplies it only sporadically. So a
+record surfaced *solely* by S2 or Europe PMC may still lack the field, and
+`institute-publication` — the class defined by *who* published rather than *what type*
+the item is — remains the hardest to resolve. That class was already flagged
+unresolvable from Crossref's `type` vocabulary alone.
 
 ---
 
