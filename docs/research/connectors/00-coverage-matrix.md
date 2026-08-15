@@ -1,7 +1,7 @@
 # 00 — Coverage matrix
 
 **Probed:** 2026-08-15 · **Benchmark:** frozen 2026-08-15, see [`README.md`](README.md)
-**Cells:** 49 recorded, 0 invalid · **Source of truth:** `probe/results/*.json`
+**Cells:** 60 recorded, 0 invalid — **all five connectors measured** · **Source of truth:** `probe/results/*.json`
 
 Every figure here is counted from the recorded cell records, not from any agent's
 summary. That distinction caught at least one arithmetic error — see *Corrections*.
@@ -15,36 +15,36 @@ does not rank connectors, and `n_results` is deliberately absent (§6).**
 
 | | Semantic Scholar | OpenAlex | Crossref | Europe PMC | PsyArXiv/OSF |
 |---|---|---|---|---|---|
-| **Q1** IFS | *not measured* | miss | **hit** | miss | miss |
-| **Q2** Somatic/Sensorimotor | *not measured* | partial | **hit** | miss | miss |
-| **Q3** AEDP transformance | *not measured* | partial | partial | miss | miss |
-| **Q4** Heroine's Journey | *not measured* | miss | **hit** | miss | miss |
-| **Q5** Marston DISC 1928 | *not measured* | partial | **hit** | miss | miss |
-| **Q6** secure base, established dyads | *not measured* | partial | partial | partial | miss |
-| **Q7** Basson responsive desire | *not measured* | **hit** | **hit** | partial | miss |
-| **Q8** novelty + aesthetic engagement | *not measured* | miss | **hit** | miss | miss |
-| **Q9** measurement invariance | *not measured* | partial | **hit** | **hit** | miss |
-| **Q10** working memory / Gf | *not measured* | **hit** | **hit** | **hit** | miss |
+| **Q1** IFS | **hit** | miss | **hit** | miss | miss |
+| **Q2** Somatic/Sensorimotor | partial | partial | **hit** | miss | miss |
+| **Q3** AEDP transformance | **hit** | partial | partial | miss | miss |
+| **Q4** Heroine's Journey | partial | miss | **hit** | miss | miss |
+| **Q5** Marston DISC 1928 | partial | partial | **hit** | miss | miss |
+| **Q6** secure base, established dyads | partial | partial | partial | partial | miss |
+| **Q7** Basson responsive desire | **hit** | **hit** | **hit** | partial | miss |
+| **Q8** novelty + aesthetic engagement | miss | miss | **hit** | miss | miss |
+| **Q9** measurement invariance | **hit** | partial | **hit** | **hit** | miss |
+| **Q10** working memory / Gf | **hit** | **hit** | **hit** | **hit** | miss |
 | **C1** *positive control* | **hit** | **hit** | **hit** | **hit** | miss |
-| **C2** *negative control* | *not measured* | miss ✓ | miss ✓ | miss ✓ | miss ✓ |
+| **C2** *negative control* | miss ✓ | miss ✓ | miss ✓ | miss ✓ | miss ✓ |
 
 ### Coverage tallies — Q1–Q10 only, controls excluded
 
 | Connector | hit | partial | miss | Measured? |
 |---|---:|---:|---:|---|
 | **Crossref** | **8** | 2 | 0 | ✅ 10/10 |
+| **Semantic Scholar** | **5** | 4 | 1 | ✅ 10/10 *(requires an API key)* |
 | **OpenAlex** | 2 | 5 | 3 | ✅ 10/10 |
 | **Europe PMC** | 2 | 2 | 6 | ✅ 10/10 |
 | **PsyArXiv/OSF** | 0 | 0 | 10 | ✅ 10/10 |
-| **Semantic Scholar** | — | — | — | ❌ **0/10 — not measured** |
 
 ## 2. Two results that are not what they look like
 
-**Semantic Scholar is `not measured`, not zero.** No coverage cell was ever recorded: the
-unauthenticated API returned sustained HTTP 429, reproduced independently by the
-controller. Its one cell is C1, a control, excluded from coverage by design. **It must
-not be ranked, tallied, or read as poor coverage** — that would place the plugin's own
-declared non-PubMed source last on evidence that does not exist. See
+**Semantic Scholar was re-run with an API key.** The original pass recorded zero cells —
+the unauthenticated shared pool returned sustained 429 across three windows. A key was
+issued 2026-08-15 and the **frozen, unchanged** benchmark was re-run: 5 hit / 4 partial /
+1 miss. It is the only connector requiring credentials; the other four completed keyless,
+and that distinction is a roster fact, not a footnote. See
 [`01-semantic-scholar.md`](01-semantic-scholar.md) §4.
 
 **PsyArXiv/OSF's 0/10 is not a coverage contest it lost.** OSF's `filter[title]` is a
@@ -132,22 +132,22 @@ Count of cells in which each connector actually returned the field.
 
 | Registry key | Semantic Scholar | OpenAlex | Crossref | Europe PMC | PsyArXiv/OSF |
 |---|---|---|---|---|---|
-| `doi` | 1/1 | 11/12 | **12/12** | 8/12 | — |
-| `pmid` | 1/1 | 7/12 | — | 6/12 | — |
-| `pmcid` | — | — | — | 7/12 | — |
+| `doi` | 9/12 | 11/12 | **12/12** | 8/12 | — |
+| `pmid` | 4/12 | 7/12 | — | 6/12 | — |
+| `pmcid` | 2/12 | — | — | **7/12** | — |
 | `openalex_id` | — | **12/12** | — | — | — |
-| `semantic_scholar_id` | 1/1 | — | — | — | — |
-| `issn` | 1/1 | 11/12 | 3/12 | — | — |
+| `semantic_scholar_id` | **12/12** | — | — | — | — |
+| `issn` | 7/12 | 11/12 | 3/12 | — | — |
 | `isbn` | — | — | **6/12** | — | — |
 | `osf_id` | — | — | — | — | — |
 | `arxiv_id` | — | — | — | — | — |
 
 | Envelope field | Semantic Scholar | OpenAlex | Crossref | Europe PMC | PsyArXiv/OSF |
 |---|---|---|---|---|---|
-| `type` | 1/1 | **12/12** | **12/12** | 10/12 | — |
-| `venue` | 1/1 | **12/12** | 10/12 | 10/12 | — |
+| `type` | 8/12 | **12/12** | **12/12** | 10/12 | — |
+| `venue` | 8/12 | **12/12** | 10/12 | 10/12 | — |
 | `publisher` | — | **12/12** | **12/12** | 2/12 | — |
-| `oa_status` | 1/1 | **12/12** | — | 7/12 | — |
+| `oa_status` | 6/12 | **12/12** | — | 7/12 | — |
 | `retraction_status` | — | **12/12** | — | — | — |
 
 ### What this table establishes
@@ -167,7 +167,15 @@ cells were zero-result). Two of the nine registry keys are **unexercised** by th
 benchmark; their availability is unestablished, not absent.
 
 **No single connector supplies everything.** Crossref lacks `oa_status` and standing
-retraction; OpenAlex lacks `isbn`; Europe PMC is the only source of `pmcid`.
+retraction; OpenAlex lacks `isbn`; Europe PMC is the richest source of `pmcid`.
+
+**Semantic Scholar, now measured across 12 cells, confirms both fixture findings and
+contradicts a third.** Confirmed: `publisher` **0/12** and `retraction_status` **0/12** —
+it supplies neither, ever. Contradicted: the fixture suggested ~40% of records carry a
+registered type with **no** DOI; across 12 top results that pattern occurred **0 times**.
+The real distribution is 8 with both, **1 with a DOI but no type**, and **3 with neither**.
+So the "type without DOI" case is not the dominant shape — *records with no DOI at all*
+are (3/12, 25%), and `semantic_scholar_id` is the only identifier present on every record.
 
 ## 8. Venue-class distribution
 
@@ -190,8 +198,12 @@ controlled vocabulary has no type for any of them.
 
 ## 9. Gaps no connector fills
 
-1. **AEDP / transformance (Q3)** — no hit anywhere. The one query the entire candidate set
-   fails.
+1. ~~**AEDP / transformance (Q3)** — no hit anywhere.~~ **CLOSED by the keyed Semantic
+   Scholar re-run**, which returned Fosha's own *AEDP: Transformance In Action* (2011).
+   No other connector reaches it. Note the record carries **neither a DOI nor a registered
+   type** — only a CorpusId — so the hit arrives as `venue_class: unverified`,
+   `classification_basis: none`. The connector that alone finds AEDP theory cannot say
+   what kind of thing it found.
 2. **`guideline`, `institute-publication`, `commentary`** — not resolvable from any
    connector's registered `type`. Needs a Layer-4 publisher heuristic.
 3. **Modality-institute publications generally** — implied by (2); the AASECT / ICEEFT /

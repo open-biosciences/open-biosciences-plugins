@@ -228,31 +228,43 @@ PMC's sampled results and 40% of the S2 C1 sample.
 
 ---
 
-## 11. Semantic Scholar has NO measured coverage — absence of measurement, not measured absence
+## 11. Semantic Scholar — RESOLVED by a keyed re-run, and it contradicted a note
 
-`probe/results/semantic-scholar.json` is `[]`. Zero of twelve cells were fetched. The
-run aborted on cell 1 after exhausting 20s/40s/70s of backoff against sustained 429s,
-independently reproduced by the controller with four spaced isolated calls.
+**Superseded 2026-08-15.** An API key was issued and the frozen benchmark re-run
+authenticated: **5 hit / 4 partial / 1 miss**, second only to Crossref. The
+"not measured" rendering this note previously mandated no longer applies.
 
-**Task 8 must not render this as `0/10`.** Four connectors have measured coverage; this
-one has none. Presenting an empty result in the same column as a measured zero would
-state something false — and would rank the plugin's own *designated* non-PubMed source
-last on evidence that does not exist.
+Three things the re-run established that the single fixture could not:
 
-Render it as a distinct state — `not measured (429)` — in every table, and keep it out
-of any coverage tally, ranking, or aggregate.
+**(a) Q3 is answerable.** `00-coverage-matrix.md` §9 recorded AEDP transformance as *"the
+one query the entire candidate set fails."* Semantic Scholar returned Fosha's own *AEDP:
+Transformance In Action* (2011). No other connector reaches it.
 
-The single datum that exists is the C1 fixture (`total: 16523`, on-target top result,
-DOI `10.1111/famp.12305`), captured before the pool saturated. It is one observation,
-not a scored cell, and it is counted nowhere.
+**(b) The Q3 record carries neither a DOI nor a registered type** — only a CorpusId. The
+single most valuable result in the benchmark arrives as `venue_class: unverified`,
+`classification_basis: none`. This is the strongest concrete argument for those being
+separate fields: a hit with no classifiable metadata must survive as a hit.
 
-**Consequence for `DECISION.md`:** the roster entry for Semantic Scholar is provisional.
-Its §8 is a *conditional* wrap resting on metadata quality and the plugin's declared
-intent, not on measured coverage. If the roster needs a defensible ordering, the honest
-move is a keyed re-run — the twelve queries are frozen, so a later run is directly
-comparable.
+**(c) A prior MEASURED claim is contradicted.** Note §10 and the constitution's Principle
+II both cited *"40% of the Semantic Scholar sample carry a registered type with no DOI"*,
+from the 5-record C1 fixture. Across 12 top results that pattern occurred **0 times**:
 
----
+| Shape | Count |
+|---|---|
+| DOI **and** type | 8/12 |
+| DOI, **no** type | 1/12 |
+| Type, **no** DOI | **0/12** |
+| Neither | 3/12 |
+
+The *conclusion* survives — 3/12 records have no DOI at all, so a DOI-only strict tool
+could not retrieve them, and `semantic_scholar_id` is the only identifier present on every
+record. The *statistic* does not. Corrected in the constitution (Principle II) rather than
+left standing, per its own amendment clause: **a MEASURED clause may be amended by
+measurement.**
+
+**(d) Rate limit is tighter than nominal.** Granted 1 req/s cumulative; 1.2s spacing
+completed 12 cells, 1.3s drew a 429 on the second call, 2.5s was needed for sustained
+sequential use.
 
 ## 12. Crossref rate limit was initially exceeded
 

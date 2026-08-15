@@ -14,6 +14,7 @@ Literature Key Registry field (`issn`) that the payload genuinely carries.
 
 from __future__ import annotations
 
+import os
 import time
 import urllib.error
 
@@ -21,21 +22,30 @@ from .base import Item, RateLimiter, Response, http_get_json
 
 NAME = "semantic-scholar"
 BASE = "https://api.semanticscholar.org/graph/v1/paper/search"
-# Published: 1000 req/s shared across all unauthenticated users, "further
-# throttled during periods of heavy use" (semanticscholar.org/product/api).
-# Observed 2026-08-15: sustained HTTP 429 for 3+ minutes on a single client
-# issuing isolated requests, no concurrent load of our own — the shared
-# unauthenticated pool was already saturated by other traffic, independent
-# of our own request pacing. Raised from an initial 3.0s.
-RATE = 10.0
+
+# AUTHENTICATED (key issued 2026-08-15). Granted limit is "1 request per second,
+# cumulative across all endpoints", with the instruction to "set your rate limit
+# to below this threshold to avoid rejected requests" — hence 1.2s, deliberately
+# under 1 req/s rather than at it.
+#
+# Prior UNAUTHENTICATED behaviour, retained because it is the measured finding:
+# the shared pool (nominally 1000 req/s across all unauthenticated users) was
+# saturated by other traffic across three separate observation windows spanning
+# ~1.5 hours. Zero of twelve queries completed. Pacing our own requests further
+# apart did not clear it, because the saturation was not ours.
+RATE = 1.2
+
+# Key is read from the environment; never hardcoded, never committed.
+# .env and .env.* are gitignored in this repo.
+_API_KEY = os.environ.get("S2_API_KEY", "").strip()
+
 FIELDS = "title,year,authors,externalIds,venue,publicationTypes,publicationVenue,openAccessPdf"
 
-# The 429s observed above are shared-pool saturation, not a self-inflicted
-# burst — pacing our own requests further apart does not by itself clear
-# them. Retry with backoff inside the adapter (base.py stays untouched;
-# other connectors do not share this pool).
+# Backoff is far shorter than the unauthenticated variant: with a key, a 429
+# means we exceeded our own 1/s allocation, which self-corrects in seconds —
+# not that a global pool is saturated.
 _MAX_RETRIES = 3
-_BACKOFF_SECONDS = (20, 40, 70)
+_BACKOFF_SECONDS = (3, 8, 20)
 
 _limiter = RateLimiter(RATE)
 
@@ -75,9 +85,10 @@ def parse(raw: dict) -> Response:
 def search(query: str, limit: int = 10) -> Response:
     _limiter.wait()
     params = {"query": query, "limit": limit, "fields": FIELDS}
+    headers = {"x-api-key": _API_KEY} if _API_KEY else None
     for attempt in range(_MAX_RETRIES + 1):
         try:
-            raw = http_get_json(BASE, params)
+            raw = http_get_json(BASE, params, headers=headers)
             return parse(raw)
         except urllib.error.HTTPError as exc:
             if exc.code != 429 or attempt == _MAX_RETRIES:
