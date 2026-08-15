@@ -1,0 +1,267 @@
+{
+    "total": 16523,
+    "offset": 0,
+    "next": 5,
+    "data": [
+        {
+            "paperId": "f3ef7388355734af480bfa905f7cbec6abfdbccf",
+            "externalIds": {
+                "MAG": "2751133296",
+                "DOI": "10.1111/famp.12305",
+                "CorpusId": 44674475,
+                "PubMed": "28870000"
+            },
+            "publicationVenue": {
+                "id": "5a9c33fc-075b-4a02-9fbe-514a8fd48f40",
+                "name": "Family Process",
+                "type": "journal",
+                "alternate_names": [
+                    "Fam Process"
+                ],
+                "issn": "0014-7370",
+                "url": "http://www.blackwell-synergy.com/rd.asp?code=famp&goto=journal",
+                "alternate_urls": [
+                    "https://www.familyprocess.org/",
+                    "https://onlinelibrary.wiley.com/journal/15455300",
+                    "http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1545-5300"
+                ]
+            },
+            "title": "Effectiveness of the 'Hold me Tight' Relationship Enhancement Program in a Self-referred and a Clinician-referred Sample: An Emotionally Focused Couples Therapy-Based Approach.",
+            "venue": "Family Process",
+            "year": 2018,
+            "openAccessPdf": {
+                "url": "https://handle.uba.uva.nl/personal/pure/en/publications/effectiveness-of-the-hold-me-tight-relationship-enhancement-program-in-a-selfreferred-and-a-clinicianreferred-sample-an-emotionally-focused-couples-therapybased-approach(c1904f6e-9a52-432a-88f6-0715cebbbe46).html",
+                "status": "GREEN",
+                "license": "other-oa"
+            },
+            "publicationTypes": [
+                "JournalArticle",
+                "ClinicalTrial"
+            ],
+            "authors": [
+                {
+                    "authorId": "2255033",
+                    "name": "H. Conradi"
+                },
+                {
+                    "authorId": "8575812",
+                    "name": "P. Dingemanse"
+                },
+                {
+                    "authorId": "4008163",
+                    "name": "A. Noordhof"
+                },
+                {
+                    "authorId": "1953465",
+                    "name": "C. Finkenauer"
+                },
+                {
+                    "authorId": "4395967",
+                    "name": "J. Kamphuis"
+                }
+            ]
+        },
+        {
+            "paperId": "b770eca05f4886182e543839df1b2a21a48b6328",
+            "externalIds": {
+                "MAG": "2409023364",
+                "DOI": "10.1111/famp.12229",
+                "CorpusId": 205130996,
+                "PubMed": "27273169"
+            },
+            "publicationVenue": {
+                "id": "5a9c33fc-075b-4a02-9fbe-514a8fd48f40",
+                "name": "Family Process",
+                "type": "journal",
+                "alternate_names": [
+                    "Fam Process"
+                ],
+                "issn": "0014-7370",
+                "url": "http://www.blackwell-synergy.com/rd.asp?code=famp&goto=journal",
+                "alternate_urls": [
+                    "https://www.familyprocess.org/",
+                    "https://onlinelibrary.wiley.com/journal/15455300",
+                    "http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1545-5300"
+                ]
+            },
+            "title": "A Review of the Research in Emotionally Focused Therapy for Couples.",
+            "venue": "Family Process",
+            "year": 2016,
+            "openAccessPdf": {
+                "url": "",
+                "status": "CLOSED",
+                "license": null
+            },
+            "publicationTypes": [
+                "Review",
+                "JournalArticle"
+            ],
+            "authors": [
+                {
+                    "authorId": "4999060",
+                    "name": "S. Wiebe"
+                },
+                {
+                    "authorId": "48675288",
+                    "name": "Susan M Johnson"
+                }
+            ]
+        },
+        {
+            "paperId": "c0114d0cab805e75a94da0f5ab924268f5dbfb03",
+            "externalIds": {
+                "MAG": "2892482836",
+                "DOI": "10.1111/jmft.12356",
+                "CorpusId": 52334972,
+                "PubMed": "30246486"
+            },
+            "publicationVenue": {
+                "id": "9834fc6f-9781-4d6b-bbba-982017ad0555",
+                "name": "Journal of Marital & Family Therapy",
+                "type": "journal",
+                "alternate_names": [
+                    "J Marital Fam Ther",
+                    "Journal of Marital and Family Therapy",
+                    "J Marital  Fam Ther"
+                ],
+                "issn": "0194-472X",
+                "url": "http://www.bellhowell.infolearning.com/proquest",
+                "alternate_urls": [
+                    "http://www3.interscience.wiley.com/journal/118540020/home",
+                    "http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1752-0606",
+                    "https://onlinelibrary.wiley.com/journal/17520606"
+                ]
+            },
+            "title": "Conversations for Connection: An Outcome Assessment of the Hold-Me-Tight Relationship-Education Program, and Recommendations for Improving Future Research Methodology in Relationship Education.",
+            "venue": "Journal of Marital & Family Therapy",
+            "year": 2018,
+            "openAccessPdf": {
+                "url": "",
+                "status": "CLOSED",
+                "license": null
+            },
+            "publicationTypes": [
+                "JournalArticle"
+            ],
+            "authors": [
+                {
+                    "authorId": "51315526",
+                    "name": "Nikki Kennedy"
+                },
+                {
+                    "authorId": "48675288",
+                    "name": "Susan M Johnson"
+                },
+                {
+                    "authorId": "4999060",
+                    "name": "S. Wiebe"
+                },
+                {
+                    "authorId": "39910223",
+                    "name": "J. Willett"
+                },
+                {
+                    "authorId": "83348684",
+                    "name": "G. Tasca"
+                }
+            ]
+        },
+        {
+            "paperId": "9624a41d1a621ffdea8c2ce815534c0ee73b6a80",
+            "externalIds": {
+                "CorpusId": 221783057
+            },
+            "publicationVenue": null,
+            "title": "Familiarizing Students with the Empirically Supported Treatment Approaches for Marital Problems",
+            "venue": "",
+            "year": 2012,
+            "openAccessPdf": {
+                "url": "",
+                "status": null,
+                "license": null
+            },
+            "publicationTypes": [
+                "Review"
+            ],
+            "authors": [
+                {
+                    "authorId": "49882068",
+                    "name": "V. Zanotti"
+                },
+                {
+                    "authorId": "2067522227",
+                    "name": "M. Urban"
+                },
+                {
+                    "authorId": "80604669",
+                    "name": "G. Solomon"
+                },
+                {
+                    "authorId": "143869658",
+                    "name": "M. Chambliss"
+                },
+                {
+                    "authorId": "5658492",
+                    "name": "Victoria M. Wilkins"
+                },
+                {
+                    "authorId": "116026444",
+                    "name": "M. Zanotti"
+                },
+                {
+                    "authorId": "94940738",
+                    "name": "Greg Urban"
+                },
+                {
+                    "authorId": "37921869",
+                    "name": "Mindy Solomon"
+                },
+                {
+                    "authorId": "46364642",
+                    "name": "C. Chambliss"
+                }
+            ]
+        },
+        {
+            "paperId": "c49fd00e5e43a65200da8666f6728635b6122013",
+            "externalIds": {
+                "MAG": "1511707216",
+                "CorpusId": 19529234
+            },
+            "publicationVenue": null,
+            "title": "Familiarizing Students with the Empirically Supported Treatment Approaches for Childhood Problems.",
+            "venue": "",
+            "year": 1998,
+            "openAccessPdf": {
+                "url": "",
+                "status": null,
+                "license": null
+            },
+            "publicationTypes": [
+                "Review"
+            ],
+            "authors": [
+                {
+                    "authorId": "5658492",
+                    "name": "Victoria M. Wilkins"
+                },
+                {
+                    "authorId": "116026444",
+                    "name": "M. Zanotti"
+                },
+                {
+                    "authorId": "94940738",
+                    "name": "Greg Urban"
+                },
+                {
+                    "authorId": "37921869",
+                    "name": "Mindy Solomon"
+                },
+                {
+                    "authorId": "46364642",
+                    "name": "C. Chambliss"
+                }
+            ]
+        }
+    ]
+}

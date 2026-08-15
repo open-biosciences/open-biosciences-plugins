@@ -183,7 +183,67 @@ Semantic Scholar as equivalent-but-slower.
 
 ---
 
-## 9. Crossref rate limit was initially exceeded
+## 9. `publisher` is not universally available — Crossref may be the only source
+
+From the Semantic Scholar C1 fixture: `publicationVenue.publisher` is **`None` on every
+one of the five records**, while `venue` and `issn` are populated. Europe PMC likewise
+returns `journalTitle` but no publisher field.
+
+Spec §6.2 classifies venue class from *"the item's own registered `type`, venue, and
+publisher"*. If publisher is only reliably available from Crossref, then either:
+
+- the classifier must work from `type` + venue alone for non-Crossref sources, or
+- Crossref becomes a mandatory second lookup for any DOI-bearing record — which
+  contradicts the "zero marginal cost" retraction finding only insofar as it applies to
+  *records Crossref already returned*, not to records surfaced by another connector.
+
+`institute-publication` is the class most dependent on publisher (it is defined by *who
+published it*, not what type it is). That class was already flagged unresolvable from
+Crossref's `type` vocabulary alone; this note says it may be unresolvable from any
+connector's metadata without a publisher-string heuristic at Layer 4.
+
+---
+
+## 10. Type present without a DOI recurs across connectors — it is not a Europe PMC quirk
+
+Note §7 recorded this for Europe PMC's Q2. The Semantic Scholar fixture shows the same
+shape independently: **2 of 5 C1 records carry no DOI** (only `CorpusId`, and in one case
+`MAG`) while still carrying `publicationTypes: ['Review']`.
+
+So the "registered type present, DOI absent" case is not an artefact of one connector's
+indexing. It is a recurring class that §6.2's resolution order currently flattens to
+`unverified`. Task 9 should size it: on the evidence so far it is roughly 11% of Europe
+PMC's sampled results and 40% of the S2 C1 sample.
+
+---
+
+## 11. Semantic Scholar has NO measured coverage — absence of measurement, not measured absence
+
+`probe/results/semantic-scholar.json` is `[]`. Zero of twelve cells were fetched. The
+run aborted on cell 1 after exhausting 20s/40s/70s of backoff against sustained 429s,
+independently reproduced by the controller with four spaced isolated calls.
+
+**Task 8 must not render this as `0/10`.** Four connectors have measured coverage; this
+one has none. Presenting an empty result in the same column as a measured zero would
+state something false — and would rank the plugin's own *designated* non-PubMed source
+last on evidence that does not exist.
+
+Render it as a distinct state — `not measured (429)` — in every table, and keep it out
+of any coverage tally, ranking, or aggregate.
+
+The single datum that exists is the C1 fixture (`total: 16523`, on-target top result,
+DOI `10.1111/famp.12305`), captured before the pool saturated. It is one observation,
+not a scored cell, and it is counted nowhere.
+
+**Consequence for `DECISION.md`:** the roster entry for Semantic Scholar is provisional.
+Its §8 is a *conditional* wrap resting on metadata quality and the plugin's declared
+intent, not on measured coverage. If the roster needs a defensible ordering, the honest
+move is a keyed re-run — the twelve queries are frozen, so a later run is directly
+comparable.
+
+---
+
+## 12. Crossref rate limit was initially exceeded
 
 The Crossref agent found, from live `x-rate-limit-*` response headers, that the
 adapter's initial `RATE = 0.2` (5 req/s) was above Crossref's declared 3 req/s cap,
