@@ -3,6 +3,17 @@
 All notable changes to the `psychology-research` plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.1] - 2026-08-14
+
+### Fixed
+- **Crisis resources are reachable again.** All four skills carried a literal `{{include: ../../references/crisis-resources.md}}` in their Safety Preflight section. The expansion was a sync-time build step that was never run before publish, so the marker shipped as-is and no crisis content — 988 Suicide and Crisis Lifeline, SAMHSA, Crisis Text Line, Veterans Crisis Line, The Trevor Project, Trans Lifeline, RAINN, Childhelp — was present in the loaded skill text. The section read as though it were protected; it was not.
+
+### Changed
+- **Skills reference shared content by path instead of by build-step expansion**, matching how `bio-research` has always done it. Each Safety Preflight now states the crisis trigger condition and the two first-line US numbers inline, then links `references/crisis-resources.md` for the full list. One copy, read live, nothing to expand and nothing to drift.
+
+### Removed
+- `scripts/sync_expand.py`, `scripts/tests/test_sync_expand.py`, and `.github/workflows/marker-check.yml`. With no expansion step there is no marker for a gate to check. The workflow could not have caught the original bug in any case: it copied the tree, expanded the copy, then checked the copy, so it passed unconditionally.
+
 ## [0.2.0] - 2026-07-09
 
 ### Added

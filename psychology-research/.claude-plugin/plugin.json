@@ -1,6 +1,6 @@
 {
   "name": "psychology-research",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Run evidence-grounded psychology research and therapist/provider fit assessment with source hierarchy, claim provenance, clinical-safety guardrails, and evidence-graded reporting.",
   "license": "Apache-2.0",
   "author": {
