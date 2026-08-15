@@ -2,7 +2,17 @@
 pubmed.ncbi.nlm.nih.gov: 1
 ncbi.nlm.nih.gov/pmc: 1
 cochranelibrary.com: 1
+# apa.org — APA's own published guidance (practice guidelines, policy statements).
+# Reachable today via ~~web; the tier records real authority.
 apa.org: 1
+# psycnet.apa.org — the PsycINFO/PsycArticles database. Tier-1 authority, but NOT
+# REACHABLE by any connector: no query API at any access level (the /api/ route
+# returns the SPA shell), robots.txt is "User-agent: * / Disallow: /", and APA
+# reserves all text-mining and AI-training rights. The only sanctioned programmatic
+# route is PsycINFO Data Solutions, a commercial bulk-dataset service, not a query
+# interface. Credentials do not change this. Verified 2026-08-15.
+# Do not plan retrievals against this host.
+psycnet.apa.org: 1
 nice.org.uk: 1
 nimh.nih.gov: 1
 nih.gov: 1
