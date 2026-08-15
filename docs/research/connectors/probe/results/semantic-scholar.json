@@ -1,0 +1,22 @@
+[
+  {
+    "connector": "semantic-scholar",
+    "query_id": "C1",
+    "result": "hit",
+    "n_results": 16523,
+    "top_result": "Effectiveness of the 'Hold me Tight' Relationship Enhancement Program in a Self-referred and a Clinician-referred Sample: An Emotionally Focused Couples Therapy-Based Approach. \u2014 H. Conradi, P. Dingemanse, A. Noordhof \u2014 2018",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "pmid",
+      "semantic_scholar_id",
+      "issn",
+      "type",
+      "venue",
+      "oa_status"
+    ],
+    "notes": "Positive control. Genuinely fetched (HTTP 200) at 2026-08-15T21:15:38Z before the unauthenticated pool saturated. Scored separately per README; contributes NOTHING to coverage. Q1-Q10 and C2 were never recorded - see 01-semantic-scholar.md section 4 and semantic-scholar-fetch-log.json. type=JournalArticle+ClinicalTrial in Family Process with a registered DOI. publisher is null, as on every S2 record.",
+    "retrieved_at": "2026-08-15T21:15:38Z"
+  }
+]

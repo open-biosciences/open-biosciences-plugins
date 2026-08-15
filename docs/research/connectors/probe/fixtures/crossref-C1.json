@@ -1,0 +1,533 @@
+{
+    "status": "ok",
+    "message-type": "work-list",
+    "message-version": "1.0.0",
+    "message": {
+        "facets": {},
+        "total-results": 9525294,
+        "items": [
+            {
+                "indexed": {
+                    "date-parts": [
+                        [
+                            2024,
+                            9,
+                            12
+                        ]
+                    ],
+                    "date-time": "2024-09-12T08:26:57Z",
+                    "timestamp": 1726129617612
+                },
+                "publisher-location": "New York",
+                "edition-number": "1",
+                "reference-count": 0,
+                "publisher": "Routledge",
+                "isbn-type": [
+                    {
+                        "type": "electronic",
+                        "value": "9780429355127"
+                    }
+                ],
+                "content-domain": {
+                    "domain": [],
+                    "crossmark-restriction": false
+                },
+                "published-print": {
+                    "date-parts": [
+                        [
+                            2021,
+                            6,
+                            30
+                        ]
+                    ]
+                },
+                "DOI": "10.4324/9780429355127-4",
+                "type": "book-chapter",
+                "created": {
+                    "date-parts": [
+                        [
+                            2021,
+                            6,
+                            30
+                        ]
+                    ],
+                    "date-time": "2021-06-30T14:49:41Z",
+                    "timestamp": 1625064581000
+                },
+                "page": "57-73",
+                "source": "Crossref",
+                "is-referenced-by-count": 0,
+                "title": [
+                    "Love, Attachment Theory, and Emotionally Focused Couples Therapy"
+                ],
+                "prefix": "10.4324",
+                "author": [
+                    {
+                        "given": "Paul T.",
+                        "family": "Guillory",
+                        "sequence": "first",
+                        "affiliation": [],
+                        "role": [
+                            {
+                                "role": "author",
+                                "vocabulary": "crossref"
+                            }
+                        ]
+                    }
+                ],
+                "member": "301",
+                "container-title": [
+                    "Emotionally Focused Therapy with African American Couples"
+                ],
+                "language": "en",
+                "deposited": {
+                    "date-parts": [
+                        [
+                            2021,
+                            6,
+                            30
+                        ]
+                    ],
+                    "date-time": "2021-06-30T14:49:48Z",
+                    "timestamp": 1625064588000
+                },
+                "score": 47.316086,
+                "resource": {
+                    "primary": {
+                        "URL": "https://www.taylorfrancis.com/books/9780429355127/chapters/10.4324/9780429355127-4"
+                    }
+                },
+                "issued": {
+                    "date-parts": [
+                        [
+                            2021,
+                            6,
+                            30
+                        ]
+                    ]
+                },
+                "ISBN": [
+                    "9780429355127"
+                ],
+                "references-count": 0,
+                "URL": "https://doi.org/10.4324/9780429355127-4",
+                "published": {
+                    "date-parts": [
+                        [
+                            2021,
+                            6,
+                            30
+                        ]
+                    ]
+                }
+            },
+            {
+                "institution": [
+                    {
+                        "name": "American Psychological Association",
+                        "acronym": [
+                            "APA"
+                        ]
+                    }
+                ],
+                "indexed": {
+                    "date-parts": [
+                        [
+                            2024,
+                            2,
+                            14
+                        ]
+                    ],
+                    "date-time": "2024-02-14T00:14:59Z",
+                    "timestamp": 1707869699622
+                },
+                "reference-count": 0,
+                "publisher": "American Psychological Association (APA)",
+                "content-domain": {
+                    "domain": [],
+                    "crossmark-restriction": false
+                },
+                "published-print": {
+                    "date-parts": [
+                        [
+                            2006
+                        ]
+                    ]
+                },
+                "DOI": "10.1037/e613602007-001",
+                "type": "dataset",
+                "created": {
+                    "date-parts": [
+                        [
+                            2013,
+                            2,
+                            18
+                        ]
+                    ],
+                    "date-time": "2013-02-18T15:52:04Z",
+                    "timestamp": 1361202724000
+                },
+                "source": "Crossref",
+                "is-referenced-by-count": 0,
+                "title": [
+                    "Emotionally Focused Therapy With Couples"
+                ],
+                "prefix": "10.1037",
+                "member": "15",
+                "container-title": [
+                    "PsycEXTRA Dataset"
+                ],
+                "deposited": {
+                    "date-parts": [
+                        [
+                            2024,
+                            2,
+                            13
+                        ]
+                    ],
+                    "date-time": "2024-02-13T17:41:53Z",
+                    "timestamp": 1707846113000
+                },
+                "score": 43.99923,
+                "resource": {
+                    "primary": {
+                        "URL": "https://doi.apa.org/doi/10.1037/e613602007-001"
+                    }
+                },
+                "issued": {
+                    "date-parts": [
+                        [
+                            2006
+                        ]
+                    ]
+                },
+                "references-count": 0,
+                "alternative-id": [
+                    "613602007-001"
+                ],
+                "URL": "https://doi.org/10.1037/e613602007-001",
+                "published": {
+                    "date-parts": [
+                        [
+                            2006
+                        ]
+                    ]
+                }
+            },
+            {
+                "indexed": {
+                    "date-parts": [
+                        [
+                            2024,
+                            9,
+                            8
+                        ]
+                    ],
+                    "date-time": "2024-09-08T08:44:16Z",
+                    "timestamp": 1725785056096
+                },
+                "edition-number": "0",
+                "reference-count": 1,
+                "publisher": "Routledge",
+                "isbn-type": [
+                    {
+                        "type": "electronic",
+                        "value": "9780203834558"
+                    }
+                ],
+                "content-domain": {
+                    "domain": [],
+                    "crossmark-restriction": false
+                },
+                "published-print": {
+                    "date-parts": [
+                        [
+                            2012,
+                            4,
+                            27
+                        ]
+                    ]
+                },
+                "DOI": "10.4324/9780203834558-14",
+                "type": "book-chapter",
+                "created": {
+                    "date-parts": [
+                        [
+                            2020,
+                            12,
+                            22
+                        ]
+                    ],
+                    "date-time": "2020-12-22T05:58:26Z",
+                    "timestamp": 1608616706000
+                },
+                "page": "111-134",
+                "source": "Crossref",
+                "is-referenced-by-count": 0,
+                "title": [
+                    "Using Emotionally Focused Couples Therapy With Military Couples"
+                ],
+                "prefix": "10.4324",
+                "member": "301",
+                "reference": [
+                    {
+                        "key": "ref6",
+                        "unstructured": "APA Military Deployment Services Task Force Report. (2007). The psychological needs of U.S. military service members and their families: A preliminary report. Washington, DC: American Psychological Association."
+                    }
+                ],
+                "container-title": [
+                    "Handbook of Counseling Military Couples"
+                ],
+                "language": "en",
+                "deposited": {
+                    "date-parts": [
+                        [
+                            2020,
+                            12,
+                            22
+                        ]
+                    ],
+                    "date-time": "2020-12-22T05:58:33Z",
+                    "timestamp": 1608616713000
+                },
+                "score": 43.94287,
+                "resource": {
+                    "primary": {
+                        "URL": "https://www.taylorfrancis.com/books/9781136850288/chapters/10.4324/9780203834558-14"
+                    }
+                },
+                "issued": {
+                    "date-parts": [
+                        [
+                            2012,
+                            4,
+                            27
+                        ]
+                    ]
+                },
+                "ISBN": [
+                    "9780203834558"
+                ],
+                "references-count": 1,
+                "URL": "https://doi.org/10.4324/9780203834558-14",
+                "published": {
+                    "date-parts": [
+                        [
+                            2012,
+                            4,
+                            27
+                        ]
+                    ]
+                }
+            },
+            {
+                "indexed": {
+                    "date-parts": [
+                        [
+                            2024,
+                            9,
+                            8
+                        ]
+                    ],
+                    "date-time": "2024-09-08T07:39:32Z",
+                    "timestamp": 1725781172095
+                },
+                "edition-number": "0",
+                "reference-count": 1,
+                "publisher": "Routledge",
+                "isbn-type": [
+                    {
+                        "type": "electronic",
+                        "value": "9780203103197"
+                    }
+                ],
+                "content-domain": {
+                    "domain": [],
+                    "crossmark-restriction": false
+                },
+                "published-print": {
+                    "date-parts": [
+                        [
+                            2012,
+                            8,
+                            21
+                        ]
+                    ]
+                },
+                "DOI": "10.4324/9780203103197-26",
+                "type": "book-chapter",
+                "created": {
+                    "date-parts": [
+                        [
+                            2020,
+                            12,
+                            21
+                        ]
+                    ],
+                    "date-time": "2020-12-21T19:37:32Z",
+                    "timestamp": 1608579452000
+                },
+                "page": "245-249",
+                "source": "Crossref",
+                "is-referenced-by-count": 0,
+                "title": [
+                    "Emotionally Focused Couples Therapy"
+                ],
+                "prefix": "10.4324",
+                "member": "301",
+                "reference": [
+                    {
+                        "key": "ref16",
+                        "unstructured": "Bradley, B. (2011). New insights into change in emotionally focused couple therapy. In J. Furrow, S., Johnson, & B. Bradley (Eds.), The emotionally focused casebook (pp. 59\u201383). New York, NY: Routledge."
+                    }
+                ],
+                "container-title": [
+                    "Family Therapy Review: Contrasting Contemporary Models"
+                ],
+                "language": "en",
+                "deposited": {
+                    "date-parts": [
+                        [
+                            2020,
+                            12,
+                            21
+                        ]
+                    ],
+                    "date-time": "2020-12-21T19:37:57Z",
+                    "timestamp": 1608579477000
+                },
+                "score": 43.109455,
+                "resource": {
+                    "primary": {
+                        "URL": "https://www.taylorfrancis.com/books/9781136243424/chapters/10.4324/9780203103197-26"
+                    }
+                },
+                "issued": {
+                    "date-parts": [
+                        [
+                            2012,
+                            8,
+                            21
+                        ]
+                    ]
+                },
+                "ISBN": [
+                    "9780203103197"
+                ],
+                "references-count": 1,
+                "URL": "https://doi.org/10.4324/9780203103197-26",
+                "published": {
+                    "date-parts": [
+                        [
+                            2012,
+                            8,
+                            21
+                        ]
+                    ]
+                }
+            },
+            {
+                "institution": [
+                    {
+                        "name": "American Psychological Association",
+                        "acronym": [
+                            "APA"
+                        ]
+                    }
+                ],
+                "indexed": {
+                    "date-parts": [
+                        [
+                            2025,
+                            3,
+                            11
+                        ]
+                    ],
+                    "date-time": "2025-03-11T04:15:37Z",
+                    "timestamp": 1741666537935,
+                    "version": "3.38.0"
+                },
+                "reference-count": 0,
+                "publisher": "American Psychological Association (APA)",
+                "content-domain": {
+                    "domain": [],
+                    "crossmark-restriction": false
+                },
+                "DOI": "10.1037/e534842010-001",
+                "type": "dataset",
+                "created": {
+                    "date-parts": [
+                        [
+                            2013,
+                            2,
+                            21
+                        ]
+                    ],
+                    "date-time": "2013-02-21T15:07:45Z",
+                    "timestamp": 1361459265000
+                },
+                "source": "Crossref",
+                "is-referenced-by-count": 0,
+                "title": [
+                    "Emotionally Focused Couples Therapy"
+                ],
+                "prefix": "10.1037",
+                "author": [
+                    {
+                        "given": "Sue",
+                        "family": "Johnson",
+                        "sequence": "first",
+                        "affiliation": [],
+                        "role": [
+                            {
+                                "role": "author",
+                                "vocabulary": "crossref"
+                            }
+                        ]
+                    }
+                ],
+                "member": "15",
+                "container-title": [
+                    "PsycEXTRA Dataset"
+                ],
+                "deposited": {
+                    "date-parts": [
+                        [
+                            2025,
+                            3,
+                            10
+                        ]
+                    ],
+                    "date-time": "2025-03-10T13:40:35Z",
+                    "timestamp": 1741614035000
+                },
+                "score": 42.645054,
+                "resource": {
+                    "primary": {
+                        "URL": "https://doi.apa.org/doi/10.1037/e534842010-001"
+                    }
+                },
+                "subtitle": [
+                    "(534842010-001)"
+                ],
+                "issued": {
+                    "date-parts": [
+                        [
+                            null
+                        ]
+                    ]
+                },
+                "references-count": 0,
+                "alternative-id": [
+                    "534842010-001"
+                ],
+                "URL": "https://doi.org/10.1037/e534842010-001"
+            }
+        ],
+        "items-per-page": 5,
+        "query": {
+            "start-index": 0,
+            "search-terms": "emotionally focused therapy couples evidence-based outcome"
+        }
+    }
+}

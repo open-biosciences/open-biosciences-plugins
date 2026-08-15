@@ -1,0 +1,1044 @@
+{
+    "version": "6.9",
+    "hitCount": 1071,
+    "nextCursorMark": "AoIIQL9BZig1NTUyMjc2MQ==",
+    "nextPageUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=emotionally focused therapy couples evidence-based outcome&cursorMark=AoIIQL9BZig1NTUyMjc2MQ==&resultType=core&pageSize=5&format=json",
+    "request": {
+        "queryString": "emotionally focused therapy couples evidence-based outcome",
+        "resultType": "core",
+        "cursorMark": "*",
+        "pageSize": 5,
+        "sort": "",
+        "synonym": false
+    },
+    "resultList": {
+        "result": [
+            {
+                "id": "PPR1288545",
+                "source": "PPR",
+                "doi": "10.31234/osf.io/sx5j4_v2",
+                "title": "A Randomized Controlled Effectiveness Trial of Emotionally Focused Couple Therapy in Five Spanish-Speaking Countries",
+                "authorString": "Sandberg J, Anderson S, Calatrava M, Greenman PS, Lafontaine MF, Andrade-Urbina D, Sambuceti-Lewis A, Osorio A, Cueli-Naranjo MA, Steffen P, Rodr\u00edguez-Gonz\u00e1lez M.",
+                "authorList": {
+                    "author": [
+                        {
+                            "fullName": "Sandberg J",
+                            "firstName": "Jonathan",
+                            "lastName": "Sandberg",
+                            "initials": "J"
+                        },
+                        {
+                            "fullName": "Anderson S",
+                            "firstName": "Shayne",
+                            "lastName": "Anderson",
+                            "initials": "S"
+                        },
+                        {
+                            "fullName": "Calatrava M",
+                            "firstName": "Mar\u00eda",
+                            "lastName": "Calatrava",
+                            "initials": "M"
+                        },
+                        {
+                            "fullName": "Greenman PS",
+                            "firstName": "Paul",
+                            "lastName": "Greenman",
+                            "initials": "PS"
+                        },
+                        {
+                            "fullName": "Lafontaine MF",
+                            "firstName": "Marie France",
+                            "lastName": "Lafontaine",
+                            "initials": "MF"
+                        },
+                        {
+                            "fullName": "Andrade-Urbina D",
+                            "firstName": "Dania",
+                            "lastName": "Andrade-Urbina",
+                            "initials": "D"
+                        },
+                        {
+                            "fullName": "Sambuceti-Lewis A",
+                            "firstName": "Alessandra",
+                            "lastName": "Sambuceti-Lewis",
+                            "initials": "A"
+                        },
+                        {
+                            "fullName": "Osorio A",
+                            "firstName": "Alfonso",
+                            "lastName": "Osorio",
+                            "initials": "A"
+                        },
+                        {
+                            "fullName": "Cueli-Naranjo MA",
+                            "firstName": "Mar\u00eda",
+                            "lastName": "Cueli-Naranjo",
+                            "initials": "MA"
+                        },
+                        {
+                            "fullName": "Steffen P",
+                            "firstName": "Patrick",
+                            "lastName": "Steffen",
+                            "initials": "P"
+                        },
+                        {
+                            "fullName": "Rodr\u00edguez-Gonz\u00e1lez M",
+                            "firstName": "Marti\u00f1o",
+                            "lastName": "Rodr\u00edguez-Gonz\u00e1lez",
+                            "initials": "M"
+                        }
+                    ]
+                },
+                "pubYear": "2026",
+                "abstractText": "<p>Objective: Emotionally Focused Couple Therapy (EFCT) is an evidence-based approach to treating couple relationship distress (Spengler et al., 2024), however the evidence comes primarily from English-speaking samples drawn from the U.S. and Canada. This randomized controlled trial (pre-registered at ClinicalTrials.gov, ID: blinded for review) aimed to investigate the efficacy of EFCT delivered in Spanish compared to waitlist controls in Argentina, Costa Rica, Guatemala, Mexico, and Spain. <h4>Method:</h4> 140 individuals in 70 heterosexual couples were randomized to EFCT or wait-list control conditions. Treatment consisted of 18-20 sessions of EFCT provided by 17 community-based therapists with advanced training in EFCT. Primary outcomes were dyadic adjustment, relationship satisfaction, attachment anxiety, and attachment avoidance. Measures were administered at pretest, posttest, and at several points throughout the intervention period. Linear mixed models were used to examine whether the trajectory of outcome differed across treatment and control conditions. <h4>Results:</h4> Consistent with hypotheses, individuals in the treatment condition experienced significantly greater improvement in dyadic adjustment (dGMA=1.09), relationship satisfaction (dGMA = .72), and greater decreases in attachment avoidance (dGMA= -.31). No significant differences were evident for attachment anxiety. <h4>Conclusion:</h4> Our findings suggest that EFCT provided by community-based therapists in Spanish-speaking countries is effective in improving dyadic adjustment and relationship satisfaction, with small decreases in attachment avoidance. Public Health significance statement: This article presents the primary outcomes of the first randomized controlled trial of Emotionally Focused Couple Therapy (EFCT) in Spanish. This 5-nation study demonstrates that couples who engaged in EFCT reported increased dyadic adjustment and relationship satisfaction and reduced attachment avoidance, with gains in the treatment groups enhanced over the control. This study is the first wide-scale, international, translational study of an empirically supported model of couple therapy with front-line therapists in a community setting. The study also provides support for the plausibility and efficacy of training therapists, in a wide variety of natural settings, to be effective in EFCT. Because decades of research have shown that couple level distress is related to a wide variety of mental and physical health problems, as well as work satisfaction and productivity, translational research highlighting effective and accessible therapy models for reducing couple distress is of practical value.</p>",
+                "pubTypeList": {
+                    "pubType": [
+                        "Preprint"
+                    ]
+                },
+                "bookOrReportDetails": {
+                    "publisher": "PsyArXiv",
+                    "yearOfPublication": 2026
+                },
+                "fullTextUrlList": {
+                    "fullTextUrl": [
+                        {
+                            "availability": "Free",
+                            "availabilityCode": "F",
+                            "documentStyle": "doi",
+                            "site": "DOI",
+                            "url": "https://doi.org/10.31234/osf.io/sx5j4_v2"
+                        }
+                    ]
+                },
+                "isOpenAccess": "N",
+                "inEPMC": "N",
+                "inPMC": "N",
+                "hasPDF": "N",
+                "hasBook": "N",
+                "hasSuppl": "N",
+                "citedByCount": 0,
+                "hasData": "N",
+                "hasReferences": "N",
+                "hasTextMinedTerms": "Y",
+                "hasDbCrossReferences": "N",
+                "hasLabsLinks": "N",
+                "license": "cc by",
+                "hasEvaluations": "N",
+                "authMan": "N",
+                "epmcAuthMan": "N",
+                "nihAuthMan": "N",
+                "hasTMAccessionNumbers": "N",
+                "dateOfCreation": "2026-07-31",
+                "firstIndexDate": "2026-07-31",
+                "firstPublicationDate": "2026-07-30"
+            },
+            {
+                "id": "42325314",
+                "source": "MED",
+                "pmid": "42325314",
+                "pmcid": "PMC13275430",
+                "fullTextIdList": {
+                    "fullTextId": [
+                        "PMC13275430"
+                    ]
+                },
+                "doi": "10.3389/fpsyg.2026.1843151",
+                "title": "Approaches to ketamine-assisted couple therapy.",
+                "authorString": "Avruch DO.",
+                "authorList": {
+                    "author": [
+                        {
+                            "fullName": "Avruch DO",
+                            "firstName": "David O",
+                            "lastName": "Avruch",
+                            "initials": "DO",
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Department of Sociology, University of Maryland, Baltimore County, MD, United States."
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "journalInfo": {
+                    "volume": "17",
+                    "journalIssueId": 4112159,
+                    "dateOfPublication": "2026 ",
+                    "monthOfPublication": 0,
+                    "yearOfPublication": 2026,
+                    "printPublicationDate": "2026-01-01",
+                    "journal": {
+                        "title": "Frontiers in psychology",
+                        "medlineAbbreviation": "Front Psychol",
+                        "issn": "1664-1078",
+                        "essn": "1664-1078",
+                        "isoabbreviation": "Front Psychol",
+                        "nlmid": "101550902"
+                    }
+                },
+                "pubYear": "2026",
+                "pageInfo": "1843151",
+                "abstractText": "Ketamine-assisted psychotherapy (KAP) is moving from the periphery toward the mainstream of mental healthcare. Research on the use of KAP in the context of couple therapy, however, remains limited. This phenomenological analysis sought data from psychotherapists (<i>n</i>\u202f=\u202f9), representing four different modalities of couple therapy, who are incorporating ketamine into their work with dyads. Qualitative interviews revealed substantial diversity with respect to how and why respondents are using ketamine to facilitate attachment processes. Study respondents described ketamine's ability to help couples reduce fearfulness, deepen emotional expression, communicate frankly, enhance trust, gain perspective on relational dysfunction, and address issues related to trauma. Strategies around preparation, dosing, and integration were explored. Data also revealed how different modalities of couple therapy conceptualize the use of ketamine in unique ways. This study, though limited due to its small sample size, contributes to the development of the nascent, emergent subfield of psychedelic-assisted couple therapy.",
+                "affiliation": "Department of Sociology, University of Maryland, Baltimore County, MD, United States.",
+                "publicationStatus": "epublish",
+                "language": "eng",
+                "pubModel": "Electronic-eCollection",
+                "pubTypeList": {
+                    "pubType": [
+                        "research-article",
+                        "Journal Article"
+                    ]
+                },
+                "keywordList": {
+                    "keyword": [
+                        "ketamine",
+                        "Couple Therapy",
+                        "Integrative Behavioral Couple Therapy",
+                        "Imago Relationship Therapy",
+                        "Emotionally Focused Couples Therapy",
+                        "Ketamine-assisted Psychotherapy",
+                        "Internal Family Systems Therapy"
+                    ]
+                },
+                "fullTextUrlList": {
+                    "fullTextUrl": [
+                        {
+                            "availability": "Subscription required",
+                            "availabilityCode": "S",
+                            "documentStyle": "doi",
+                            "site": "DOI",
+                            "url": "https://doi.org/10.3389/fpsyg.2026.1843151"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "html",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC13275430"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "pdf",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC13275430?pdf=render"
+                        }
+                    ]
+                },
+                "isOpenAccess": "Y",
+                "inEPMC": "Y",
+                "inPMC": "Y",
+                "hasPDF": "Y",
+                "hasBook": "N",
+                "hasSuppl": "N",
+                "citedByCount": 0,
+                "hasData": "N",
+                "hasReferences": "N",
+                "hasTextMinedTerms": "Y",
+                "hasDbCrossReferences": "N",
+                "hasLabsLinks": "N",
+                "license": "cc by",
+                "hasEvaluations": "N",
+                "authMan": "N",
+                "epmcAuthMan": "N",
+                "nihAuthMan": "N",
+                "hasTMAccessionNumbers": "N",
+                "dateOfCompletion": "2026-06-22",
+                "dateOfCreation": "2026-06-22",
+                "firstIndexDate": "2026-06-23",
+                "fullTextReceivedDate": "2026-06-26",
+                "dateOfRevision": "2026-06-22",
+                "electronicPublicationDate": "2026-06-04",
+                "firstPublicationDate": "2026-06-04"
+            },
+            {
+                "id": "42093236",
+                "source": "MED",
+                "pmid": "42093236",
+                "pmcid": "PMC13150406",
+                "fullTextIdList": {
+                    "fullTextId": [
+                        "PMC13150406"
+                    ]
+                },
+                "doi": "10.1111/jmft.70141",
+                "title": "\"I'm Not Here to Teach You How to Be Gay:\" LGBTQ+ Client Experiences of Othering in Emotionally Focused Couple Therapy.",
+                "authorString": "Edwards C, Dwanyen L, Wittenborn A, Allan R.",
+                "authorList": {
+                    "author": [
+                        {
+                            "fullName": "Edwards C",
+                            "firstName": "Caitlin",
+                            "lastName": "Edwards",
+                            "initials": "C",
+                            "authorId": {
+                                "type": "ORCID",
+                                "value": "0000-0001-7576-0483"
+                            },
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Allan Counselling and Consulting, London, UK."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "fullName": "Dwanyen L",
+                            "firstName": "Lekie",
+                            "lastName": "Dwanyen",
+                            "initials": "L",
+                            "authorId": {
+                                "type": "ORCID",
+                                "value": "0000-0002-4543-6890"
+                            },
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Allan Counselling and Consulting, London, UK."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "fullName": "Wittenborn A",
+                            "firstName": "Andrea",
+                            "lastName": "Wittenborn",
+                            "initials": "A",
+                            "authorId": {
+                                "type": "ORCID",
+                                "value": "0000-0003-4608-0635"
+                            },
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Allan Counselling and Consulting, London, UK."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "fullName": "Allan R",
+                            "firstName": "Robert",
+                            "lastName": "Allan",
+                            "initials": "R",
+                            "authorId": {
+                                "type": "ORCID",
+                                "value": "0000-0003-4847-0194"
+                            },
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Allan Counselling and Consulting, London, UK."
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "authorIdList": {
+                    "authorId": [
+                        {
+                            "type": "ORCID",
+                            "value": "0000-0001-7576-0483"
+                        },
+                        {
+                            "type": "ORCID",
+                            "value": "0000-0002-4543-6890"
+                        },
+                        {
+                            "type": "ORCID",
+                            "value": "0000-0003-4608-0635"
+                        },
+                        {
+                            "type": "ORCID",
+                            "value": "0000-0003-4847-0194"
+                        }
+                    ]
+                },
+                "dataLinksTagsList": {
+                    "dataLinkstag": [
+                        "altmetrics"
+                    ]
+                },
+                "journalInfo": {
+                    "issue": "3",
+                    "volume": "52",
+                    "journalIssueId": 4185879,
+                    "dateOfPublication": "2026 Jul",
+                    "monthOfPublication": 7,
+                    "yearOfPublication": 2026,
+                    "printPublicationDate": "2026-07-01",
+                    "journal": {
+                        "title": "Journal of marital and family therapy",
+                        "medlineAbbreviation": "J Marital Fam Ther",
+                        "issn": "0194-472X",
+                        "essn": "1752-0606",
+                        "isoabbreviation": "J Marital Fam Ther",
+                        "nlmid": "7904614"
+                    }
+                },
+                "pubYear": "2026",
+                "pageInfo": "e70141",
+                "abstractText": "Despite the increasing emphasis on addressing the intersections of client and therapist identity to improve therapeutic outcomes, therapy clients holding marginalized identities continue to experience othering. Othering is a process that engenders marginalization and inequality based on preconceived group identity, involves the hegemonic construction of belonging and not belonging, and often entails both stereotyping and racialization. This paper reports on the experience of lesbian, gay, bisexual, transgender, queer/questioning plus (LGBTQ+) emotionally focused couple therapy (EFCT) clients' experience of othering both in their own therapy and as part of participating in a research study on tailoring EFCT to account for the unique lived experience of members of the LGBTQ+ communities. This study relied on negative case analysis in the context of thematic analysis (TA) to develop three themes: (1) understanding versus inflating identity, (2) educating the therapist, and (3) deepening discussions around identity.",
+                "affiliation": "Allan Counselling and Consulting, London, UK.",
+                "publicationStatus": "ppublish",
+                "language": "eng",
+                "pubModel": "Print",
+                "pubTypeList": {
+                    "pubType": [
+                        "research-article",
+                        "Journal Article"
+                    ]
+                },
+                "grantsList": {
+                    "grant": [
+                        {
+                            "agency": "Michigan State University",
+                            "orderIn": 0
+                        }
+                    ]
+                },
+                "meshHeadingList": {
+                    "meshHeading": [
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Humans"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Professional-Patient Relations"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Couples Therapy",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "MT",
+                                        "qualifierName": "methods",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Adult"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Middle Aged"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Female"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Male"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Sexual and Gender Minorities",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "PX",
+                                        "qualifierName": "psychology",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "keywordList": {
+                    "keyword": [
+                        "Othering",
+                        "Lgbtq+",
+                        "Emotionally Focused Couple Therapy"
+                    ]
+                },
+                "subsetList": {
+                    "subset": [
+                        {
+                            "code": "IM",
+                            "name": "Index Medicus"
+                        }
+                    ]
+                },
+                "fullTextUrlList": {
+                    "fullTextUrl": [
+                        {
+                            "availability": "Subscription required",
+                            "availabilityCode": "S",
+                            "documentStyle": "doi",
+                            "site": "DOI",
+                            "url": "https://doi.org/10.1111/jmft.70141"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "html",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC13150406"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "pdf",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC13150406?pdf=render"
+                        }
+                    ]
+                },
+                "isOpenAccess": "Y",
+                "inEPMC": "Y",
+                "inPMC": "Y",
+                "hasPDF": "Y",
+                "hasBook": "N",
+                "hasSuppl": "N",
+                "citedByCount": 0,
+                "hasData": "N",
+                "hasReferences": "N",
+                "hasTextMinedTerms": "N",
+                "hasDbCrossReferences": "N",
+                "hasLabsLinks": "Y",
+                "license": "cc by",
+                "hasEvaluations": "N",
+                "authMan": "N",
+                "epmcAuthMan": "N",
+                "nihAuthMan": "N",
+                "hasTMAccessionNumbers": "N",
+                "dateOfCompletion": "2026-07-16",
+                "dateOfCreation": "2026-05-07",
+                "firstIndexDate": "2026-05-13",
+                "fullTextReceivedDate": "2026-05-20",
+                "dateOfRevision": "2026-07-16",
+                "firstPublicationDate": "2026-07-01"
+            },
+            {
+                "id": "41268857",
+                "source": "MED",
+                "pmid": "41268857",
+                "pmcid": "PMC12636061",
+                "fullTextIdList": {
+                    "fullTextId": [
+                        "PMC12636061"
+                    ]
+                },
+                "doi": "10.1111/jmft.70093",
+                "title": "Emotion Access and Navigation in Chinese Couples: Insights and Adaptations From Emotionally Focused Couples Therapy Therapists.",
+                "authorString": "Tseng CF, Liu J, Fatahian-Tehran HM, Liu T.",
+                "authorList": {
+                    "author": [
+                        {
+                            "fullName": "Tseng CF",
+                            "firstName": "Chi-Fang",
+                            "lastName": "Tseng",
+                            "initials": "CF",
+                            "authorId": {
+                                "type": "ORCID",
+                                "value": "0000-0001-6410-9521"
+                            },
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Human Development and Family Studies, Michigan State University, East Lansing, Michigan, USA."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "fullName": "Liu J",
+                            "firstName": "Jiayi",
+                            "lastName": "Liu",
+                            "initials": "J",
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Human Development and Family Studies, Michigan State University, East Lansing, Michigan, USA."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "fullName": "Fatahian-Tehran HM",
+                            "firstName": "Hamed M",
+                            "lastName": "Fatahian-Tehran",
+                            "initials": "HM",
+                            "authorId": {
+                                "type": "ORCID",
+                                "value": "0009-0000-4836-2252"
+                            },
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Human Development and Family Studies, Michigan State University, East Lansing, Michigan, USA."
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "fullName": "Liu T",
+                            "firstName": "Ting",
+                            "lastName": "Liu",
+                            "initials": "T",
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Philadelphia Center for Emotionally Focused Therapy, Philadelphia, Pennsylvania, USA."
+                                    },
+                                    {
+                                        "affiliation": "Asian Association for Emotionally Focused Couple and Family Therapy, Taiwan."
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "authorIdList": {
+                    "authorId": [
+                        {
+                            "type": "ORCID",
+                            "value": "0000-0001-6410-9521"
+                        },
+                        {
+                            "type": "ORCID",
+                            "value": "0009-0000-4836-2252"
+                        }
+                    ]
+                },
+                "dataLinksTagsList": {
+                    "dataLinkstag": [
+                        "altmetrics",
+                        "supporting_data"
+                    ]
+                },
+                "journalInfo": {
+                    "issue": "1",
+                    "volume": "52",
+                    "journalIssueId": 4039473,
+                    "dateOfPublication": "2026 Jan",
+                    "monthOfPublication": 1,
+                    "yearOfPublication": 2026,
+                    "printPublicationDate": "2026-01-01",
+                    "journal": {
+                        "title": "Journal of marital and family therapy",
+                        "medlineAbbreviation": "J Marital Fam Ther",
+                        "issn": "0194-472X",
+                        "essn": "1752-0606",
+                        "isoabbreviation": "J Marital Fam Ther",
+                        "nlmid": "7904614"
+                    }
+                },
+                "pubYear": "2026",
+                "pageInfo": "e70093",
+                "abstractText": "The effectiveness of Emotionally Focused Couple Therapy (EFCT) has been well-documented, yet its application with Chinese couples remains underexplored. This is the first qualitative study examining therapists' perspectives on using EFCT with Chinese couples in clinical settings. Thematic analysis of semi-structured interviews with 20 therapists from mainland China, Taiwan, and Hong Kong revealed that therapists viewed EFCT as a useful approach for Chinese couples. EFCT was reported to be helpful for couples with relationship distress and mental health concerns. However, therapists emphasized the importance of understanding cultural values and nuances that influence presenting problems. Overall, therapists recommended adjusting EFCT skills to better serve the needs of Chinese couples, understanding cultural impacts on couples' presenting problems, and incorporating additional components and training for therapists working with Chinese couples. These findings provide a foundation for culturally adapted EFCT, ensuring its relevance for Chinese couples while honoring their unique relational and cultural contexts.",
+                "affiliation": "Human Development and Family Studies, Michigan State University, East Lansing, Michigan, USA.",
+                "publicationStatus": "ppublish",
+                "language": "eng",
+                "pubModel": "Print",
+                "pubTypeList": {
+                    "pubType": [
+                        "research-article",
+                        "Journal Article"
+                    ]
+                },
+                "grantsList": {
+                    "grant": [
+                        {
+                            "agency": "This study was supported by funding from the Michigan State University Asian Studies Center's Dr. Delia Koo Global Faculty Endowment.",
+                            "orderIn": 0
+                        }
+                    ]
+                },
+                "meshHeadingList": {
+                    "meshHeading": [
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Humans"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Attitude of Health Personnel"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Emotions"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Spouses",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "PX",
+                                        "qualifierName": "psychology",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Couples Therapy",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "MT",
+                                        "qualifierName": "methods",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Qualitative Research"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Adult"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Middle Aged"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "China"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Hong Kong"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Taiwan"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Female"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Male"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "East Asian People"
+                        }
+                    ]
+                },
+                "keywordList": {
+                    "keyword": [
+                        "Cultural Adaptation",
+                        "Chinese Couples",
+                        "Emotionally Focused Couple Therapy",
+                        "Therapists' Perspectives"
+                    ]
+                },
+                "subsetList": {
+                    "subset": [
+                        {
+                            "code": "IM",
+                            "name": "Index Medicus"
+                        }
+                    ]
+                },
+                "fullTextUrlList": {
+                    "fullTextUrl": [
+                        {
+                            "availability": "Subscription required",
+                            "availabilityCode": "S",
+                            "documentStyle": "doi",
+                            "site": "DOI",
+                            "url": "https://doi.org/10.1111/jmft.70093"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "html",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC12636061"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "pdf",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC12636061?pdf=render"
+                        }
+                    ]
+                },
+                "isOpenAccess": "Y",
+                "inEPMC": "Y",
+                "inPMC": "Y",
+                "hasPDF": "Y",
+                "hasBook": "N",
+                "hasSuppl": "Y",
+                "citedByCount": 0,
+                "hasData": "Y",
+                "hasReferences": "Y",
+                "hasTextMinedTerms": "Y",
+                "hasDbCrossReferences": "N",
+                "hasLabsLinks": "Y",
+                "license": "cc by",
+                "hasEvaluations": "N",
+                "authMan": "N",
+                "epmcAuthMan": "N",
+                "nihAuthMan": "N",
+                "hasTMAccessionNumbers": "Y",
+                "tmAccessionTypeList": {
+                    "accessionType": [
+                        "doi"
+                    ]
+                },
+                "dateOfCompletion": "2025-11-21",
+                "dateOfCreation": "2025-11-21",
+                "firstIndexDate": "2025-11-21",
+                "fullTextReceivedDate": "2025-11-24",
+                "dateOfRevision": "2026-01-22",
+                "firstPublicationDate": "2026-01-01"
+            },
+            {
+                "id": "42117334",
+                "source": "MED",
+                "pmid": "42117334",
+                "pmcid": "PMC13162192",
+                "fullTextIdList": {
+                    "fullTextId": [
+                        "PMC13162192"
+                    ]
+                },
+                "doi": "10.1111/jmft.70144",
+                "title": "Building Trust and Connection: A Family Systems Perspective on Black Veteran Reintegration.",
+                "authorString": "Francis L.",
+                "authorList": {
+                    "author": [
+                        {
+                            "fullName": "Francis L",
+                            "firstName": "Lastenia",
+                            "lastName": "Francis",
+                            "initials": "L",
+                            "authorId": {
+                                "type": "ORCID",
+                                "value": "0009-0008-2299-8664"
+                            },
+                            "authorAffiliationDetailsList": {
+                                "authorAffiliation": [
+                                    {
+                                        "affiliation": "Department of Human Development and Family Science, Marriage and Family Therapy Program, Syracuse University, Syracuse, New York, USA."
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "authorIdList": {
+                    "authorId": [
+                        {
+                            "type": "ORCID",
+                            "value": "0009-0008-2299-8664"
+                        }
+                    ]
+                },
+                "journalInfo": {
+                    "issue": "3",
+                    "volume": "52",
+                    "journalIssueId": 4185879,
+                    "dateOfPublication": "2026 Jul",
+                    "monthOfPublication": 7,
+                    "yearOfPublication": 2026,
+                    "printPublicationDate": "2026-07-01",
+                    "journal": {
+                        "title": "Journal of marital and family therapy",
+                        "medlineAbbreviation": "J Marital Fam Ther",
+                        "issn": "0194-472X",
+                        "essn": "1752-0606",
+                        "isoabbreviation": "J Marital Fam Ther",
+                        "nlmid": "7904614"
+                    }
+                },
+                "pubYear": "2026",
+                "pageInfo": "e70144",
+                "abstractText": "Reintegration after military deployment is often viewed as an individual process, though it occurs in family systems. Black veterans remain underrepresented in reintegration research, particularly in studies focusing on relational trust and racialized stress. Semi-structured interviews were conducted with 23 veterans of Operation Enduring Freedom (OEF) and Operation Iraqi Freedom (OIF) revealed four interrelated themes: presence, communication, racial identity, and family role negotiation. Findings indicate that trust was built through everyday relational processes rather than immediate emotional disclosure, and racial identity served as both a resource and a strain. These findings highlight trust as a relational process shaped by family dynamics and sociocultural contexts, extending reintegration literature.",
+                "affiliation": "Department of Human Development and Family Science, Marriage and Family Therapy Program, Syracuse University, Syracuse, New York, USA.",
+                "publicationStatus": "ppublish",
+                "language": "eng",
+                "pubModel": "Print",
+                "pubTypeList": {
+                    "pubType": [
+                        "research-article",
+                        "Journal Article"
+                    ]
+                },
+                "meshHeadingList": {
+                    "meshHeading": [
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Humans"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Family Relations",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "EH",
+                                        "qualifierName": "ethnology",
+                                        "majorTopic_YN": "N"
+                                    },
+                                    {
+                                        "abbreviation": "PX",
+                                        "qualifierName": "psychology",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Trust",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "PX",
+                                        "qualifierName": "psychology",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Adult"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Middle Aged"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Veterans",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "PX",
+                                        "qualifierName": "psychology",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Female"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Male"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Afghan Campaign 2001-"
+                        },
+                        {
+                            "majorTopic_YN": "N",
+                            "descriptorName": "Iraq War, 2003-2011"
+                        },
+                        {
+                            "majorTopic_YN": "Y",
+                            "descriptorName": "Black or African American",
+                            "meshQualifierList": {
+                                "meshQualifier": [
+                                    {
+                                        "abbreviation": "EH",
+                                        "qualifierName": "ethnology",
+                                        "majorTopic_YN": "N"
+                                    },
+                                    {
+                                        "abbreviation": "PX",
+                                        "qualifierName": "psychology",
+                                        "majorTopic_YN": "N"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "keywordList": {
+                    "keyword": [
+                        "Family Systems",
+                        "Relational Trust",
+                        "Racialized Stress",
+                        "Military Reintegration",
+                        "Black Veterans"
+                    ]
+                },
+                "subsetList": {
+                    "subset": [
+                        {
+                            "code": "IM",
+                            "name": "Index Medicus"
+                        }
+                    ]
+                },
+                "fullTextUrlList": {
+                    "fullTextUrl": [
+                        {
+                            "availability": "Subscription required",
+                            "availabilityCode": "S",
+                            "documentStyle": "doi",
+                            "site": "DOI",
+                            "url": "https://doi.org/10.1111/jmft.70144"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "html",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC13162192"
+                        },
+                        {
+                            "availability": "Open access",
+                            "availabilityCode": "OA",
+                            "documentStyle": "pdf",
+                            "site": "Europe_PMC",
+                            "url": "https://europepmc.org/articles/PMC13162192?pdf=render"
+                        }
+                    ]
+                },
+                "isOpenAccess": "Y",
+                "inEPMC": "Y",
+                "inPMC": "Y",
+                "hasPDF": "Y",
+                "hasBook": "N",
+                "hasSuppl": "Y",
+                "citedByCount": 0,
+                "hasData": "Y",
+                "hasReferences": "Y",
+                "hasTextMinedTerms": "N",
+                "hasDbCrossReferences": "N",
+                "hasLabsLinks": "N",
+                "license": "cc by",
+                "hasEvaluations": "N",
+                "authMan": "N",
+                "epmcAuthMan": "N",
+                "nihAuthMan": "N",
+                "hasTMAccessionNumbers": "N",
+                "dateOfCompletion": "2026-07-16",
+                "dateOfCreation": "2026-05-12",
+                "firstIndexDate": "2026-05-14",
+                "fullTextReceivedDate": "2026-05-20",
+                "dateOfRevision": "2026-07-17",
+                "firstPublicationDate": "2026-07-01"
+            }
+        ]
+    }
+}
