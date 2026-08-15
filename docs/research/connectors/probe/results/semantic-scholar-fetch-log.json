@@ -1,0 +1,20 @@
+{
+  "note": "Not part of the CellRecord schema. Records exactly what this task attempted against api.semanticscholar.org, for the transparency the dossier's Sec 4 and Sec 8 rely on. No cell in semantic-scholar.json was estimated, extrapolated, or copied from another connector -- this log is the receipt.",
+  "fetched": [
+    {"query_id": "C1", "status": "OK", "detail": "n=16523 top=Effectiveness of the 'Hold me Tight' Relationship Enhancement Program... -- H. Conradi, P. Dingemanse, A. Noordhof -- 2018", "retrieved_at": "2026-08-15T21:15:38Z"}
+  ],
+  "unfetched": [
+    {"query_id": "Q1", "status": "FAILED", "detail": "HTTPError 429 after 1 initial attempt + 3 retries (20s/40s/70s backoff) inside probe/connectors/semantic_scholar.py::search()"},
+    {"query_id": "Q2", "status": "FAILED", "detail": "HTTPError 429 after 1 initial attempt + 3 retries (20s/40s/70s backoff)"},
+    {"query_id": "Q3", "status": "NOT_ATTEMPTED_TO_COMPLETION", "detail": "request was in flight when the run was stopped on explicit instruction to stop burning attempts against the saturated pool; no partial/invented result was recorded for it"},
+    {"query_id": "Q4", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"},
+    {"query_id": "Q5", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"},
+    {"query_id": "Q6", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"},
+    {"query_id": "Q7", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"},
+    {"query_id": "Q8", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"},
+    {"query_id": "Q9", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"},
+    {"query_id": "Q10", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"},
+    {"query_id": "C2", "status": "NOT_ATTEMPTED", "detail": "run stopped before reaching this query"}
+  ],
+  "context": "Prior to this per-query-tolerant driver run, two full `python3 -m probe.run --connector semantic-scholar` invocations were also attempted and both aborted on the first HTTPError (run.py has no partial-write path). Total real HTTP calls made against api.semanticscholar.org during this task, counting every attempt including retries and the earlier fixture-capture attempts: 1 (initial fixture 429) + 1 (fixture 429) + 1 (fixture 200, saved as C1) + 4 (Q1: 1 + 3 retries) + 4 (Q2: 1 + 3 retries) + 1 (Q3, interrupted before its first retry) + a handful of ad hoc single-shot curl checks (2) during troubleshooting = approximately 14 calls total. The controller independently made at least 1 more isolated call that also returned 429 at the same time."
+}

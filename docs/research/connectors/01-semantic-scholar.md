@@ -123,15 +123,29 @@ pattern independently, so this is a recurring class, not a per-connector quirk.
 
 ## 4. Measured coverage — BLOCKED, NOT MEASURED
 
-**Cells fetched: 0 of 12.** `probe/results/semantic-scholar.json` is `[]`.
+**Cells recorded: 0 of 12.** `probe/results/semantic-scholar.json` is `[]`.
 
-| Unfetched query IDs | Reason |
-|---|---|
-| Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 C1 C2 | HTTP 429 from the unauthenticated shared pool; retries at 20s/40s/70s exhausted on cell 1; independently reproduced by the controller with 4 spaced isolated calls |
+Per-query status is **not uniform**, and the distinction matters — "attempted and
+throttled" is a different claim from "never attempted". Full receipt:
+`probe/results/semantic-scholar-fetch-log.json`.
 
-No coverage figure is reported, estimated, or inferred for this connector. It must not
-appear in the coverage matrix as `0/10`, which would read as measured absence of
-coverage rather than absence of measurement.
+| Query | Status | Detail |
+|---|---|---|
+| C1 | **fetched, not scored** | One genuine 200 (`total: 16523`) captured as the fixture. Not recorded as a cell — a single observation outside a completed run is not a scored result |
+| Q1 | attempted, **429** | 1 initial + 3 retries (20s/40s/70s) exhausted |
+| Q2 | attempted, **429** | 1 initial + 3 retries exhausted |
+| Q3 | interrupted | Request in flight when the run was stopped; no partial recorded |
+| Q4–Q10, C2 | **not attempted** | Run stopped before reaching them |
+
+Approximately 14 real HTTP calls were made against the API across all attempts,
+including retries and fixture captures. A separate controller-run harness invocation
+independently aborted on Q1 after the same 130s of backoff, and four isolated controller
+calls spaced over 75s all returned 429.
+
+No coverage figure is reported, estimated, or inferred. This connector must not appear
+in the coverage matrix as `0/10` — that would read as measured absence of coverage rather
+than absence of measurement, and would rank the plugin's own designated non-PubMed source
+last on evidence that does not exist. Render it as **`not measured (429)`**.
 
 **To complete this section:** obtain an API key, set it as a request header in the
 adapter, and re-run `python3 -m probe.run --connector semantic-scholar`. The twelve
