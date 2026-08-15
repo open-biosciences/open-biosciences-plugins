@@ -1,0 +1,213 @@
+[
+  {
+    "connector": "crossref",
+    "query_id": "Q1",
+    "result": "hit",
+    "n_results": 9204356,
+    "top_result": "Unburdening Parts — unknown — 2017",
+    "venue_class": "book-chapter",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "isbn"
+    ],
+    "notes": "Crossref type=book-chapter, container-title 'Internal Family Systems Therapy with Children' (Routledge). Directly on-topic for IFS parts/Self-leadership.",
+    "retrieved_at": "2026-08-15T21:08:58Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q2",
+    "result": "hit",
+    "n_results": 469967,
+    "top_result": "Somatic Experiencing — unknown — 2015",
+    "venue_class": "book-chapter",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "isbn"
+    ],
+    "notes": "Crossref type=reference-entry, an encyclopedia entry within container-title 'The SAGE Encyclopedia of Theory in Counseling and Psychotherapy' (SAGE). Treated as book-chapter per rubric ('a chapter within a larger work') since reference-entry has no dedicated class. Directly names the modality (Somatic Experiencing) but does not reach 'window of tolerance' or Sensorimotor Psychotherapy specifically.",
+    "retrieved_at": "2026-08-15T21:08:58Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q3",
+    "result": "partial",
+    "n_results": 1104654,
+    "top_result": "Accelerated Experiential Dynamic Psychotherapy — Diana Fosha — 2023",
+    "venue_class": "grey",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher"
+    ],
+    "notes": "Crossref type=dataset, container-title 'PsycTHERAPY Dataset' (APA). Verified via web search: APA PsycTherapy is a streaming-video clinical-demonstration database, not scholarly literature; this DOI is a training-video catalogue record, not a discussion of transformance/Fosha's theory. Wrong literature for the query -> partial. venue_class judgment call: 'dataset' has no dedicated class; treated as grey (non-peer-reviewed professional-body database entry) rather than unverified because both DOI and a registered type are present.",
+    "retrieved_at": "2026-08-15T21:08:59Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q4",
+    "result": "hit",
+    "n_results": 1449841,
+    "top_result": "The Heroine's Journey — Maureen Murdock — 2016",
+    "venue_class": "book-chapter",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "isbn"
+    ],
+    "notes": "Crossref type=book-chapter, container-title 'Encyclopedia of Psychology and Religion' (Springer). Names Murdock; does not name Frankel in the returned metadata.",
+    "retrieved_at": "2026-08-15T21:08:59Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q5",
+    "result": "hit",
+    "n_results": 1485266,
+    "top_result": "Emotions of normal people. — William Moulton Marston — 1928",
+    "venue_class": "book",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "publisher"
+    ],
+    "notes": "Crossref type=book, publisher Harcourt Brace & Company, no container-title (top-level monograph). This is the APA PsycNET record for the actual 1928 primary source itself -- an exact match for the historical-primary format axis.",
+    "retrieved_at": "2026-08-15T21:09:00Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q6",
+    "result": "partial",
+    "n_results": 1399165,
+    "top_result": "Training Partnerships: Safe Haven or Secure Base? — unknown — 2012",
+    "venue_class": "book-chapter",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "isbn"
+    ],
+    "notes": "Crossref type=book-chapter, container-title 'Adult Attachment and Couple Psychotherapy' (Routledge/Clulow). Verified via web search: this is Ch.10 by Felicia Olney, in Part III of the book, which 'examines the significance of training and the organisation of work for effective practice with couples' -- i.e. clinical-training/supervisory dyads, not romantic adult partnerships. Wrong population per the Q6 established-dyad discrimination -> partial, not hit.",
+    "retrieved_at": "2026-08-15T21:09:01Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q7",
+    "result": "hit",
+    "n_results": 3718455,
+    "top_result": "Is it time to move on from \"hypoactive sexual desire disorder?\" — Rosemary Basson — 2010",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "issn"
+    ],
+    "notes": "Crossref type=journal-article, venue 'Menopause' (Wolters Kluwer). Authored by Rosemary Basson, the named authority in the query, directly addressing the spontaneous/responsive desire model.",
+    "retrieved_at": "2026-08-15T21:09:01Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q8",
+    "result": "hit",
+    "n_results": 5517632,
+    "top_result": "Virtually Connected: Do Shared Novel Activities in Virtual Reality Enhance Self-Expansion and Relationship Quality? — Rhonda Nicole Balzarini, Anya Sharma, SHaRe Lab — 2024",
+    "venue_class": "preprint",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "publisher"
+    ],
+    "notes": "Crossref type=posted-content, publisher 'Center for Open Science' (OSF/PsyArXiv infrastructure), DOI prefix 10.31219/osf.io -- maps directly to preprint per rubric. Directly on-topic for shared novel activity / self-expansion; does not name 'aesthetic engagement' specifically.",
+    "retrieved_at": "2026-08-15T21:09:02Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q9",
+    "result": "hit",
+    "n_results": 3112525,
+    "top_result": "Supplemental Material for Positive Mental Health Scale: Validation and Measurement Invariance Across Eight Countries, Genders, and Age Groups — unknown — 2021",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "issn"
+    ],
+    "notes": "Crossref type=journal-article, venue 'Psychological Assessment' (APA). DOI is the '.supp' supplementary-materials record for the article rather than the primary-article DOI, but carries the same registered type/venue/publisher as the parent journal-article and directly names measurement invariance and scale validation.",
+    "retrieved_at": "2026-08-15T21:09:02Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "Q10",
+    "result": "hit",
+    "n_results": 2762709,
+    "top_result": "Individual Differences in Attention Control — Cody A. Mashburn, Jason S. Tsukahara, Randall W. Engle — 2020",
+    "venue_class": "book-chapter",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "isbn"
+    ],
+    "notes": "Crossref type=book-chapter, container-title 'Working Memory' (Oxford University Press). Engle is a leading working-memory-capacity/fluid-intelligence researcher; directly on-topic.",
+    "retrieved_at": "2026-08-15T21:09:03Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "C1",
+    "result": "hit",
+    "n_results": 9525294,
+    "top_result": "Love, Attachment Theory, and Emotionally Focused Couples Therapy — Paul T. Guillory — 2021",
+    "venue_class": "book-chapter",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "isbn"
+    ],
+    "notes": "Crossref type=book-chapter, container-title 'Emotionally Focused Therapy with African American Couples' (Routledge). Positive control passes: harness returns a directly on-topic EFT-for-couples result. Not counted toward coverage score per README/RUBRIC.",
+    "retrieved_at": "2026-08-15T21:09:03Z"
+  },
+  {
+    "connector": "crossref",
+    "query_id": "C2",
+    "result": "miss",
+    "n_results": 11218320,
+    "top_result": "REGULATION OF GLYCOGEN METABOLISM AS A POTENTIAL THERAPEUTIC APPROACH AGAINST GLIOBLASTOMA — Niah Schram, Joseph Hayes, Tamara Zwain — 2025",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "type",
+      "venue",
+      "publisher",
+      "issn"
+    ],
+    "notes": "token search returned adjacent papers; no construct match. Top hit is an unrelated glioblastoma/glycogen-metabolism oncology article (venue: Neuro-Oncology), matched only on scattered tokens (e.g. 'regulation', author surname 'Hayes') -- not a match to the fabricated 'Neuro-Dynamic Co-Regulation Index (Vanderbilt & Hayes 2019)' construct or citation. No result across the returned set presented itself as that construct -- negative control passes.",
+    "retrieved_at": "2026-08-15T21:09:04Z"
+  }
+]
