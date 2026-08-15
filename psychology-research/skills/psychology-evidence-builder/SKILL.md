@@ -2,7 +2,7 @@
 name: psychology-evidence-builder
 description: "Run evidence-grounded psychology, therapy, sex therapy, family-systems, or narrative-psychology research using LOCATE -> RETRIEVE -> EXTRACT -> CLASSIFY -> SYNTHESIZE. Use when the user asks to research a psychology concept, modality, clinical-adjacent thesis, or document with source provenance."
 bindings:
-  literature: []                          # Tier-2 wires [pubmed, semantic-scholar, ~~web]
+  literature: [pubmed]                    # biomedical/psychiatric only — see CONNECTORS.md
   certifying-body: [~~certifying-body]    # Tier-3 wires real adapters
   licensing-board: [~~licensing-board]    # Tier-3 wires real adapters
   clinical-guidelines: [~~clinical-guidelines]   # Tier-4 wires
@@ -25,9 +25,13 @@ not medical advice, and not a substitute for a licensed clinician.
 
 Use the bindings declared in this file's frontmatter, in priority order. If a higher-priority binding returns no usable result, fall back to the next.
 
-During Tier-1a (current version), `literature: []` is empty. Literature claims fall through to `~~web` only and are tier-capped at SUPPORTED at the CLASSIFY step.
+`literature: [pubmed]` is bound. **PubMed covers the biomedical, psychiatric and RCT-shaped half of psychology, and only that half.** Its own scope note excludes non-medical psychology.
 
-Once Tier-2 wires `[pubmed, semantic-scholar, ~~web]`: PubMed is appropriate primary for biomedical, psychiatric, and RCT-shaped claims. For modality theory, qualitative practice literature, or book-form canon, prefer Semantic Scholar or note the paradigm fit explicitly. Consult `references/modality-canon.md` to identify the claim's paradigm before choosing the source.
+**For modality theory, qualitative practice literature, or book-form canon, there is currently no bound connector.** Those claims fall through to `~~web` and remain tier-capped at SUPPORTED at the CLASSIFY step. Do not present a PubMed miss on such a claim as evidence of absence — it is a scope limit, and a measured one: a 2026-08-14 run with PubMed bound returned `UNRESOLVED` for IFS, Somatic Experiencing/Sensorimotor, AEDP transformance, the Heroine's Journey, Marston DISC, and secure-base research in established adult dyads.
+
+Consult `references/modality-canon.md` to identify the claim's paradigm **before** choosing a source, and say plainly in the report when a claim's paradigm has no bound connector.
+
+Coverage for those paradigms arrives with `psychology-mcp` (Crossref + OpenAlex). See `CONNECTORS.md`.
 
 If a claim is grounded only in `~~web`, the resulting claim cannot be labeled `VERIFIED` regardless of the URL's apparent authority — see CLASSIFY for the demotion rule.
 

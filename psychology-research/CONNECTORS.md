@@ -10,7 +10,7 @@ The plugin is tool-agnostic. It describes workflows in terms of source categorie
 
 | Category | Placeholder | Default Binding (Tier-?) | Primary Uses |
 |----------|-------------|--------------------------|--------------|
-| Literature | `~~literature` | (Tier-2: pubmed, semantic-scholar) | Peer-reviewed psychology, psychiatry, sex therapy, family systems, and psychotherapy research |
+| Literature | `~~literature` | **`pubmed`** (declared in `.mcp.json`) | Biomedical, psychiatric and RCT-shaped research **only** — see "What is bound today" below |
 | Web search/browser | `~~web` | (always: tier-capped at SUPPORTED) | Current provider pages, professional directories, official organizations, and public practice pages |
 | Licensing board | `~~licensing-board` | (Tier-3: per-state adapters) | State license lookup and disciplinary-status verification |
 | Certifying body | `~~certifying-body` | (Tier-3: AASECT, ICEEFT, AEDP, SE, EMDRIA, IFS, Gottman, PACT adapters) | AASECT, ICEEFT, AEDP Institute, SE International, EMDRIA, IFS Institute, and similar credential checks |
@@ -42,4 +42,35 @@ When `mcpServers` entries are populated (Tier-2 onward), they are ordered by cat
 3. Licensing-board servers
 4. Clinical-guidelines servers
 
-Within a category, ordering is alphabetical by server name. This ordering is documented here rather than encoded in JSON because JSON has no comments; PR review enforces the convention. Tier-1a ships with `mcpServers: {}`, so the convention is enforced on first population at Tier-2 entry.
+Within a category, ordering is alphabetical by server name. This ordering is documented here rather than encoded in JSON because JSON has no comments; PR review enforces the convention.
+
+Every entry **must** carry `"type": "http"`. An entry with a `url` and no `type` is read as a stdio server, skipped at load, and warned about.
+
+## What is bound today, and what is not
+
+`.mcp.json` declares **one** server:
+
+```json
+{ "mcpServers": { "pubmed": { "type": "http", "url": "https://pubmed.mcp.claude.com/mcp" } } }
+```
+
+**This closes the biomedical half of the literature category and nothing else.** PubMed's own scope note excludes non-medical psychology. A 2026-08-14 consumer run with PubMed bound still returned `UNRESOLVED` for IFS, Somatic Experiencing / Sensorimotor, AEDP transformance, the Heroine's Journey, Marston DISC, and secure-base research in established adult dyads.
+
+Claims in those paradigms fall through to `~~web` and stay tier-capped at `SUPPORTED`. **Say so in the report** rather than presenting a PubMed miss as evidence of absence.
+
+### What closes the rest
+
+A Layer-1 discovery pass measured five candidate APIs against a frozen 12-query benchmark (49 recorded cells). Result:
+
+| Connector | Coverage | Roster position |
+|---|---|---|
+| **Crossref** | 8 hit / 2 partial / 0 miss | **Tier 0** — the only connector reaching book canon and historical primaries; sole source of `isbn` and registered `type` |
+| **OpenAlex** | 2 / 5 / 3 | **Tier 0** — the only source of standing retraction status |
+| Europe PMC | 2 / 2 / 6 | Tier 1 — sole source of `pmcid`; missed the modality queries entirely |
+| Semantic Scholar | *not measured* | Tier 2 — unauthenticated API returns sustained HTTP 429; needs a key |
+| PsyArXiv / OSF | 0 / 0 / 10 | not scheduled — `filter[title]` is a substring match, not an index |
+| APA PsycNET | — | **removed** — no query API at any access level (SPA shell, `robots.txt` disallow, TDM rights reserved) |
+
+These arrive as first-party servers in **`psychology-mcp`**, the platform's Layer-2 gateway for psychology — the counterpart to `biosciences-mcp`, which `bio-research` declares. Until it is deployed, this plugin's literature reach is the single PubMed binding above.
+
+Full evidence, including the per-connector dossiers and the response-envelope design: `docs/research/connectors/` in this repository.
