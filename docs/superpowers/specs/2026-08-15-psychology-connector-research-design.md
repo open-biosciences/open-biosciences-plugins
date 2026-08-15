@@ -254,7 +254,11 @@ ADR-001 §7 mandates `slim=True` on batch tools and specifies `id`/`name`/`score
 5. **Write** `DECISION.md`.
 6. **Stop.** The Layer-2 build is a separate SpecKit program; applying the interim binding is a separate PR.
 
-Steps 2–5 run inline. No agent fan-out for artefact production.
+**Parallelism.** Steps 1 and 6 are gates and run inline. Step 2's five dossiers are independent units — separate adapter, test, fixture, results file, and dossier each — and are dispatched **in parallel, one agent per connector**, per ADR-005 ("we adopt Git Worktrees as the canonical pattern for parallel MCP server development"; its Phase 0 namespace refactor removes the one shared write, the connector registry). Steps 3–5 need all five complete and run inline.
+
+Parallel dispatch is conditional on **artefact-level verification, not agent reports**: a connector's work is accepted only when its recorded fixture is a genuine API payload and its twelve cell records pass `validate()`. See the plan's fan-out protocol.
+
+*(Rev 1 asserted "no agent fan-out for artefact production" here and the plan then cited this section as its authority — a fabricated constraint with a circular citation. Corrected 2026-08-15; see Appendix C item 5.)*
 
 ## 9. Non-goals
 
@@ -336,3 +340,4 @@ Recorded because each came from inference rather than reading a source, and the 
 2. **Invented a stdlib-only constraint** from the absence of `pyproject.toml` in the plugin repo. Plugins do not declare Python dependencies by design; the Layer-2 package has real ones.
 3. **Assumed plugins cannot bundle executable code.** `scripts/`, `bin/`, and `skills/*/scripts/` are documented features, which also means AGE-554's "expose validators via `bin/`" asks for an existing capability.
 4. **Placed venue classification at Layer 4.** ADR-001 §4 and §8 put schema normalization in the server envelope. The plugin was scraping URLs for signal a conformant server would supply.
+5. **Fabricated an execution constraint and cited itself for it.** §8 asserted "no agent fan-out for artefact production"; the implementation plan then cited §8 as the authority. Nothing supported it. The belief was imported from a memory scoped to the storyboard pipeline, whose own text disclaims the generalization ("this does not condemn subagents generally"), and whose failure mode was forged output rather than parallelism. **ADR-005 mandates the opposite** for 3+ similar units. Corrected: dossiers fan out; verification is by artefact, not by report.

@@ -1,6 +1,6 @@
 # psychology-mcp Layer-1 Discovery Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. **Do not use subagent-driven-development for this plan** — the spec (§8) mandates inline execution and forbids agent fan-out for artefact production.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. **Tasks 3–7 are dispatched in parallel, one agent per connector** — see "Fan-out protocol" below. Tasks 1, 2, and 8–10 run inline.
 
 **Goal:** Produce the Layer-1 discovery evidence — five connector dossiers, a 60-cell coverage matrix, a literature envelope contract, and a decision document — that a `psychology-mcp` Layer-2 build will be specified from.
 
@@ -24,6 +24,47 @@ Every task's requirements implicitly include these. Values copied verbatim from 
 - **Sequential probing, never parallel.** Respect each API's rate limit; spec §10 names throttling as a risk.
 - **`DECISION.md` proposes deltas; it applies none.**
 - **Commit trailer on every commit:** `Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>`
+
+## Fan-out protocol
+
+Tasks 3–7 are five independent units — each touches only its own adapter, test, fixture, results file, and dossier — and are dispatched **in parallel, one agent per connector**, per ADR-005 ("Git Worktrees for Parallel MCP Server Development", Accepted). Tasks 1, 2 and 8–10 are gates or need all five complete, and run inline.
+
+**Phase 0 applied.** ADR-005's prerequisite is a namespace refactor so no two agents write the same file. Here there is exactly one shared write — the connector registry in `run.py` — and Task 2 removes it by declaring all five entries up front as a static name→module map with lazy import. **Tasks 3–7 therefore never touch `run.py`.** The five agents share `base.py`, `schema.py`, `queries.py` and `run.py` as **read-only**.
+
+**Verification is by artefact, never by report.** A subagent can report a twelve-call loop complete without having run it ([[feedback-verify-subagent-tool-loop-completion]] — a 43-call loop was reported "0 errors" with the calls never made). Do not accept a connector as done on its agent's say-so. The controller verifies, from the main loop:
+
+```bash
+cd docs/research/connectors
+python3 - <<'PY'
+import json, sys
+from pathlib import Path
+from probe.schema import CellRecord, validate
+ok = True
+for name in ["semantic-scholar","openalex","crossref","europe-pmc","psyarxiv-osf"]:
+    fx = Path(f"probe/fixtures/{name}-C1.json")
+    rs = Path(f"probe/results/{name}.json")
+    if not fx.exists() or fx.stat().st_size < 200:
+        print(f"{name}: FIXTURE MISSING OR STUB"); ok = False; continue
+    json.loads(fx.read_text())                       # must be real JSON from the API
+    rows = json.loads(rs.read_text())
+    if len(rows) != 12:
+        print(f"{name}: {len(rows)} cells, expected 12"); ok = False; continue
+    for r in rows:
+        r["metadata_completeness"] = tuple(r["metadata_completeness"])
+        for p in validate(CellRecord(**r)):
+            print(f"{name} {r['query_id']}: {p}"); ok = False
+    print(f"{name}: OK")
+sys.exit(0 if ok else 1)
+PY
+```
+
+A fabricated run cannot produce a real API payload in `fixtures/` or twelve records that pass `validate()`. That is the gate.
+
+**Model.** Use sonnet or better for these agents — never haiku. The cited failure was a haiku subagent on a monotonous sequential loop, which is exactly the shape of a twelve-cell probe.
+
+**Consistency.** Five agents classifying `venue_class` independently will diverge, and Task 8's matrix compares them. Task 2 therefore writes a **classification rubric** that all five agents receive verbatim; deviation from it is a review finding.
+
+**Rate limits.** Five agents against five *different* APIs share no limit (ADR-005 Risk 2 concerns concurrent hits on the *same* API). Each adapter carries its own `RateLimiter`; agents must not raise another connector's `RATE`.
 
 ## File Structure
 
@@ -212,8 +253,10 @@ Report the frozen benchmark to the maintainer and **stop**. Do not begin Task 2.
 ### Task 2: Probe harness core
 
 **Files:**
-- Create: `docs/research/connectors/probe/__init__.py`, `probe/queries.py`, `probe/schema.py`, `probe/connectors/__init__.py`, `probe/connectors/base.py`, `probe/tests/__init__.py`
+- Create: `docs/research/connectors/probe/__init__.py`, `probe/queries.py`, `probe/schema.py`, `probe/connectors/__init__.py`, `probe/connectors/base.py`, `probe/run.py`, `probe/RUBRIC.md`, `probe/tests/__init__.py`
 - Test: `probe/tests/test_queries.py`, `probe/tests/test_schema.py`, `probe/tests/test_base.py`
+
+**This task must complete before any of Tasks 3–7 are dispatched.** It produces everything the five parallel agents share, including the pre-declared registry that removes their only shared write.
 
 **Interfaces:**
 - Consumes: the frozen queries and cell schema from Task 1's `README.md`
@@ -221,6 +264,8 @@ Report the frozen benchmark to the maintainer and **stop**. Do not begin Task 2.
   - `queries.QUERIES: tuple[Query, ...]` where `Query(id, search, format_axis, subject_axis, role)`
   - `schema.CellRecord(connector, query_id, result, n_results, top_result, venue_class, doi_present, metadata_completeness, notes, retrieved_at)` and `schema.validate(rec) -> list[str]`
   - `connectors.base.Item`, `connectors.base.Response(total, items, raw)`, `connectors.base.RateLimiter(min_interval).wait()`, `connectors.base.build_url(url, params) -> str`, `connectors.base.build_headers(extra) -> dict`, `connectors.base.http_get_json(url, params, headers, timeout) -> dict`
+  - `run.CONNECTORS: dict[str, str]` — all five connector names pre-declared, mapped to module names; `run.run_connector(name) -> list[CellRecord]`
+  - `probe/RUBRIC.md` — the venue-class and metadata-completeness classification rubric, passed verbatim to every Task 3–7 agent
 
 - [ ] **Step 1: Write the failing tests for `queries.py`**
 
@@ -654,16 +699,182 @@ def http_get_json(url: str, params: dict | None = None,
 Run: `cd docs/research/connectors && python3 -m pytest probe/tests -v`
 Expected: PASS, 25 tests
 
-- [ ] **Step 13: Commit**
+- [ ] **Step 13: Implement `probe/run.py` with all five connectors pre-declared**
+
+This is ADR-005's Phase 0 namespace refactor. The registry names all five connectors **now**, so no Task 3–7 agent ever edits this file. Modules are imported lazily, so a name whose module does not exist yet simply fails when that connector is run — not at import time.
+
+```python
+"""Run one connector's 12 cells and write validated records to results/.
+
+The registry below names all five connectors up front so that parallel
+per-connector work never shares a write to this file (ADR-005 Phase 0).
+Modules are imported lazily; a connector whose module is not yet written
+fails only when it is run.
+"""
+
+from __future__ import annotations
+
+import argparse
+import importlib
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+from .queries import QUERIES
+from .schema import CellRecord, validate
+
+# connector name -> module name under probe.connectors
+CONNECTORS: dict[str, str] = {
+    "semantic-scholar": "semantic_scholar",
+    "openalex": "openalex",
+    "crossref": "crossref",
+    "europe-pmc": "europe_pmc",
+    "psyarxiv-osf": "osf",
+}
+
+RESULTS_DIR = Path(__file__).parent / "results"
+
+
+def load(name: str):
+    module = importlib.import_module(f".connectors.{CONNECTORS[name]}", package="probe")
+    if module.NAME != name:
+        raise AssertionError(f"{CONNECTORS[name]}.NAME is {module.NAME!r}, expected {name!r}")
+    return module
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def _describe(item) -> str:
+    authors = ", ".join(item.authors[:3]) or "unknown"
+    return f"{item.title} — {authors} — {item.year}"
+
+
+def run_connector(name: str) -> list[CellRecord]:
+    module = load(name)
+    records: list[CellRecord] = []
+
+    for query in QUERIES:
+        resp = module.search(query.search)
+        top = resp.items[0] if resp.items else None
+        rec = CellRecord(
+            connector=name,
+            query_id=query.id,
+            result="hit" if top else "miss",
+            n_results=resp.total,
+            top_result=_describe(top) if top else None,
+            venue_class="unverified",   # classified by hand per RUBRIC.md
+            doi_present=bool(top and top.doi),
+            metadata_completeness=(),   # filled in by hand per RUBRIC.md
+            notes="",
+            retrieved_at=_now(),
+        )
+        records.append(rec)
+        print(f"{name} {query.id}: n={resp.total} top={rec.top_result}")
+
+    return records
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--connector", required=True, choices=sorted(CONNECTORS))
+    args = parser.parse_args()
+
+    records = run_connector(args.connector)
+    RESULTS_DIR.mkdir(exist_ok=True)
+    out = RESULTS_DIR / f"{args.connector}.json"
+    out.write_text(
+        json.dumps([r.to_dict() for r in records], indent=2) + "\n", encoding="utf-8"
+    )
+    print(f"\nwrote {out} ({len(records)} cells)")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+`run_connector` produces a **first pass** — what came back mechanically. `venue_class`, `metadata_completeness`, `partial` downgrades, and the C2 adjacent-match note are judgement calls made per `RUBRIC.md` while writing the dossier, and edited into the results JSON by hand.
+
+Verify the registry resolves and the CLI rejects unknown names:
+
+```bash
+cd docs/research/connectors
+python3 -c "from probe.run import CONNECTORS; print(sorted(CONNECTORS)); assert len(CONNECTORS)==5"
+python3 -m probe.run --connector nope 2>&1 | tail -1   # expect: invalid choice
+```
+
+Expected: the five names, then an `invalid choice` error.
+
+- [ ] **Step 14: Write `probe/RUBRIC.md`**
+
+Five agents classifying independently will diverge, and Task 8's matrix compares them. This file is passed **verbatim** to every Task 3–7 agent.
+
+````markdown
+# Classification rubric
+
+Applied when hand-refining `probe/results/<connector>.json`. Deviating from this
+is a review finding — Task 8 compares these classifications across connectors.
+
+## `venue_class` — classify the TOP result only
+
+Decide from the item's own registered metadata, never from the URL or the index
+that surfaced it.
+
+| Observed | Class |
+|---|---|
+| Registered type is a journal article in a named journal | `peer-reviewed-article` |
+| Registered type is a book or monograph, or an ISBN with no chapter | `book` |
+| A chapter within a larger work | `book-chapter` |
+| Published by a modality institute or professional body, not a journal | `institute-publication` |
+| Preprint server, or type `posted-content` / source `PPR` | `preprint` |
+| Clinical guideline or consensus statement | `guideline` |
+| Report, thesis, working paper, org web content | `grey` |
+| Editorial, commentary, letter, blog, consumer media | `commentary` |
+| **No DOI, or no registered type to classify from** | `unverified` |
+
+When two classes could apply, choose the **more specific** one and say why in `notes`.
+When genuinely undecidable, use `unverified` and say so — do not guess.
+
+## `metadata_completeness` — what the API ACTUALLY returned
+
+List only keys present and non-null **in the payload for that query**. Do not list a
+key because the API documents it.
+
+Registry keys: `doi` `pmid` `pmcid` `openalex_id` `semantic_scholar_id` `osf_id`
+`arxiv_id` `isbn` `issn`
+Envelope fields: `type` `venue` `publisher` `retraction_status` `oa_status`
+
+## `result`
+
+- `hit` — a top result that genuinely addresses the query
+- `partial` — results returned, but the top one is tangential, wrong population,
+  or wrong literature (say which in `notes`)
+- `miss` — nothing addressing the query, regardless of `n_results`
+
+## C2 (negative control)
+
+Zero results → `miss`, `n_results: 0`. Non-empty with no construct match → `miss`
+plus the note `"token search returned adjacent papers; no construct match"`. A result
+presented as matching the fabricated construct or its citation → **record it in the
+dossier §7 as a finding**, not merely as a cell.
+````
+
+- [ ] **Step 15: Commit**
 
 ```bash
 git add docs/research/connectors/probe/
-git commit -m "feat(probe): frozen query set, cell-record contract, shared plumbing
+git commit -m "feat(probe): shared harness, pre-declared registry, classification rubric
 
 Stdlib-only discovery harness. queries.py transcribes the frozen benchmark;
 schema.py encodes the cell contract including the C2 adjacent-match rule
 (a miss with n_results > 0 must carry a note); base.py provides Item,
 Response, RateLimiter and pure URL/header builders.
+
+run.py declares all five connectors up front with lazy import - ADR-005
+Phase 0, so the five parallel per-connector tasks never share a write.
+RUBRIC.md fixes venue-class and metadata-completeness judgement so the
+five dossiers stay comparable in the Task 8 matrix.
 
 Deliberately minimal - this is disposable discovery tooling, not
 psychology-mcp code.
@@ -676,15 +887,14 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 ### Task 3: Semantic Scholar — adapter and dossier
 
 **Files:**
-- Create: `docs/research/connectors/probe/connectors/semantic_scholar.py`, `probe/run.py`, `docs/research/connectors/01-semantic-scholar.md`
+- Create: `docs/research/connectors/probe/connectors/semantic_scholar.py`, `docs/research/connectors/01-semantic-scholar.md`
 - Test: `probe/tests/test_semantic_scholar.py`
 - Data: `probe/fixtures/semantic-scholar-C1.json`, `probe/results/semantic-scholar.json`
 
 **Interfaces:**
-- Consumes: `queries.QUERIES`, `schema.CellRecord`, `schema.validate`, `connectors.base.{Item, Response, RateLimiter, http_get_json}`
+- Consumes (read-only): `queries.QUERIES`, `schema.CellRecord`, `schema.validate`, `connectors.base.{Item, Response, RateLimiter, http_get_json}`, `run.py`, `RUBRIC.md`
 - Produces:
   - `connectors.semantic_scholar.NAME = "semantic-scholar"`, `.RATE: float`, `.search(query: str, limit: int = 10) -> Response`, `.parse(raw: dict) -> Response`
-  - `run.CONNECTORS: dict[str, module]` and `run.run_connector(name) -> list[CellRecord]` — Tasks 4–7 register into `CONNECTORS`
 
 - [ ] **Step 1: Observe the live response and record a fixture**
 
@@ -810,86 +1020,7 @@ def search(query: str, limit: int = 10) -> Response:
 Run: `cd docs/research/connectors && python3 -m pytest probe/tests/test_semantic_scholar.py -v`
 Expected: PASS, 5 tests
 
-- [ ] **Step 6: Implement the runner**
-
-`probe/run.py`:
-
-```python
-"""Run one connector's 12 cells and write validated records to results/."""
-
-from __future__ import annotations
-
-import argparse
-import json
-from datetime import datetime, timezone
-from pathlib import Path
-
-from .connectors import semantic_scholar
-from .queries import QUERIES
-from .schema import CellRecord, validate
-
-CONNECTORS = {
-    semantic_scholar.NAME: semantic_scholar,
-}
-
-RESULTS_DIR = Path(__file__).parent / "results"
-
-
-def _now() -> str:
-    return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
-
-
-def _describe(item) -> str:
-    authors = ", ".join(item.authors[:3]) or "unknown"
-    return f"{item.title} — {authors} — {item.year}"
-
-
-def run_connector(name: str) -> list[CellRecord]:
-    module = CONNECTORS[name]
-    records: list[CellRecord] = []
-
-    for query in QUERIES:
-        resp = module.search(query.search)
-        top = resp.items[0] if resp.items else None
-        rec = CellRecord(
-            connector=name,
-            query_id=query.id,
-            result="hit" if top else "miss",
-            n_results=resp.total,
-            top_result=_describe(top) if top else None,
-            venue_class="unverified",          # classified by hand during the dossier write-up
-            doi_present=bool(top and top.doi),
-            metadata_completeness=(),          # filled in by hand from the observed payload
-            notes="",
-            retrieved_at=_now(),
-        )
-        records.append(rec)
-        print(f"{name} {query.id}: n={resp.total} top={rec.top_result}")
-
-    return records
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--connector", required=True, choices=sorted(CONNECTORS))
-    args = parser.parse_args()
-
-    records = run_connector(args.connector)
-    RESULTS_DIR.mkdir(exist_ok=True)
-    out = RESULTS_DIR / f"{args.connector}.json"
-    out.write_text(
-        json.dumps([r.to_dict() for r in records], indent=2) + "\n", encoding="utf-8"
-    )
-    print(f"\nwrote {out} ({len(records)} cells)")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-`run_connector` produces a **first pass**: it records what came back mechanically. `venue_class`, `metadata_completeness`, `result` refinement to `partial`, and the C2 adjacent-match note are judgement calls made while writing the dossier, and are edited into the results JSON by hand. Re-run `validate()` after editing (Step 8).
-
-- [ ] **Step 7: Run the 12 cells**
+- [ ] **Step 6: Run the 12 cells**
 
 ```bash
 cd docs/research/connectors
@@ -899,7 +1030,7 @@ python3 -m probe.run --connector semantic-scholar
 
 Expected: 12 printed lines, then `wrote probe/results/semantic-scholar.json (12 cells)`. If the API throttles (HTTP 429), raise `RATE` in the adapter and re-run — record the observed limit for dossier §1.
 
-- [ ] **Step 8: Hand-refine the records, then re-validate**
+- [ ] **Step 7: Hand-refine the records, then re-validate**
 
 Edit `probe/results/semantic-scholar.json`: set each `venue_class` from the observed record, list the `metadata_completeness` keys the payload actually carried, downgrade thin results to `partial`, and apply the C2 rule from `README.md` — if C2 returned adjacent papers with no construct match, set `result: "miss"` and add the note.
 
@@ -920,11 +1051,11 @@ print('OK' if not bad else f'{bad} problem(s)')
 
 Expected: `OK`
 
-- [ ] **Step 9: Write `01-semantic-scholar.md`**
+- [ ] **Step 8: Write `01-semantic-scholar.md`**
 
 Use the spec §5 template, all eight sections. Section 4 is the 12 cells as a markdown table with example records. Sections 5 and 6 answer Fuzzy-to-Fact feasibility (does it accept a DOI as a lookup key for `get_work`?) and FastMCP wrapping feasibility (async-native REST? batch endpoint? is a slim projection expressible via the `fields` parameter?). Section 7 records whether a public MCP server exists. Section 8 gives an unambiguous wrap / bind / drop recommendation.
 
-- [ ] **Step 10: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
 git add docs/research/connectors/
@@ -944,12 +1075,11 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 
 **Files:**
 - Create: `docs/research/connectors/probe/connectors/openalex.py`, `docs/research/connectors/02-openalex.md`
-- Modify: `docs/research/connectors/probe/run.py` (register in `CONNECTORS`)
 - Test: `probe/tests/test_openalex.py`
 - Data: `probe/fixtures/openalex-C1.json`, `probe/results/openalex.json`
 
 **Interfaces:**
-- Consumes: `connectors.base.{Item, RateLimiter, Response, http_get_json}`, `run.CONNECTORS`
+- Consumes (read-only): `connectors.base.{Item, RateLimiter, Response, http_get_json}`, `queries.QUERIES`, `schema.*`, `run.py`, `RUBRIC.md`
 - Produces: `connectors.openalex.NAME = "openalex"`, `.RATE`, `.search(query, limit)`, `.parse(raw)`
 
 - [ ] **Step 1: Record the fixture**
@@ -1083,31 +1213,18 @@ def search(query: str, limit: int = 10) -> Response:
 Run: `cd docs/research/connectors && python3 -m pytest probe/tests/test_openalex.py -v`
 Expected: PASS, 6 tests
 
-- [ ] **Step 6: Register in the runner**
-
-In `probe/run.py`, add the import and the registry entry:
-
-```python
-from .connectors import openalex, semantic_scholar
-
-CONNECTORS = {
-    semantic_scholar.NAME: semantic_scholar,
-    openalex.NAME: openalex,
-}
-```
-
-- [ ] **Step 7: Run the 12 cells, refine, validate**
+- [ ] **Step 6: Run the 12 cells, refine, validate**
 
 ```bash
 cd docs/research/connectors
 python3 -m probe.run --connector openalex
 ```
 
-Then hand-refine `probe/results/openalex.json` as in Task 3 Step 8, and re-validate with the same one-liner, substituting the filename. Expected: `OK`.
+Then hand-refine `probe/results/openalex.json` as in Task 3 Step 7, and re-validate with the same one-liner, substituting the filename. Expected: `OK`.
 
-- [ ] **Step 8: Write `02-openalex.md`** using the spec §5 template, all eight sections.
+- [ ] **Step 7: Write `02-openalex.md`** using the spec §5 template, all eight sections.
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add docs/research/connectors/
@@ -1128,12 +1245,11 @@ Crossref is structurally load-bearing, not merely another index: spec §6.2 reso
 
 **Files:**
 - Create: `docs/research/connectors/probe/connectors/crossref.py`, `docs/research/connectors/03-crossref.md`
-- Modify: `docs/research/connectors/probe/run.py`
 - Test: `probe/tests/test_crossref.py`
 - Data: `probe/fixtures/crossref-C1.json`, `probe/results/crossref.json`
 
 **Interfaces:**
-- Consumes: `connectors.base.*`, `run.CONNECTORS`
+- Consumes (read-only): `connectors.base.*`, `queries.QUERIES`, `schema.*`, `run.py`, `RUBRIC.md`
 - Produces: `connectors.crossref.NAME = "crossref"`, `.RATE`, `.search(query, limit)`, `.parse(raw)`
 
 - [ ] **Step 1: Record the fixture**
@@ -1297,31 +1413,19 @@ def search(query: str, limit: int = 10) -> Response:
 Run: `cd docs/research/connectors && python3 -m pytest probe/tests/test_crossref.py -v`
 Expected: PASS, 7 tests
 
-- [ ] **Step 6: Register in the runner**
-
-```python
-from .connectors import crossref, openalex, semantic_scholar
-
-CONNECTORS = {
-    semantic_scholar.NAME: semantic_scholar,
-    openalex.NAME: openalex,
-    crossref.NAME: crossref,
-}
-```
-
-- [ ] **Step 7: Run the 12 cells, refine, validate**
+- [ ] **Step 6: Run the 12 cells, refine, validate**
 
 ```bash
 cd docs/research/connectors && python3 -m probe.run --connector crossref
 ```
 
-Refine and re-validate as in Task 3 Step 8. Expected: `OK`.
+Refine and re-validate as in Task 3 Step 7. Expected: `OK`.
 
-- [ ] **Step 8: Write `03-crossref.md`**
+- [ ] **Step 7: Write `03-crossref.md`**
 
 All eight sections. Give §3 extra weight: tabulate every Crossref `type` value observed across all 12 queries against spec §6.2's venue classes, and state explicitly which classes Crossref can and cannot resolve. This table is the input to Task 9.
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add docs/research/connectors/
@@ -1343,12 +1447,11 @@ The open question here is **supersede vs. complement** (spec §10 q1): Europe PM
 
 **Files:**
 - Create: `docs/research/connectors/probe/connectors/europe_pmc.py`, `docs/research/connectors/04-europe-pmc.md`
-- Modify: `docs/research/connectors/probe/run.py`
 - Test: `probe/tests/test_europe_pmc.py`
 - Data: `probe/fixtures/europe-pmc-C1.json`, `probe/results/europe-pmc.json`
 
 **Interfaces:**
-- Consumes: `connectors.base.*`, `run.CONNECTORS`
+- Consumes (read-only): `connectors.base.*`, `queries.QUERIES`, `schema.*`, `run.py`, `RUBRIC.md`
 - Produces: `connectors.europe_pmc.NAME = "europe-pmc"`, `.RATE`, `.search(query, limit)`, `.parse(raw)`
 
 - [ ] **Step 1: Record the fixture**
@@ -1490,32 +1593,19 @@ def search(query: str, limit: int = 10) -> Response:
 Run: `cd docs/research/connectors && python3 -m pytest probe/tests/test_europe_pmc.py -v`
 Expected: PASS, 7 tests
 
-- [ ] **Step 6: Register in the runner**
-
-```python
-from .connectors import crossref, europe_pmc, openalex, semantic_scholar
-
-CONNECTORS = {
-    semantic_scholar.NAME: semantic_scholar,
-    openalex.NAME: openalex,
-    crossref.NAME: crossref,
-    europe_pmc.NAME: europe_pmc,
-}
-```
-
-- [ ] **Step 7: Run the 12 cells, refine, validate**
+- [ ] **Step 6: Run the 12 cells, refine, validate**
 
 ```bash
 cd docs/research/connectors && python3 -m probe.run --connector europe-pmc
 ```
 
-Refine and re-validate as in Task 3 Step 8. Expected: `OK`.
+Refine and re-validate as in Task 3 Step 7. Expected: `OK`.
 
-- [ ] **Step 8: Write `04-europe-pmc.md`**
+- [ ] **Step 7: Write `04-europe-pmc.md`**
 
 All eight sections. §7 must answer spec §10 open question 1 directly: tabulate the `source` values observed across all 12 queries, and state whether Europe PMC supersedes a PubMed binding or complements it — with the `PPR`/`NBK` counts as evidence.
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add docs/research/connectors/
@@ -1534,12 +1624,11 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 
 **Files:**
 - Create: `docs/research/connectors/probe/connectors/osf.py`, `docs/research/connectors/05-psyarxiv-osf.md`
-- Modify: `docs/research/connectors/probe/run.py`
 - Test: `probe/tests/test_osf.py`
 - Data: `probe/fixtures/psyarxiv-osf-C1.json`, `probe/results/psyarxiv-osf.json`
 
 **Interfaces:**
-- Consumes: `connectors.base.*`, `run.CONNECTORS`
+- Consumes (read-only): `connectors.base.*`, `queries.QUERIES`, `schema.*`, `run.py`, `RUBRIC.md`
 - Produces: `connectors.osf.NAME = "psyarxiv-osf"`, `.RATE`, `.search(query, limit)`, `.parse(raw)`
 
 - [ ] **Step 1: Record the fixture**
@@ -1678,33 +1767,19 @@ def search(query: str, limit: int = 10) -> Response:
 Run: `cd docs/research/connectors && python3 -m pytest probe/tests/test_osf.py -v`
 Expected: PASS, 6 tests
 
-- [ ] **Step 6: Register in the runner**
-
-```python
-from .connectors import crossref, europe_pmc, openalex, osf, semantic_scholar
-
-CONNECTORS = {
-    semantic_scholar.NAME: semantic_scholar,
-    openalex.NAME: openalex,
-    crossref.NAME: crossref,
-    europe_pmc.NAME: europe_pmc,
-    osf.NAME: osf,
-}
-```
-
-- [ ] **Step 7: Run the 12 cells, refine, validate**
+- [ ] **Step 6: Run the 12 cells, refine, validate**
 
 ```bash
 cd docs/research/connectors && python3 -m probe.run --connector psyarxiv-osf
 ```
 
-`filter[title]` is a substring match, not relevance ranking — expect low recall and **record that as a finding**, not as poor coverage. Refine and re-validate as in Task 3 Step 8. Expected: `OK`.
+`filter[title]` is a substring match, not relevance ranking — expect low recall and **record that as a finding**, not as poor coverage. Refine and re-validate as in Task 3 Step 7. Expected: `OK`.
 
-- [ ] **Step 8: Write `05-psyarxiv-osf.md`**
+- [ ] **Step 7: Write `05-psyarxiv-osf.md`**
 
 All eight sections. §3 must include the Crossref cross-check from spec §3.5: for each PsyArXiv result carrying a DOI, compare the metadata OSF returns against what Crossref returns for the same DOI, and report how much preprint metadata survives across indexers. §5 must be candid about whether substring filtering can support Fuzzy-to-Fact Phase 1 at all.
 
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add docs/research/connectors/
