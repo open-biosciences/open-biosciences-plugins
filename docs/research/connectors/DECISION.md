@@ -179,19 +179,58 @@ propagate. A hand-edit in the mirror is discarded by the next sync.
 
 Stated plainly, because the alternative is advertising capability that does not exist.
 
-### 5.1 The marketplace description overstates current reach
+### 5.1 APA PsycNET — TESTED 2026-08-15. Not reachable, and the barrier is not authentication.
 
-`psychology-research`'s `plugin.json` promises *"evidence-grounded psychology research …
-with source hierarchy, claim provenance."* `references/source-tiers.yaml` places
-`pubmed.ncbi.nlm.nih.gov`, `cochranelibrary.com` and **`apa.org` at Tier 1**.
+The deferral of PsycNET rested on an assumption ("licensed, no open API") that had never
+been tested. It has now been, and the assumption holds — but for different reasons than
+assumed, and with an important distinction the original framing missed.
 
-**No probed connector reaches APA/PsycINFO-class content.** APA PsycNET was never probed —
-it is a deferred candidate believed licensed with no open API, and that belief was **not
-tested** in this pass. Until it is, `apa.org: 1` describes reach the plugin does not have.
+| Probe | Result |
+|---|---|
+| `psycnet.apa.org/search/results?term=…` | **HTTP 403** |
+| `psycnet.apa.org/api/search` | HTTP 200 — but returns the **Angular SPA shell**, not JSON. Not an API; the app serves `index.html` for unknown routes |
+| `psycnet.apa.org/robots.txt` | **`User-agent: * / Disallow: /`** — only Googlebot, CrossrefEventDataBot, Twitterbot and bingbot are permitted, each to a narrow path list |
+| APA licensing | *"All rights, including for text and data mining, AI training, and similar technologies, are reserved by APA"* |
+| Sanctioned programmatic route | **PsycINFO Data Solutions** — a commercial custom-dataset service for subscribing institutions. Not a query API |
 
-*(Note that credentialed access is not the barrier it was assumed to be — see §2. If
-PsycNET has any programmatic route, it is declarable. Establishing whether it does is
-outstanding work, not a closed question.)*
+**The barrier is not credentials.** §2 establishes that credentialed servers are fully
+declarable (`${VAR}`, `headersHelper`, `userConfig`/`sensitive`), so an API key would have
+been no obstacle. There is **no API to authenticate against**, and automated access is
+disallowed by `robots.txt` and by an explicit reserved-rights statement covering text
+mining and AI training. A subscribing institution is in the same position as an
+unsubscribed one with respect to a query interface.
+
+**PsycNET is therefore removed from the candidate set — not deferred.** Revisit only if
+APA publishes a query API.
+
+### 5.1a The `apa.org: 1` tier entry is defensible; the implied capability is not
+
+The original framing — *"`apa.org: 1` describes reach the plugin does not have"* — was too
+broad. Two different surfaces were being conflated:
+
+| Surface | Reachable? |
+|---|---|
+| **`www.apa.org`** — practice guidelines, policy statements, public pages | **Yes.** No catch-all `robots.txt` disallow; content pages return 200. Reachable today via `~~web` |
+| **`psycnet.apa.org`** — the PsycINFO/PsycArticles bibliographic database | **No.** See above |
+
+So `apa.org: 1` **stands** for APA's own published professional guidance, which is
+legitimately Tier-1 authority and is fetchable now.
+
+**What must be corrected is the implication that PsycINFO-class bibliographic search is
+available.** Recommended `source-tiers.yaml` change, for the delta PR rather than this
+document:
+
+```yaml
+apa.org: 1                 # APA's own published guidance — reachable via ~~web
+psycnet.apa.org: 1         # authority tier is real, but NOT REACHABLE: no query API,
+                           # robots-disallowed, TDM rights reserved. See DECISION.md 5.1
+```
+
+A tier entry for an unreachable source is not automatically wrong — the tier records
+*authority*, not *access*. But a consumer that cannot distinguish "high tier, reachable"
+from "high tier, unreachable" will plan retrievals that can never succeed. That
+distinction belongs in the envelope's reachability metadata or in the tier file's
+comments, and it is a live design question for the Layer-2 program.
 
 ### 5.2 Three venue classes are unresolvable from any connector
 
