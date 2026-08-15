@@ -275,7 +275,9 @@ connector.
 
 1. **Interim binding PR** against AGE-552, applying §4.
 2. **Semantic Scholar keyed re-run** — resolves §1 Tier 2 and §5.4.
-3. **PsycNET reachability check** — resolves §5.1.
+3. ~~PsycNET reachability check~~ — **done 2026-08-15.** Not reachable; removed from the
+   candidate set (§5.1). The follow-on is the `source-tiers.yaml` comment change in §5.1a,
+   which folds into the interim binding PR.
 4. **Layer-2 SpecKit program** — initialise `psychology-mcp` at
    `/home/donbr/open-biosciences/psychology-mcp`, register it in
    `open-biosciences.code-workspace` and the platform README, then one
