@@ -74,7 +74,64 @@ overriding one connector's judgement is worse than a noted borderline.
 
 ---
 
-## 5. Crossref rate limit was initially exceeded
+## 5. C1 as a harness check is invalid for a non-index connector
+
+`RUBRIC.md` states: *"C1 expected `hit` for every connector. A miss means a broken
+client."* **PsyArXiv/OSF returned `miss` on C1 — and the client is not broken.**
+
+Independently verified by the controller with direct `curl` calls outside the harness:
+
+| Request | Result |
+|---|---|
+| `filter[title]=couples` | **73** hits |
+| `filter[title]=couples therapy` | **0** |
+| `filter[title]=<full C1 query>` | **0** |
+
+`filter[title]` is a contiguous case-insensitive **substring** match on the title
+field. No multi-word natural-language query occurs verbatim in a title, so every
+benchmark query misses regardless of what PsyArXiv actually holds.
+
+**The rubric's premise was wrong**, not the agent's result. C1 validates a harness only
+when the connector offers relevance-ranked search. For a retrieval-by-identifier or
+substring API, a C1 miss is a *search-surface finding*, not a client fault.
+
+**Consequence for Task 8:** do not report OSF's 0/12 as "worst coverage". It did not
+lose a coverage contest; it was never in one. Report it as a connector whose search
+surface cannot express the benchmark at all — which is the actual, and more useful,
+finding.
+
+**Consequence for the rubric** (recorded, not retro-applied): C1's diagnostic power is
+conditional on the connector being an index.
+
+---
+
+## 6. Preprint DOIs may carry the PUBLISHED article's registered type
+
+Reported by the PsyArXiv/OSF agent, **partially corroborated** by the controller.
+
+Agent's finding: on a *published* PsyArXiv preprint, `attributes.doi` holds the
+**published journal article's** DOI rather than an OSF-minted preprint DOI
+(`preprint_doi_created` was null). Crossref therefore classifies all five checked DOIs
+as `journal-article`, not `posted-content`. Two of the five carry a
+`relation.has-preprint` back-reference to the real `10.31234/osf.io/...` DOI, proving
+the records are distinct.
+
+Controller spot-check: sampled five PsyArXiv records independently and found
+`doi: None` and `preprint_doi_created: None` on all five — so **many OSF records carry
+no DOI at all** (which is why all 12 cells are `venue_class: unverified`). This
+corroborates the DOI-sparsity half. The claim about what a *populated* DOI points at is
+the agent's, from five records; not independently re-verified here.
+
+**Consequence for Task 9 — this is first-order.** The proposed envelope resolution
+order is *"DOI with registered metadata → classify from the item's own registered
+type."* If a preprint record's DOI resolves to the published article, that rule
+classifies a preprint as `peer-reviewed-article`. The envelope needs either a
+provenance-beats-DOI rule for repository-sourced records, or an explicit
+`relation.has-preprint` check. Do not let §6.2 ship without addressing it.
+
+---
+
+## 7. Crossref rate limit was initially exceeded
 
 The Crossref agent found, from live `x-rate-limit-*` response headers, that the
 adapter's initial `RATE = 0.2` (5 req/s) was above Crossref's declared 3 req/s cap,
