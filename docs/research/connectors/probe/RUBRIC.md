@@ -12,6 +12,17 @@ Decide from the item's own registered metadata, never from the URL or the index
 that surfaced it. An index is a lookup vehicle, not a peer-review warrant
 (spec §6.1).
 
+**`venue_class` and `result` are orthogonal.** `result` records whether the connector
+found the thing the query asked for; `venue_class` records what *kind* of artefact the
+top result is, **classified regardless of relevance**. A `miss` whose top result is a
+well-formed but off-topic journal article is `result: miss` + `venue_class:
+peer-reviewed-article` + a note saying why it missed. Do not collapse a miss to
+`unverified` merely because it missed — that would discard the finding that the
+connector returned classifiable metadata. `unverified` means *no DOI or no registered
+type to classify from*, which is a statement about the connector's metadata, not about
+relevance. A miss returning genuinely zero results is `top_result: null`,
+`venue_class: unverified`.
+
 | Observed | Class |
 |---|---|
 | Registered type is a journal article in a named journal | `peer-reviewed-article` |
