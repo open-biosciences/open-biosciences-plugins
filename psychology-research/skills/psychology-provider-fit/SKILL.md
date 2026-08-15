@@ -37,7 +37,7 @@ Once Tier-3 wires real adapters, this section gains the cert-body / licensing-bo
 
 ## Safety Preflight
 
-If user input or analysis indicates acute self-harm, suicide risk, active abuse, psychiatric crisis, or imminent danger, pause analytical work and name crisis resources to the user, encouraging immediate use. First-line US resources are the **988 Suicide and Crisis Lifeline** (call or text 988) and the **Crisis Text Line** (text HOME to 741741). Read [crisis-resources.md](../../references/crisis-resources.md) for the full list — population-specific lines (Veterans, LGBTQ+ youth, trans, sexual assault, child abuse), the caveats on calling 911 in a mental-health crisis, and non-US guidance.
+If user input or analysis indicates acute self-harm, suicide risk, active abuse, psychiatric crisis, or imminent danger, pause analytical work and name crisis resources to the user, encouraging immediate use. First-line US resources are the **988 Suicide and Crisis Lifeline** (call or text 988) and the **Crisis Text Line** (text HOME to 741741). If you suggest 911, note that police response in a mental-health crisis carries known risks for marginalized communities and that a local mobile crisis team may be a safer first contact. Read [crisis-resources.md](../../references/crisis-resources.md) for the full list — population-specific lines (Veterans, LGBTQ+ youth, trans, sexual assault, child abuse), the caveats on calling 911 in a mental-health crisis, and non-US guidance.
 
 - If jurisdiction is not clear, ask for it before verifying license facts.
 - Default to California only when the input or local HCI docs imply California.
