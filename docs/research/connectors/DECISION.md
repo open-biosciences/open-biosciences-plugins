@@ -38,18 +38,27 @@ despite that being part of its candidate rationale — unconfirmed by this bench
 
 ### Tier 2 — conditional, needs a decision first
 
-| | Verdict | Blocking question |
+| | Verdict | Note |
 |---|---|---|
-| **Semantic Scholar** | **conditional wrap** | **Coverage was never measured.** Sustained HTTP 429 from the unauthenticated shared pool, reproduced independently. It is a **credentialed** connector; the other four completed keyless. |
+| **Semantic Scholar** | **wrap** — condition discharged | Key issued 2026-08-15; frozen benchmark re-run authenticated. **5 hit / 4 partial / 1 miss**, second only to Crossref. Remains the only **credentialed** connector — the other four completed keyless. |
 
 Its metadata is the richest in the candidate set — DOI + PMID + CorpusId + ISSN in one
 response, plus the only multi-prefix strict lookup (`DOI:`, `CorpusId:`, `PMID:`,
 `ARXIV:`), which is exactly what the §4.2 "type but no DOI" records need.
 
-**Recommended action before it enters the roster: obtain an API key and re-run the frozen
-benchmark.** The twelve queries are unchanged, so a keyed run drops directly into the
-existing matrix. Committing it on metadata quality alone would place the plugin's own
-declared binding in the roster with no coverage evidence.
+**Done.** The key arrived, the frozen benchmark was re-run, and the result promotes it
+from conditional to committed — but to **Tier 1, not Tier 0**. Tier 0 exists because the
+envelope needs a classifier (Crossref) and a retraction clearer (OpenAlex). Semantic
+Scholar supplies **neither**: `publisher` 0/12 and `retraction_status` 0/12. Excellent
+coverage does not substitute for a Tier-0 responsibility.
+
+**What earns it Tier 1 is unique reach, not rank.** It is the only connector to answer
+Q3 (AEDP transformance, returning Fosha's own 2011 paper), and the only route to records
+carrying no DOI — 3 of 12 top results, reachable solely via `CorpusId`.
+
+**And it cannot classify its own best result.** The Q3 record carries no DOI, no type and
+no venue, so the hit that justifies this connector arrives as `venue_class: unverified`,
+`classification_basis: none`.
 
 ### Not in the roster
 
@@ -240,16 +249,24 @@ four vocabularies**. `institute-publication` is the consequential one: it is def
 IFS / Gottman / PACT tier in `source-tiers.yaml`. That tier has **no connector route**
 and needs a Layer-4 publisher heuristic.
 
-### 5.3 One query no connector answers
+### 5.3 ~~One query no connector answers~~ — CLOSED
 
-**Q3 — AEDP transformance.** Crossref's best is a `partial` on an APA PsycTherapy
-streaming-video catalogue entry typed `dataset`. Nothing in the candidate set reaches
-AEDP theory literature. No envelope design fixes a retrieval gap.
+**Q3 — AEDP transformance is answerable after all.** The keyed Semantic Scholar re-run
+returned Fosha's own *AEDP: Transformance In Action* (2011). Crossref's best remained a
+`partial` on an APA PsycTherapy streaming-video catalogue entry typed `dataset`.
 
-### 5.4 Semantic Scholar's coverage is unknown, not poor
+The correction is worth more than the win: Q3 was the sharpest evidence that
+modality-theory literature was structurally unreachable. It was reachable — by the one
+connector that could not be measured until a key was issued. **A capability gap and a
+measurement gap looked identical from the outside**, and only the second one was real.
 
-Zero coverage cells recorded. It must never be rendered `0/10`. Its roster position is
-provisional pending a keyed re-run.
+### 5.4 ~~Semantic Scholar's coverage is unknown~~ — RESOLVED
+
+Measured at 5/4/1 on the keyed re-run. What remains is not uncertainty but cost: it is
+the only roster connector requiring credentials, its granted rate is **1 req/s cumulative
+across all endpoints** (MEASURED tighter than nominal — a 429 at 1.3s spacing, 2.5s needed
+for sustained use), and its licence **requires attribution** in any published material,
+an obligation that propagates to every downstream consumer of a grounded claim.
 
 ### 5.5 Partial coverage, named rather than averaged
 

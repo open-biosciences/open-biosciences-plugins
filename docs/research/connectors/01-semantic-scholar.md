@@ -1,18 +1,17 @@
 # 01 — Semantic Scholar
 
 **Connector:** `semantic-scholar` · **API:** Semantic Scholar Academic Graph
-**Probed:** 2026-08-15 · **Status: §4 coverage BLOCKED — see below**
+**Probed:** 2026-08-15 unauthenticated (blocked) · **re-probed 2026-08-15 authenticated — §4 now MEASURED**
 
-> **Read this first.** Zero of the twelve benchmark queries were fetched through the
-> harness. The unauthenticated API returned sustained HTTP 429 throughout the probe
-> window. `probe/results/semantic-scholar.json` is therefore `[]` — an empty array, not
-> twelve zero-result rows. Nothing in this dossier describes a response that was not
-> received.
+> **Read this first — this dossier was re-run.** The original pass fetched **zero** of
+> twelve queries: the unauthenticated shared pool returned sustained HTTP 429 across three
+> observation windows spanning ~1.5 hours. An API key was issued on 2026-08-15 and the
+> **frozen, unchanged** benchmark was re-run authenticated. All twelve cells are now
+> measured.
 >
-> One genuine C1 response **was** captured earlier in the window and is preserved as
-> `probe/fixtures/semantic-scholar-C1.json`. Sections 1, 2, 3, 5, 6, 7 and 8 are written
-> from that payload plus published documentation. Section 4 is not written, because it
-> cannot be.
+> The unauthenticated findings are retained rather than overwritten — they are the
+> evidence for this connector being **credentialed rather than keyless**, which is a
+> roster-level distinction the other three keyless connectors do not carry.
 
 ---
 
@@ -39,6 +38,9 @@ Observed 2026-08-15, from two independent vantage points:
 | Controller, isolated single call | HTTP 429 |
 | Controller, 4 calls spaced 25s over 75s | HTTP 429 × 4 |
 | Controller, 3 calls spaced 15s — **~1.5 h later, separate window** | HTTP 429 × 3 |
+| **Authenticated**, single call | **HTTP 200** |
+| **Authenticated**, 12-cell run at 1.2s spacing | **12 × HTTP 200** |
+| **Authenticated**, detail pass at 1.3s spacing | **429 on the 2nd call** — see below |
 | Harness run, `RATE = 10.0s` + retries at 20s / 40s / 70s | 429 on **cell 1**, all retries exhausted, run aborted |
 
 The harness spent 130 seconds of deliberate backoff on the first query alone and never
@@ -60,12 +62,16 @@ A wrapper cannot be built against a tier whose availability is this variable.
 Europe PMC each completed all twelve queries keyless in the same session. This one could
 not complete one.
 
-### Terms and attribution
+### Terms and attribution — VERIFIED on key issuance
 
-Not verified. The published API terms were not retrieved during this probe and no
-attribution requirement is asserted here. This must be established before any binding
-decision is finalised — the sibling PubMed connector already carries a DOI-link
-attribution obligation, so per-source obligations should be assumed until checked.
+**Attribution is a licence obligation, not a courtesy.** The issuing terms require
+attribution to Semantic Scholar, or citation of *The Semantic Scholar Open Data
+Platform*, in any published material using its results.
+
+This propagates: a dissertation or report grounded through this connector inherits the
+obligation. It is now a Required Pattern in the `psychology-mcp` constitution (v1.1.0)
+rather than a client-level detail, because the consumer of a grounded claim — not the
+client that fetched it — is where the obligation lands.
 
 ## 2. Mechanics
 
@@ -134,43 +140,68 @@ Under the design's current resolution order — *no DOI → `unverified`* — th
 untierable despite the API having told us what they are. Europe PMC exhibits the same
 pattern independently, so this is a recurring class, not a per-connector quirk.
 
-## 4. Measured coverage — BLOCKED, NOT MEASURED
+## 4. Measured coverage — 5 hit / 4 partial / 1 miss
 
-**Coverage cells recorded: 0 of 10.** `probe/results/semantic-scholar.json` contains
-**one** record — C1, the positive control — which per `README.md` is scored separately
-and **contributes nothing to any coverage figure**.
+**All 12 cells fetched authenticated, 2026-08-15.** Frozen benchmark, unchanged.
 
-Per-query status is **not uniform**, and the distinction matters — "attempted and
-throttled" is a different claim from "never attempted". Full receipt:
-`probe/results/semantic-scholar-fetch-log.json`.
+| Query | Result | n | Top result | venue_class |
+|---|---|---:|---|---|
+| Q1 IFS | **hit** | 49 | *Internal Family Systems Therapy* — Blatner | peer-reviewed-article |
+| Q2 Somatic/Sensorimotor | partial | 5 | *Regulating Trauma Through the Body* (narrative review) | peer-reviewed-article |
+| Q3 AEDP transformance | **hit** | 110 | ***AEDP: Transformance In Action* — D. Fosha, 2011** | **unverified** |
+| Q4 Heroine's Journey | partial | 5 | Heroine's Journey in Italian TV serials | unverified |
+| Q5 Marston DISC 1928 | partial | 1 | *Comparative Study of MBTI and DISC* | unverified |
+| Q6 secure base, established dyads | partial | 116 | Secure base/safe haven in adult **child-parent** dyads | peer-reviewed-article |
+| Q7 Basson responsive desire | **hit** | 235 | Basson, *Women's sexual desire — disordered or misunderstood?* | peer-reviewed-article |
+| Q8 novelty + aesthetic engagement | miss | 7 | Lymphangioleiomyomatosis physical activity | peer-reviewed-article |
+| Q9 measurement invariance | **hit** | 40,856 | DERS-SF psychometric validation | peer-reviewed-article |
+| Q10 working memory / Gf | **hit** | 2,117 | Unsworth et al. | peer-reviewed-article |
+| C1 *positive control* | **hit** | 16,523 | 'Hold me Tight' EFT RCT | peer-reviewed-article |
+| C2 *negative control* | miss ✓ | 1 | Mouse Nrf2 SUMO-binding study | unverified |
 
-| Query | Status | Detail |
-|---|---|---|
-| C1 | **fetched and recorded** | Genuine 200 at 21:15:38Z (`total: 16523`), top result on-target. Recorded as a cell, `result: hit`. It is the positive control, so it is scored separately and adds nothing to coverage — but it is real data and is not discarded |
-| Q1 | attempted, **429** | 1 initial + 3 retries (20s/40s/70s) exhausted |
-| Q2 | attempted, **429** | 1 initial + 3 retries exhausted |
-| Q3 | interrupted | Request in flight when the run was stopped; no partial recorded |
-| Q4–Q10, C2 | **not attempted** | Run stopped before reaching them |
+**Second-best measured coverage in the candidate set**, behind Crossref's 8/2/0.
 
-Approximately 14 real HTTP calls were made against the API across all attempts,
-including retries and fixture captures. A separate controller-run harness invocation
-independently aborted on Q1 after the same 130s of backoff, and four isolated controller
-calls spaced over 75s all returned 429.
+### 4.1 Q3 — the gap no other connector closed
 
-No coverage figure is reported, estimated, or inferred. This connector must not appear
-in the coverage matrix as `0/10` — that would read as measured absence of coverage rather
-than absence of measurement, and would rank the plugin's own designated non-PubMed source
-last on evidence that does not exist. Render it as **`not measured (429)`**.
+`00-coverage-matrix.md` §9 recorded *"AEDP / transformance (Q3) — no hit anywhere. The one
+query the entire candidate set fails."* **Semantic Scholar returned Fosha's own paper,
+*AEDP: Transformance In Action* (2011).**
 
-**To complete this section:** obtain an API key, set it as a request header in the
-adapter, and re-run `python3 -m probe.run --connector semantic-scholar`. The twelve
-queries are frozen and unchanged, so a later run is directly comparable with the other
-four connectors.
+That finding is now superseded, and the correction matters more than the win: Q3 was the
+sharpest evidence that modality-theory literature was unreachable. It was reachable — by
+the one connector we could not measure.
 
-The one datum that exists: the C1 query returned `total: 16523` with a well-targeted top
-result (*"Effectiveness of the 'Hold me Tight' Relationship Enhancement Program"*, 2018,
-*Family Process*, DOI `10.1111/famp.12305`) at the time the fixture was captured. That is
-a single observation, not a scored cell, and it is not counted anywhere.
+### 4.2 The Q3 record carries neither a DOI nor a type
+
+The single most valuable result in this run resolves to `venue_class: unverified`,
+`classification_basis: none`. Semantic Scholar returned a `CorpusId` and nothing else —
+no DOI, no `publicationTypes`, no venue.
+
+**So the connector that alone can find AEDP theory cannot say what kind of thing it
+found.** A consumer requiring `registered` basis would discard it; one accepting
+`index-asserted` still gets nothing, because there is no asserted type either. This is
+the strongest concrete argument in the whole benchmark for `classification_basis` being a
+distinct field rather than collapsed into `venue_class`.
+
+### 4.3 Partials are all real discriminations, not near-misses
+
+- **Q6** returned secure-base/safe-haven research in adult **child-parent** dyads. Q6 is
+  scoped to *established adult romantic* dyads precisely to preserve that distinction.
+- **Q5** found the DISC model but via an MBTI comparison, not Marston's 1928 primary.
+- **Q4** found the Heroine's Journey applied to Italian television serials, not clinical
+  or narrative-psychology use.
+
+Each is the query doing its job.
+
+### 4.4 Authenticated rate limit is tighter than nominal
+
+The granted limit is **1 request/second cumulative across all endpoints**, with the
+issuer's instruction to pace *below* it. MEASURED: the 12-cell run at 1.2s spacing
+completed cleanly, but a follow-up detail pass at **1.3s spacing drew a 429 on its second
+call**. Sustained sequential use needed **2.5s**.
+
+That is a real constraint on any gateway built here, independent of coverage — roughly
+24 works/minute, and cumulative across endpoints means search and fetch share the budget.
 
 ## 5. Fuzzy-to-Fact feasibility (ADR-001 §3)
 
@@ -214,36 +245,51 @@ All are unaffiliated third parties. Binding one would place a community-maintain
 in the path of the plugin's primary non-PubMed literature route — and would still not
 solve the rate limit, which belongs to the upstream API rather than to any wrapper.
 
-## 8. Recommendation — CONDITIONAL WRAP, pending a keyed re-run
+## 8. Recommendation — WRAP. Tier 1, not Tier 0.
 
-**Wrap, conditional on obtaining an API key. Do not bind a third-party server.**
+**Wrap in `psychology-mcp` as a credentialed connector. Do not bind a third-party server.**
 
-Reasoning:
+The conditional in the earlier revision is discharged: coverage is now measured at
+**5 hit / 4 partial / 1 miss**, second only to Crossref.
 
-1. **Metadata quality is best-in-class** (§3). The DOI + PMID + CorpusId + ISSN crosswalk
-   in one response directly serves ADR-001 §6 triangulation, and `fields` gives native
-   slim mode.
-2. **The plugin already names Semantic Scholar** as its intended non-PubMed literature
-   binding, in `CONNECTORS.md`, `SKILL.md` (twice) and `modality-canon.md`. It is the
-   designated source for exactly the modality and book-canon literature the other
-   connectors were weakest on.
-3. **Binding a community server helps nothing** — the constraint is upstream.
+### Why Tier 1 rather than Tier 0
 
-**The honest caveat, and it is load-bearing: coverage was never measured.** This
-recommendation rests on metadata quality and on the plugin's own declared intent — *not*
-on evidence that Semantic Scholar answers the twelve benchmark queries better than
-OpenAlex or Crossref. That evidence does not exist yet. It must not be presented as
-though it does.
+Tier 0 is Crossref + OpenAlex because the envelope is not implementable without both —
+Crossref classifies, OpenAlex clears retraction. **Semantic Scholar does neither.** It
+supplies no `publisher` (0/12) and no retraction signal (0/12), so it cannot carry either
+Tier-0 responsibility. Its coverage is excellent and its unique reach is real, but
+coverage is not what Tier 0 is for.
+
+### What it uniquely brings
+
+1. **Q3 — AEDP transformance.** The only connector in the candidate set to answer it,
+   returning Fosha's own *AEDP: Transformance In Action* (2011). This was recorded as the
+   one query the entire set failed.
+2. **Records with no DOI.** 3 of 12 top results carry only a `CorpusId`. Its multi-prefix
+   strict lookup (`CorpusId:`, `PMID:`, `ARXIV:`, `MAG:`) is the only route to them.
+3. **Identifier crosswalk.** DOI + PMID + PMCID + CorpusId + ISSN in one response.
+
+### The cost, stated plainly
+
+- **Credentialed.** The other three roster connectors completed keyless. This one is
+  unusable without a key: zero of twelve across three unauthenticated windows.
+- **1 req/s cumulative across all endpoints** — and MEASURED tighter than nominal, with a
+  429 at 1.3s spacing and 2.5s needed for sustained use. Roughly 24 works/minute, shared
+  between search and fetch. That constrains any gateway built on it regardless of
+  coverage, and §6b's caching guidance is the mitigation: its contributions are all
+  low-volatility and cache indefinitely.
+- **Attribution is a licence obligation** (§1) that propagates to every downstream
+  consumer of a grounded claim.
+- **Cannot classify its own best result.** Q3 returned no DOI, no type, no venue — so the
+  hit that justifies this connector arrives as `venue_class: unverified`,
+  `classification_basis: none`.
 
 ### Residual risks
 
-- **Coverage unmeasured** — the recommendation is provisional until a keyed re-run fills §4.
-- **Credentialed, unlike its peers** — three other connectors work keyless. A key imposes
-  acquisition, storage and rotation cost on every consumer. Declarable via `${VAR}` header
-  expansion, `headersHelper`, or plugin `userConfig` with `sensitive: true`, but it is a
-  different consumer contract and belongs in the scope-boundary decision.
-- **Even keyed, 100 req/5 min is modest** — fine for interactive research, thin for batch.
-- **No publisher, no retraction status** — both must come from elsewhere (Crossref supplies
-  both).
-- **Terms of use unverified** — attribution obligations unknown.
-- **Strict lookup unverified** — §5 rests on documentation.
+- **`publisher` never supplied** — 0/12, confirming the fixture. Venue classification
+  depending on publisher must come from Crossref or OpenAlex.
+- **No retraction signal** — a record sourced only from S2 is `retraction_status: unknown`,
+  never `not-retracted`.
+- **Batch endpoint still unverified.** `/paper/batch` is documented; the 1 req/s ceiling
+  makes verifying it worthwhile, since batch is the only way to beat the per-call budget.
+- **Strict lookup still unverified live** — §5 rests on documentation.

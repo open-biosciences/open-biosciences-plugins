@@ -1,6 +1,185 @@
 [
   {
     "connector": "semantic-scholar",
+    "query_id": "Q1",
+    "result": "hit",
+    "n_results": 49,
+    "top_result": "Internal Family Systems Therapy \u2014 Adam Blatner \u2014 2026",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "issn",
+      "oa_status",
+      "semantic_scholar_id",
+      "type",
+      "venue"
+    ],
+    "notes": "Article titled 'Internal Family Systems Therapy' in a peer-reviewed psychotherapy journal. Same standard by which Crossref's IFS book chapter scored hit.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q2",
+    "result": "partial",
+    "n_results": 5,
+    "top_result": "Regulating Trauma Through the Body: A Narrative Review of Somatic-Based Interventions \u2014 Federica Visco-Comandini, Giulia Marselli, Andrea Gobbo \u2014 2026",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "issn",
+      "oa_status",
+      "semantic_scholar_id",
+      "type",
+      "venue"
+    ],
+    "notes": "Narrative review of somatic-based trauma interventions - correct subject axis, but does not name Somatic Experiencing/Sensorimotor or the window-of-tolerance construct specifically.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q3",
+    "result": "hit",
+    "n_results": 110,
+    "top_result": "AEDP: Transformance In Action \u2014 D. Fosha \u2014 2011",
+    "venue_class": "unverified",
+    "doi_present": false,
+    "metadata_completeness": [
+      "semantic_scholar_id"
+    ],
+    "notes": "Fosha's own 'AEDP: Transformance In Action' (2011) - the construct exactly. NO DOI and no registered type returned, only a CorpusId, so venue_class is unverified on metadata grounds despite the hit.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q4",
+    "result": "partial",
+    "n_results": 5,
+    "top_result": "Io viaggio da sola. Modelli di Heroine\u2019s Journey nella nuova serialit\u00e0 televisiva \u2014 Luca Bandirali \u2014 2017",
+    "venue_class": "unverified",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "semantic_scholar_id"
+    ],
+    "notes": "Heroine's Journey applied to Italian television serials, not narrative psychology or clinical use. DOI present but S2 returned no type, so unclassifiable from this payload alone.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q5",
+    "result": "partial",
+    "n_results": 1,
+    "top_result": "Comparative Study of MBTI and DISC \u2014 P. Patra \u2014 2013",
+    "venue_class": "unverified",
+    "doi_present": false,
+    "metadata_completeness": [
+      "semantic_scholar_id"
+    ],
+    "notes": "Addresses the DISC model but is a MBTI/DISC comparison, not Marston's 1928 primary or the situational-vs-fixed-trait question. No DOI, no type.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q6",
+    "result": "partial",
+    "n_results": 116,
+    "top_result": "Attachment-Based Support and Depression in Adult Child-Parent Dyads: The Role of Secure Base and Safe Haven \u2014 Ella Carasso, D. Segel\u2010Karpas, Shira Barzilay \u2014 2025",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "issn",
+      "pmcid",
+      "semantic_scholar_id",
+      "type",
+      "venue"
+    ],
+    "notes": "Secure base and safe haven measured in adult CHILD-PARENT dyads, not established adult romantic dyads. Wrong population - exactly the discrimination Q6 was scoped to preserve.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q7",
+    "result": "hit",
+    "n_results": 235,
+    "top_result": "Women's sexual desire--disordered or misunderstood? \u2014 R. Basson \u2014 2002",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "issn",
+      "oa_status",
+      "pmid",
+      "semantic_scholar_id",
+      "type",
+      "venue"
+    ],
+    "notes": "Basson's own paper on responsive vs disordered female desire, J Sex & Marital Therapy 2002.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q8",
+    "result": "miss",
+    "n_results": 7,
+    "top_result": "B42-01 Active Community Engagement Increases Self-reported and Objectively Measured Physical Activity in Lymphangioleiomyomatosis \u2014 C. E. Child, F. Mohamedali, L. A. Ho \u2014 2026",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "issn",
+      "semantic_scholar_id",
+      "type",
+      "venue"
+    ],
+    "notes": "Lymphangioleiomyomatosis physical-activity abstract - token match on activity/engagement. Well-formed record, entirely wrong literature.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q9",
+    "result": "hit",
+    "n_results": 40856,
+    "top_result": "Difficulties in Emotion Regulation Scale-Short Form (DERS-SF): Psychometric Validation and Measurement Invariance Testing in a Sample of Urban Indian Adolescents \u2014 N. A. Bhat, B. Roopesh, B. Bhaskarapillai \u2014 2024",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "issn",
+      "oa_status",
+      "pmcid",
+      "pmid",
+      "semantic_scholar_id",
+      "type",
+      "venue"
+    ],
+    "notes": "DERS-SF psychometric validation and measurement invariance testing - directly the construct.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "Q10",
+    "result": "hit",
+    "n_results": 2117,
+    "top_result": "There\u2019s more to the working memory capacity\u2014fluid intelligence relationship than just secondary memory \u2014 N. Unsworth, Gene A. Brewer, Gregory J. Spillers \u2014 2009",
+    "venue_class": "peer-reviewed-article",
+    "doi_present": true,
+    "metadata_completeness": [
+      "doi",
+      "issn",
+      "oa_status",
+      "pmid",
+      "semantic_scholar_id",
+      "type",
+      "venue"
+    ],
+    "notes": "Unsworth et al. on the working-memory-capacity / fluid-intelligence relationship - directly on topic.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
     "query_id": "C1",
     "result": "hit",
     "n_results": 16523,
@@ -9,14 +188,28 @@
     "doi_present": true,
     "metadata_completeness": [
       "doi",
+      "issn",
+      "oa_status",
       "pmid",
       "semantic_scholar_id",
-      "issn",
       "type",
-      "venue",
-      "oa_status"
+      "venue"
     ],
-    "notes": "Positive control. Genuinely fetched (HTTP 200) at 2026-08-15T21:15:38Z before the unauthenticated pool saturated. Scored separately per README; contributes NOTHING to coverage. Q1-Q10 and C2 were never recorded - see 01-semantic-scholar.md section 4 and semantic-scholar-fetch-log.json. type=JournalArticle+ClinicalTrial in Family Process with a registered DOI. publisher is null, as on every S2 record.",
-    "retrieved_at": "2026-08-15T21:15:38Z"
+    "notes": "Positive control passes. 'Hold me Tight' EFT RCT, Family Process, typed JournalArticle+ClinicalTrial.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
+  },
+  {
+    "connector": "semantic-scholar",
+    "query_id": "C2",
+    "result": "miss",
+    "n_results": 1,
+    "top_result": "SUMO-binding Sites in Mouse Nrf 2 : Impact on the Transcriptional Activity of Nrf 2 \u2014 Y. Yim, Katherine M. Betke, W. McDonald \u2014 2016",
+    "venue_class": "unverified",
+    "doi_present": false,
+    "metadata_completeness": [
+      "semantic_scholar_id"
+    ],
+    "notes": "token search returned adjacent papers; no construct match. Top result is a mouse Nrf2 SUMO-binding study - no relation to the fabricated construct or its fabricated citation. Negative control PASSES.",
+    "retrieved_at": "2026-08-15T23:20:00Z"
   }
 ]
