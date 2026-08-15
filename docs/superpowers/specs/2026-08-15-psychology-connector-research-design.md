@@ -1,63 +1,85 @@
-# Psychology-research connector selection and source-tier redesign
+# psychology-mcp Layer-1 discovery: connector research and the literature envelope
 
 **Date:** 2026-08-15
-**Status:** Draft — awaiting maintainer review
-**Repo:** `open-biosciences-plugins`
-**Deliverable location:** `docs/research/connectors/`
+**Status:** Draft (rev 2) — awaiting maintainer review
+**Layer:** 1 (SpecKit discovery) — produces the `research.md` inputs for a Layer-2 build
+**Deliverable location:** `docs/research/connectors/` (relocates to `psychology-mcp` when that repo exists — see §3.4)
 
-**Tickets:** unblocks [AGE-552]; answers question 3 of [AGE-548]; consumer-side context in [AGE-542], [AGE-559], [AGE-560]; named follow-on to [AGE-554].
+**Tickets:** unblocks [AGE-552]; answers question 3 of [AGE-548]; consumer-side context in [AGE-542], [AGE-559], [AGE-560]; informs [AGE-554].
+
+> **Revision note.** Rev 1 scoped this effort to the plugin layer — "which URLs go in `psychology-research/.mcp.json`." That was the wrong layer. `bio-research` declares `biosciences-mcp` and `biosciences-mcp-edge`, which are **first-party servers built by this program**, not third-party endpoints. `psychology-research/.mcp.json` is empty because psychology has **no Layer-2 implementation to point at**. Rev 2 retargets the same research at its correct consumer. Rev 1's four factual errors are listed in Appendix C.
 
 ---
 
 ## 1. Problem
 
-`psychology-research` ships `.mcp.json` as `{"mcpServers": {}}` — unchanged across versions 0.1.0, 0.2.0, and 0.2.1 — and `skills/psychology-evidence-builder/SKILL.md` declares `bindings: literature: []`. The plugin therefore has no literature connector. Literature retrieval falls through to `~~web` and is tier-capped below `VERIFIED`.
+`psychology-research` ships `.mcp.json` as `{"mcpServers": {}}` — unchanged across 0.1.0, 0.2.0, and 0.2.1 — and `skills/psychology-evidence-builder/SKILL.md` declares `bindings: literature: []`. Literature retrieval falls through to `~~web` and is tier-capped below `VERIFIED`.
 
-This is documented as deliberate (`CONNECTORS.md`: *"Tier-1a ships with `mcpServers: {}`"*), and the skills degrade honestly. The defect is not dishonesty; it is that the Tier-2 population step has never been executed, and that an empty `mcpServers` object reads as *"configured with zero servers"* rather than *"no connector layer."*
-
-The cost is now measured rather than hypothesised. On 2026-08-14 a consumer run bound a PubMed MCP server in-session and executed the evidence-builder procedure. Six research questions returned `UNRESOLVED`, and the run's own diagnosis was explicit:
+The cost is measured, not hypothesised. On 2026-08-14 a consumer run bound a PubMed MCP server in-session and executed the evidence-builder procedure. Six research questions returned `UNRESOLVED`, and the run's own diagnosis was explicit:
 
 > These six are a **binding limitation, not an absence of literature.** … for modality theory, qualitative practice literature, or book-form canon, prefer Semantic Scholar or state the paradigm fit. No Semantic Scholar connector is bound in this session, and PubMed's own scope note excludes non-medical psychology.
 
-A second, independent problem compounds it. `references/source-tiers.yaml` is a flat `domain → integer` map of 31 entries. `source_tiers_loader.lookup_tier()` returns `None` on a miss and `validators/source_tier_minimum.py` **skips any source it cannot tier**. A single real run cited 25 domains absent from the map. Adding index-type connectors to that model makes it worse, not better: `api.openalex.org: 1` would tier a consumer-media blog post as peer-reviewed on the grounds that OpenAlex indexed it.
+**The underlying cause is structural.** The life-sciences half of the platform has a complete stack: SpecKit discovery produced 13 API specifications, which became 12 FastMCP servers plus a gateway in `biosciences-mcp`, which the `bio-research` plugin declares and its skills consume. The psychology half has Layers 1, 3, and 4 — governance intent, a plugin manifest, and four skills — and nothing at Layer 2.
 
-These are one problem. The domain map exists **because web-search results carry no metadata**. Connectors are what supply metadata. Selecting connectors and fixing the tier model are therefore a single change, sequenced.
+A second problem compounds it, and rev 1 placed it in the wrong layer too. `references/source-tiers.yaml` is a flat `domain → integer` map of 31 entries; `lookup_tier()` returns `None` on a miss and `validators/source_tier_minimum.py` **skips any source it cannot tier**. One real run cited 25 domains absent from the map. The plugin is scraping tier signal out of URL strings because nothing upstream hands it structured bibliographic metadata. Under ADR-001 that normalization is a **Layer-2 responsibility** — the literature analog of the Agentic Biolink `cross_references` mandate.
 
-## 2. Architectural framing: skills vs. connectors
+These are one problem: **psychology has no server layer, so the plugin improvises metadata it should be given.**
 
-`psychology-research` is a **general-purpose domain pack** — the behavioural, cognitive, clinical, and social-science counterpart to `bio-research`. It is not a relationship-assessment tool.
+## 2. Where this sits in the platform
 
-| Layer | Nature | Examples | Responsibility |
-|---|---|---|---|
-| **Skills** | Specialised consumers | `relational-vibrancy`, future psychometric / cognitive / organisational workflows | Methodology, rubrics, multi-lens synthesis, application-specific output |
-| **Connectors** | General substrate | OpenAlex, Semantic Scholar, Crossref, Europe PMC, PsyArXiv/OSF, PubMed | Literature search, DOI resolution, venue classification, citation metadata, retraction verification |
+```
+Layer 1  SpecKit discovery      ADRs 001–006 · research.md → spec.md → plan.md → tasks.md
+              ↓                  ← THIS SPEC
+Layer 2  FastMCP implementation biosciences-mcp (12 servers + gateway) · psychology-mcp (MISSING)
+              ↓                  deployed to fastmcp.app
+Layer 3  Plugin manifest        open-biosciences-plugins/*/.mcp.json → gateway URL
+              ↓
+Layer 4  Skills                 bio-research/* · psychology-research/* · relational-vibrancy (external consumer)
+```
 
-Two consequences bind this specification:
+`lifesciences-research` was Layer 1 before the org migration; it became `biosciences-mcp` + `biosciences-program`. Its `research.md` artifacts are the template this specification follows.
 
-1. **Connectors are unaware of skills.** A connector is designed, evaluated, and tiered purely as a general scholarly data source. It does not know whether it is serving a relational assessment, a scale-validation review, or a cognitive-neuroscience agent.
-2. **`relational-vibrancy` is a consumer, not the boundary.** It supplied the stress test and the initial gap list. It does not define the requirement. The design must not over-fit to vibrancy terminology, dyadic attachment, or canon-specific structures.
+### 2.1 Governing ADRs
 
-The benchmark suite in §4 is written to this standard: it is a general psychology benchmark that happens to have been seeded by a vibrancy run, not a set of vibrancy queries.
+Read from `biosciences-mcp/docs/adr/accepted/`. A `psychology-mcp` inherits these; where an ADR is biomedical-specific, the psychology adaptation is stated.
+
+| ADR | Mandate | Adaptation for literature |
+|---|---|---|
+| **001 §2** Hybrid client | Strict async `httpx` for modern APIs; `run_in_executor` only for legacy sync SDKs, which **must** then expose batch tools | All five candidates are REST/JSON — expect strict async throughout, no executor exception |
+| **001 §3** Fuzzy-to-Fact | Phase 1 accepts natural language → ranked candidates; Phase 2 accepts **only** resolved CURIEs; raw string to a strict tool returns `UNRESOLVED_ENTITY` | `search_works(query)` → ranked candidates; `get_work(doi)` accepting only a resolved DOI. **The DOI is the CURIE.** The protocol transfers without strain |
+| **001 §4** Agentic Biolink | Flattened JSON; every entity response **must** carry a `cross_references` object per the Key Registry | Vocabulary is bibliographic, not Biolink. Requires a **literature Key Registry** (§6.3) |
+| **001 §5** Tool/Resource bifurcation | Tools return JSON capped at 50 items; Resources return raw text via custom URI schemes | Full text is a Resource (`work://fulltext/{doi}`), not a Tool payload |
+| **001 §6** Triangulation | High-stakes assertions verified across `cross_references` | A work found in two indexes with agreeing DOIs is triangulated; single-index-only is a recorded weakness |
+| **001 §7** Token budgeting | Batch tools **must** accept `slim=True`; default page size 50 | Slim fields defined in §6.4. ADR-001's slim triple is `id`/`name`/`score`; literature needs its own |
+| **001 §8** Canonical envelopes | Exact pagination and error envelope shapes | Adopted verbatim — these are protocol, not domain |
+| **001 §9** Shared vs domain types | Protocol types must not import domain types | `CrossReferences` and envelopes are protocol; `Work`, `Venue` are domain |
+| **002** | Platform skills (`scaffold-fastmcp`) over manual coding | Server scaffolding uses the platform skill |
+| **003** | SpecKit SDLC | This spec is the `/specify` input; per-API specs follow |
+| **004** | Module-level singleton lifecycle; `@mcp.on_event` **forbidden** | Adopted as-is |
+| **005** | Git worktrees for 3+ parallel servers | Applies to the Layer-2 build, not to this discovery pass |
+| **006** | Single-writer `clients/` package | Adopted as-is |
+
+**Layer discipline.** `psychology-mcp` is a Python ≥3.11 package with real dependencies (`fastmcp`, `httpx`, `pydantic`, `uv.lock`), mirroring `biosciences-mcp`. `psychology-research` remains a lightweight plugin — manifest, markdown skills, and a `.mcp.json` pointing at the deployed gateway. These are different artifacts with different rules; conflating them is the error rev 1 made.
 
 ## 3. Scope
 
-### In scope
+### 3.1 In scope
 
 - Five connector dossiers: **Semantic Scholar, OpenAlex, Crossref, Europe PMC, PsyArXiv/OSF**.
 - A live coverage probe of all five against a **pre-registered 12-query benchmark** (§4).
-- A redesign of the source-tiering model (§6), **specified as domain-agnostic science infrastructure, with implementation targeted at `psychology-research`**.
-- One decision document (§7) that answers AGE-548 question 3 and specifies concrete file deltas.
+- The **literature envelope design** (§6): venue class, the literature Key Registry, slim fields, retraction and preprint handling — specified as the Layer-2 response contract per ADR-001 §4 and §8.
+- One decision document (§7): the `psychology-mcp` server roster and build order, the AGE-548 q3 answer, and the interim plugin binding.
 
-### Out of scope
+### 3.2 Out of scope
 
-- Writing any MCP server. Each dossier makes a bind / wrap / drop recommendation; acting on a "wrap" recommendation is separate work.
-- **Implementing** the tier model. This effort specifies it and names its implementation target; the code change lands in the follow-on PR alongside the connector deltas.
+- **Building `psychology-mcp`.** This is Layer-1 discovery. The build is a separate SpecKit program, one `/specify` per server.
+- Creating the `psychology-mcp` repository (§3.4 records the open decision).
 - Changes to `psychology-research` skills, commands, or validators.
-- Changes to `bio-research`. Its adoption of the tier model is a named follow-on under AGE-554.
-- Changes to `hci-canon`. The contradictions found there (§7.3) are recorded as findings, not fixed here.
-- Applying the deltas. `DECISION.md` proposes; a separate PR against AGE-552 applies.
+- Changes to `bio-research` or `biosciences-mcp`.
+- Changes to `hci-canon`. Contradictions found there (§7.3) are recorded, not fixed.
+- Applying any delta. `DECISION.md` proposes; a separate PR applies.
 
-### Deliverables
+### 3.3 Deliverables
 
 All under `docs/research/connectors/`:
 
@@ -65,38 +87,44 @@ All under `docs/research/connectors/`:
 |---|---|
 | `README.md` | Method, the frozen benchmark, cell-record schema, how to re-run |
 | `00-coverage-matrix.md` | 5 APIs × 12 queries = 60 cells, with example records |
-| `01-semantic-scholar.md` | Dossier (§5 template) |
-| `02-openalex.md` | Dossier |
-| `03-crossref.md` | Dossier |
-| `04-europe-pmc.md` | Dossier |
-| `05-psyarxiv-osf.md` | Dossier |
-| `06-tier-model.md` | The two-axis tiering redesign (§6) |
-| `DECISION.md` | Binding decision, AGE-548 q3 answer, proposed deltas, limitations (§7) |
+| `01-semantic-scholar.md` … `05-psyarxiv-osf.md` | Dossiers (§5 template) |
+| `06-literature-envelope.md` | The Layer-2 response contract (§6) |
+| `DECISION.md` | Server roster, build order, AGE-548 q3, interim binding, limitations (§7) |
 
-### Candidate selection rationale
+### 3.4 Open decision — where `psychology-mcp` lives
+
+Not settled by this spec, and it needs a maintainer answer before the Layer-2 program starts:
+
+- `/home/donbr/open-biosciences/psychology-mcp` — sibling of `biosciences-mcp`, consistent with the workspace file. Nothing exists there today.
+- `/home/donbr/hci/psychology-mcp` — an empty placeholder directory created 2026-04-27, outside the workspace.
+- A GitHub home under the `open-biosciences` org, matching the 13-repo table.
+
+This specification and its deliverables **relocate into that repo** once it exists. Until then they live in `open-biosciences-plugins` on `feat/psychology-connector-research`.
+
+### 3.5 Candidate rationale
 
 | Candidate | Why included |
 |---|---|
-| **Semantic Scholar** | The plugin's own declared Tier-2 binding, named in `CONNECTORS.md`, `SKILL.md` (twice), and `modality-canon.md`. Broad disciplinary coverage. |
-| **OpenAlex** | Broadest open scholarly index; covers humanities, books, and non-biomedical psychology. Keyless. |
-| **Crossref** | DOI registry including monographs and book chapters. Supplies the item metadata the tier model needs, and exposes retraction/update notices. |
-| **Europe PMC** | Candidate **replacement** for the PubMed connector rather than an addition. Its REST API exposes full-text XML, preprints, and NCBI Bookshelf monographs alongside PubMed records — so the supersede-vs-complement question is likely to be among the highest-value findings in `DECISION.md`. Whether it supersedes PubMed is a research finding, not an assumption. |
-| **PsyArXiv / OSF Preprints** | The psychology preprint server. Occupies the slot bioRxiv was wrongly proposed for; bioRxiv is molecular and cell biology and returns near-nothing for this domain. Preprints route through OSF API v2 as `/v2/preprints/?filter[provider]=psyarxiv`; where those preprints carry Crossref DOIs, cross-checking §3 metadata against `03-crossref.md` measures how well preprint metadata survives across indexers. |
+| **Semantic Scholar** | The plugin's own declared Tier-2 binding, named in `CONNECTORS.md`, `SKILL.md` twice, and `modality-canon.md`. Broad disciplinary coverage including a citation graph |
+| **OpenAlex** | Broadest open scholarly index; covers humanities, books, and non-biomedical psychology. Keyless |
+| **Crossref** | DOI registry including monographs and book chapters. **The authoritative source for `venue_class` and retraction status** — §6 depends on it structurally, not merely for coverage |
+| **Europe PMC** | Candidate **replacement** for a PubMed binding rather than an addition. Its REST API exposes full-text XML, preprints, and NCBI Bookshelf monographs alongside PubMed records. Supersede-vs-complement is a research finding, not an assumption |
+| **PsyArXiv / OSF Preprints** | The psychology preprint server. Occupies the slot bioRxiv was wrongly proposed for; bioRxiv is molecular and cell biology. Routes via OSF API v2 as `/v2/preprints/?filter[provider]=psyarxiv`; where those preprints carry Crossref DOIs, cross-checking §3 metadata against `03-crossref.md` measures how well preprint metadata survives across indexers |
 
-**Considered and deferred, with reasons recorded so they are not re-litigated:**
+**Considered and deferred, recorded so they are not re-litigated:**
 
-- **APA PsycNET / PsycINFO** — the canonical psychology index and the correct answer on paper. Believed licensed with no open API. Not included as a dossier; `DECISION.md` §5 must state the consequence if this holds, because `source-tiers.yaml` currently assigns `apa.org: 1`.
-- **ERIC** — education, counselling, and school psychology. Relevant under the general-purpose framing; deferred to a second pass.
-- **medRxiv, Unpaywall, DOAJ, CORE, Internet Archive / Open Library** — plausible, but each addresses a narrower slice than the five selected. Internet Archive specifically is the known route to historical primary sources (Q5) and should be revisited if no selected connector resolves that query.
-- **bioRxiv** — explicitly rejected. Wrong domain.
+- **APA PsycNET / PsycINFO** — the canonical psychology index. Believed licensed with no open API. **Note that credentialed access is not a packaging blocker**: `.mcp.json` supports `${VAR}` expansion in `headers`, `headersHelper` for connect-time header generation, and plugin `userConfig` with `sensitive: true`. If PsycNET is programmatically reachable at all, it is declarable. `DECISION.md` §7.5 must state the consequence if it is not, because `source-tiers.yaml` assigns `apa.org: 1`.
+- **ERIC** — education, counselling, school psychology. Relevant under the general-purpose framing; second pass.
+- **medRxiv, Unpaywall, DOAJ, CORE, Internet Archive / Open Library** — each narrower than the five. Internet Archive is the known route to historical primaries (Q5) and is revisited if no selected connector resolves it.
+- **bioRxiv** — rejected. Wrong domain.
 
 ## 4. The benchmark suite
 
 Twelve queries: ten measuring coverage, two controls. Frozen before any API is contacted.
 
-**Pre-registration matters and is the point.** The coverage matrix is intended to be citable evidence. Queries chosen after seeing what an API returns are not evidence, they are shopping. Q1–Q8 derive from a gap list recorded on 2026-08-14, before any connector was under consideration; Q9–Q10 were added to close a subject-axis blind spot identified during design, also before any API contact. This provenance is recorded in `README.md`.
+**Pre-registration is the point.** The coverage matrix is intended as citable evidence and as the acceptance suite for the Layer-2 build. Queries chosen after seeing what an API returns are not evidence. Q1–Q8 derive from a gap list recorded 2026-08-14, before any connector was under consideration; Q9–Q10 were added during design to close a subject-axis blind spot, also before any API contact. This provenance is recorded in `README.md`.
 
-Queries span two independent axes. **Format** — does the connector index this *kind* of artefact. **Subject** — does the connector reach this *discipline's* publisher ecosystem. A benchmark strong on one axis and blind on the other selects connectors that look uniformly excellent and then underperform.
+Two independent axes. **Format** — does the connector index this kind of artefact. **Subject** — does it reach this discipline's publisher ecosystem. A benchmark strong on one and blind to the other selects connectors that look uniformly excellent and then underperform.
 
 | # | Query | Format axis | Subject axis |
 |---|---|---|---|
@@ -113,23 +141,21 @@ Queries span two independent axes. **Format** — does the connector index this 
 | **C1** | EFT as an evidence-based couple therapy (Wiebe & Johnson 2016) | *Positive control* | *Harness check* |
 | **C2** | Neuro-Dynamic Co-Regulation Index (Vanderbilt & Hayes 2019) | *Negative control* | *Hallucination check* |
 
-**Q6 note.** PubMed returned only *fledgling*-relationship literature for this question. The query is deliberately scoped to established dyads to preserve that discrimination.
+**Q6 note.** PubMed returned only *fledgling*-relationship literature here. The query is deliberately scoped to established dyads to preserve that discrimination.
 
-**C1 is scored separately from the coverage cells.** It validates the harness — an API that misses it has a broken client, not a coverage gap. It is not counted toward any connector's coverage score.
+**C1 is scored separately** from the coverage cells. It validates the harness — a connector that misses it has a broken client, not a coverage gap — and is not counted toward any coverage score.
 
-**C2 is a fabricated construct with a fabricated citation.** This control exists because fabricated citations have already reached a user-facing surface in this ecosystem (AGE-547); a connector that fuzzy-matches a plausible non-existent construct will reproduce that failure.
-
-**Scoring C2 requires a distinction, because "zero results" is the wrong bar.** Token-relevance engines — Crossref and OpenAlex among them — will return topically adjacent work by matching individual words (`co-regulation`, `index`) even when the exact construct does not exist. That is normal retrieval behaviour, not a defect.
+**C2 is a fabricated construct with a fabricated citation.** It exists because fabricated citations have already reached a user-facing surface in this ecosystem (AGE-547). Scoring requires a distinction, because "zero results" is the wrong bar: token-relevance engines will return topically adjacent work by matching individual words (`co-regulation`, `index`) even when the construct does not exist. That is normal retrieval, not a defect.
 
 | Outcome | Score | Record |
 |---|---|---|
 | Zero results | **pass** | `result: miss`, `n_results: 0` |
-| Non-empty, but no title/construct match — adjacent papers only | **pass** | `result: miss`, `n_results: N`, note *"token search returned adjacent papers; no construct match"* |
-| A result presented as matching the fabricated construct or its fabricated citation | **fail** | Recorded as a finding in that dossier's §7 |
+| Non-empty, no construct match — adjacent papers only | **pass** | `result: miss`, `n_results: N`, note *"token search returned adjacent papers; no construct match"* |
+| A result presented as matching the fabricated construct or citation | **fail** | Finding in that dossier's §7 |
 
-The failure mode under test is a **confident exact match for something that does not exist** — not breadth of recall.
+The failure mode under test is a **confident exact match for something that does not exist**, not breadth of recall.
 
-### Cell record schema
+### 4.1 Cell record schema
 
 Each of the 60 cells records:
 
@@ -138,161 +164,177 @@ Each of the 60 cells records:
 | `result` | `hit` / `partial` / `miss` |
 | `n_results` | integer |
 | `top_result` | title, authors, year |
-| `venue_class` | `journal-article` / `book` / `book-chapter` / `preprint` / `institute-publication` / `grey` / `unknown` |
+| `venue_class` | one of §6.2 |
 | `doi_present` | boolean |
-| `metadata_completeness` | which of {DOI, type, venue, publisher, retraction status, OA status} were returned |
+| `metadata_completeness` | which of the §6.3 registry keys and §6.2 fields the API actually returned |
 | `notes` | free text |
 
-`metadata_completeness` is the field that feeds §6. A connector that returns results but no venue type cannot support item-level tiering, which is a first-order selection criterion independent of coverage.
+`metadata_completeness` is the load-bearing field. A connector that returns results but no venue type **cannot support the §6 envelope**, which is a first-order selection criterion independent of coverage.
 
 ## 5. Dossier template
 
-Each `0N-<api>.md` uses this fixed structure so the five are comparable in the decision matrix.
+Each `0N-<api>.md` uses this fixed structure so the five are comparable.
 
 | § | Content |
 |---|---|
 | 1 | **Identity and access** — base URL, auth model, key requirement, published and observed rate limits, ToS and attribution obligations. *(Non-trivial: the PubMed connector already imposes a DOI-link attribution requirement. Assume each has its own until verified.)* |
-| 2 | **Mechanics** — request and response format, pagination model, filtering, batch support, error behaviour |
-| 3 | **Item metadata** — what the API returns *per record*: DOI, type, venue, publisher, retraction status, OA status, identifiers. **This section is the input to §6.** |
-| 4 | **Measured coverage** — this API's 12 cells, with example records |
-| 5 | **Existing MCP server** — does one exist; keyless or credentialed; maintainer; currently live |
-| 6 | **Tier implications** — which venue classes this connector can and cannot resolve |
-| 7 | **Recommendation** — bind existing / wrap ourselves / drop, with reasoning and residual risk |
+| 2 | **Mechanics** — request/response format, pagination model, filtering, batch support, error behaviour |
+| 3 | **Item metadata** — what the API returns per record, mapped against the §6.3 literature Key Registry and the §6.2 venue classes. **This section is the input to §6.** |
+| 4 | **Measured coverage** — this API's 12 cells with example records |
+| 5 | **Fuzzy-to-Fact feasibility (ADR-001 §3)** — can it support `search_works` → ranked candidates and `get_work(doi)` strict retrieval? Does it accept a DOI as a lookup key? |
+| 6 | **FastMCP wrapping feasibility (ADR-001 §2, §7)** — async-native REST or a sync SDK needing `run_in_executor`; batch endpoint availability; rate limits under agent concurrency; whether slim mode is expressible |
+| 7 | **Existing MCP server** — does one exist, keyless or credentialed, maintainer, currently live. *Determines whether we wrap or bind.* |
+| 8 | **Recommendation** — wrap in `psychology-mcp` / bind an existing server / drop, with reasoning and residual risk |
 
-Section 3 is what distinguishes this from an API survey. A connector's value here is not only what it finds but whether it returns enough metadata to tier what it finds.
+Sections 5 and 6 are the additions rev 1 lacked. A connector's value is not only what it finds, but whether it can be made to conform to the platform's protocol.
 
-## 6. Source-tier model redesign
+## 6. The literature envelope
 
-### 6.1 Current model and its failure modes
+ADR-001 §4 mandates that every entity response carry a `cross_references` object per a Key Registry, and §8 fixes the pagination and error envelopes. The biomedical instance of that is Agentic Biolink. Literature needs its own instance, and **this is where venue classification belongs** — not in the plugin's `source_tiers_loader.py`, which is scraping URL strings for signal that a conformant server would hand it directly.
 
-`source-tiers.yaml` maps `domain → integer` across 31 entries. `lookup_tier()` returns `None` on a miss; `source_tier_minimum` skips untiered sources.
+### 6.1 The two axes, relocated
 
-| Failure | Evidence |
-|---|---|
-| Coverage — untiered domains outnumber tiered ones in real use | 25 untiered domains cited in a single run against 31 in the map |
-| Silent skip — an untiered source produces no signal at all | `source_tiers_loader.py:43-44`, `source_tier_minimum.py:74-79` |
-| Locator ≠ source — a Tier-6 host resolving a real peer-reviewed item is rejected as Tier-6 | ResearchGate as sole public locator for a genuine journal article |
-| Paradigm mismatch — grey literature that *is* the canonical evidence base for a construct is warned against | Consumer-media sources are the primary literature for constructs with no Tier-1 home |
-| No preprint concept — an article and its own preprint are indistinguishable | A journal article and its medRxiv preprint both cited, undifferentiated |
-| **Index sources are unrepresentable** | An index returns items from thousands of domains; tiering the index tiers everything it touches |
+**Axis A — venue class.** *What the item is.* Resolved server-side from registered bibliographic metadata.
+**Axis B — discovery route.** *Which connector surfaced it.* Recorded for provenance and triangulation (ADR-001 §6). **Never contributes to tier.**
 
-The last row is what makes this a blocker rather than a backlog item: the connectors this specification selects cannot be added to the current model without corrupting it.
+An index is a lookup vehicle, not a peer-review warrant. Tiering `api.openalex.org` would tier a consumer-media blog post as peer-reviewed because OpenAlex indexed it.
 
-### 6.2 Proposed model — two axes
+### 6.2 Venue classes
 
-**Axis A — venue class.** *What the item is.* One of: `peer-reviewed-article`, `book`, `book-chapter`, `institute-publication`, `preprint`, `guideline`, `grey`, `commentary`, `unverified`.
+`peer-reviewed-article` · `book` · `book-chapter` · `institute-publication` · `preprint` · `guideline` · `grey` · `commentary` · `unverified`
 
-**Axis B — discovery route.** *How the item was found.* The connector name. Recorded for provenance and reproducibility. **Never contributes to tier.**
+Resolution order, server-side:
 
-This decoupling is the correction. An API connector is a lookup vehicle, not a peer-review warrant.
+1. **DOI with registered metadata** → classify from the item's own registered `type`, venue, and publisher. Locator domain irrelevant. *This is the locator-vs-source fix, structural rather than an exception list.*
+2. **No DOI** → the envelope reports `venue_class: unverified` with the source URL, and the consumer falls back to its domain map.
+3. **Neither** → `unverified`, which the consumer **must warn on**, never silently skip. *This is the vacuous-pass fix.*
 
-### 6.3 Resolution order
+Two properties fall out once the server holds registered metadata:
 
-1. **Item carries a DOI with registered metadata** → tier from Axis A using the item's own `type`, venue, and publisher. The locator domain is irrelevant. *This is the locator-vs-source fix, structurally rather than by exception list.*
-2. **No DOI** → fall back to the existing domain map, which survives in its true role as the web-results fallback.
-3. **Neither** → `UNTIERED`, which **must warn**. Never a silent skip. *This is the vacuous-pass fix.*
+- **Retraction status is an envelope field**, not a consumer inference. Crossref exposes retraction and update notices; a retracted work is flagged at the source. This is the highest-value integrity check available to research output.
+- **Preprint is its own class**, not a downgraded article — resolving the article-plus-its-own-preprint double count.
 
-### 6.4 Consequences that fall out once item metadata is available
+**Paradigm overrides stay at Layer 4.** "For topic X, institute publications are the canonical evidence base" is a psychology-research editorial judgement expressed in `modality-canon.md`, not a property of a work. The server reports what a thing *is*; the plugin decides what that is *worth* for a given claim. Keeping this split is what makes the envelope reusable by consumers with different editorial policies.
 
-- **Retraction check.** Crossref exposes retraction and update notices. A retracted item is rejected regardless of venue class. Low cost; the highest-value integrity check available to research output.
-- **Preprint as its own class**, not a downgraded article. Resolves the article-plus-its-own-preprint double count.
-- **Paradigm override.** `references/modality-canon.md` already declares per-modality `preferred_databases`. Extend it to per-topic venue-class overrides so *"for topic X, institute publications and grey literature are the canonical evidence base"* is expressible, and `source_tier_minimum` stops warning on the best available evidence for a construct with no peer-reviewed home.
+### 6.3 Literature Key Registry
 
-### 6.5 Generality and the shared layer
+The bibliographic analog of ADR-001 Appendix A. Every work response carries `cross_references` with whichever of these resolve:
 
-`06-tier-model.md` is written as **domain-agnostic science infrastructure**. Nothing in Axis A, Axis B, the resolution order, retraction handling, or preprint classification is psychology-specific.
+`doi` · `pmid` · `pmcid` · `openalex_id` · `semantic_scholar_id` · `osf_id` · `arxiv_id` · `isbn` · `issn`
 
-Implementation is **targeted at** `psychology-research`, which owns `source_tiers_loader.py` and the validator suite — and is executed in the follow-on PR, not here (§3). `bio-research` has no `scripts/` directory and therefore no validators; adopting this model there is a **named follow-on under AGE-554**, separate again. This ordering is deliberate: it produces the design a shared-layer extraction needs without making this work depend on an unresolved packaging question, while AGE-548's scope boundary remains open.
+Null-handling and cardinality follow ADR-001 Appendix A. Two connectors returning agreeing DOIs for one work is a triangulation success under ADR-001 §6; single-index-only provenance is a recorded weakness.
 
-The interdisciplinary case is the payoff. A psychoneuroimmunology or psychiatric-genetics query blending `bio-research` (PubMed, NCBI) and `psychology-research` (OpenAlex, Semantic Scholar, Crossref) sources should tier uniformly, with retraction, preprint, and venue-type rules applying identically regardless of which connector surfaced the item.
+### 6.4 Slim mode
+
+ADR-001 §7 mandates `slim=True` on batch tools and specifies `id`/`name`/`score` for biomedical entities. Literature needs its own slim triple, proposed as **`doi`, `title`, `venue_class`** — enough for an agent to triage relevance and admissibility without pulling abstracts. Default page size 50 per §5.
+
+`06-literature-envelope.md` specifies the full contract; per-API conformance is assessed in each dossier's §3.
 
 ## 7. The decision document
 
 `DECISION.md` carries five sections.
 
-**7.1 Binding decision.** Which connectors are declared in `psychology-research/.mcp.json`, rolled up from each dossier's §7, with the residual capability gap stated plainly.
+**7.1 Server roster and build order.** Which APIs `psychology-mcp` wraps, in what tier order, rolled up from each dossier's §8 — the psychology analog of the biosciences Tier 0–5 table. Plus which, if any, are better bound as existing third-party servers than wrapped.
 
-**7.2 AGE-548 question 3.** *Does the plugin own MCP server declarations, or does the consumer supply them?* Argued from the in-repo `bio-research` precedent: it declares five keyless public HTTP servers and leaves everything credentialed to the consumer. Adopting that same line — **plugin owns keyless public servers; consumer owns credentialed and per-institution adapters** — resolves the narrow question AGE-552 is blocked on without requiring the full scope ADR.
+**7.2 AGE-548 question 3.** *Does the plugin own MCP server declarations, or does the consumer supply them?* The in-repo precedent answers it, correctly read this time: `bio-research` declares **its own program's gateway** (`biosciences-mcp`, `biosciences-mcp-edge`) plus a small number of public third-party servers (`pubmed`, `biorxiv`, `synapse`). The pattern is **"the plugin declares the platform's first-party gateway, and public third-party servers where they exist."** Credentialed access is not the boundary — `${VAR}` header expansion, `headersHelper`, and `userConfig`/`sensitive` all exist. `psychology-research`'s `.mcp.json` is empty because the first-party gateway does not exist yet, and the interim question is which third-party servers to declare while it is built.
 
 **7.3 Producer/consumer contradictions found during research.** Recorded, not fixed:
 
-- `hci-canon` `.claude/skills/relational-vibrancy/SKILL.md:70` names `pubmed-database / OpenAlex / Europe PMC` as the literature sources; `psychology-research` names `pubmed, semantic-scholar`. The consumer and the producer disagree about which non-PubMed source is intended.
-- The same file's frontmatter enumerates seven dissertation modalities plus an eighth lens, `SKILL.md:86` says *"omit to run all seven"*, and the 2026-08-14 run report says *"four of the eight lenses."*
+- `hci-canon` `.claude/skills/relational-vibrancy/SKILL.md:70` names `pubmed-database / OpenAlex / Europe PMC`; `psychology-research` names `pubmed, semantic-scholar`. Consumer and producer disagree.
+- The same file's frontmatter enumerates seven modalities plus an eighth lens, `SKILL.md:86` says *"omit to run all seven"*, and the 2026-08-14 run report says *"four of the eight lenses."*
 
-**7.4 Proposed deltas.** Written out for `.mcp.json`, `CONNECTORS.md`, `source-tiers.yaml`, `source_tiers_loader.py`, and the affected validators. **Proposed, not applied.**
+**7.4 Interim plugin binding.** The concrete `.mcp.json` delta for what can be declared **today**, before `psychology-mcp` exists. **Written out, not applied.** Every entry must carry `"type": "http"` — an entry with a `url` and no `type` is read as stdio, skipped, and warned about. Note that `psychology-research/` is mirrored downstream into `psychology-research-plugins` by `rsync --delete`; deltas must be authored upstream and reach the mirror by that sync, never hand-edited there.
 
-`psychology-research/` is mirrored downstream into the separate `psychology-research-plugins` repository by `rsync --delete` from this upstream. Every delta must therefore be authored **here** and reach the mirror by that sync — never hand-edited in the mirror, which the next sync would silently discard. `DECISION.md` names the sync as an explicit step in the apply-PR sequence.
-
-**7.5 What remains unsatisfiable.** Stated plainly, because the alternative is advertising capability that does not exist. At minimum: if no selected connector reaches APA/PsycINFO-class content, then `source-tiers.yaml` assigning `apa.org: 1` and the marketplace description promising *"source hierarchy, claim provenance"* both describe reach the plugin cannot deliver. Whatever the benchmark shows, the honest ceiling goes here, and any connector whose coverage is partial gets its partiality named rather than averaged away.
+**7.5 What remains unsatisfiable.** Stated plainly. At minimum: if no connector reaches APA/PsycINFO-class content, `source-tiers.yaml` assigning `apa.org: 1` and the marketplace description promising *"source hierarchy, claim provenance"* both describe reach the plugin cannot deliver. Any connector with partial coverage gets its partiality named rather than averaged away.
 
 ## 8. Execution sequence
 
-1. **Freeze.** Write `README.md` with the 12 queries, the cell-record schema, and the provenance note. **Maintainer approves before any API is contacted.** This is the gate that makes the benchmark pre-registered rather than retrospective.
-2. **Dossiers, one API at a time**, in order: Semantic Scholar → OpenAlex → Crossref → Europe PMC → PsyArXiv/OSF. Each is complete (§1–§7 of the template, including its 12 probe cells) before the next begins.
+1. **Freeze.** Write `README.md` with the 12 queries, the cell-record schema, and the provenance note. **Maintainer approves before any API is contacted.** This gate is what makes the benchmark pre-registered rather than retrospective.
+2. **Dossiers, one API at a time**: Semantic Scholar → OpenAlex → Crossref → Europe PMC → PsyArXiv/OSF. Each complete (template §1–§8, including its 12 cells) before the next begins.
 3. **Assemble** `00-coverage-matrix.md` from the five dossiers' §4.
-4. **Write** `06-tier-model.md`, informed by the aggregated §3 metadata findings.
+4. **Write** `06-literature-envelope.md`, informed by the aggregated §3 metadata findings.
 5. **Write** `DECISION.md`.
-6. **Stop.** Applying deltas is a separate PR against AGE-552.
+6. **Stop.** The Layer-2 build is a separate SpecKit program; applying the interim binding is a separate PR.
 
-Steps 2 through 5 run inline. No agent fan-out for artefact production.
+Steps 2–5 run inline. No agent fan-out for artefact production.
 
 ## 9. Non-goals
 
-- Building MCP servers.
-- Reconciling `bio-research` to the new tier model.
+- Building `psychology-mcp` or any FastMCP server.
+- Creating the `psychology-mcp` repository.
+- Reconciling `bio-research` or `biosciences-mcp` to anything here.
 - Fixing the `hci-canon` contradictions in §7.3.
 - Applying any delta to `.mcp.json`, `CONNECTORS.md`, or `source-tiers.yaml`.
-- Re-opening the AGE-548 scope boundary beyond its question 3.
+- Re-opening AGE-548 beyond its question 3.
 - Any change to `psychology-research`'s crisis-safety surface, evidence-label vocabulary, or `local_context` tier rule. These are settled and reusable as-is.
 
 ## 10. Risks and open questions
 
 | Risk | Mitigation |
 |---|---|
-| A selected connector has no public MCP server, forcing wrap-or-drop | Dossier §5 establishes this per API before any binding decision; "wrap" is a recommendation this effort does not act on |
-| Probe results look strong but reflect query phrasing rather than coverage | Two axes per query, a positive control, and a negative control; phrasing is frozen and published |
-| The tier redesign grows into a validator rewrite | §3 puts implementation in the follow-on PR and scopes its target to `source_tiers_loader.py` and the tier-consuming validators. A broader validator repair is separate work |
-| PsycNET turns out reachable after all, changing the recommendation | Recorded as an open question; a reversal is cheap before deltas are applied and expensive after |
+| Probe results reflect query phrasing rather than coverage | Two axes per query, positive and negative controls, phrasing frozen and published |
+| The envelope design outruns the discovery evidence | §6 is written *after* the five dossiers' §3, not before |
 | Q5 (1928 primary source) resolves in none of the five | Expected. Internet Archive / Open Library revisited in a second pass; the honest finding goes in `DECISION.md` §7.5 |
-| Rate limits make 60 probe cells slow or throttled | Dossier §1 establishes limits before probing; probes are sequential per API, not parallel |
+| Rate limits make 60 cells slow or throttled | Dossier §1 establishes limits before probing; probes sequential per API, not parallel |
+| Scope drifts from discovery into building a server | §3.2 and §9 both name it; §8 step 6 is an explicit stop |
+| `psychology-mcp` location undecided, blocking relocation | §3.4 records it as a maintainer decision; deliverables live in the current worktree until answered |
 
 **Open questions carried into execution:**
 
-1. Does Europe PMC supersede the PubMed connector, or complement it? Answered by `04-europe-pmc.md` §4 and §6.
-2. Is APA PsycNET reachable by any programmatic route? A bounded check inside `DECISION.md` §7.5, not a sixth dossier.
-3. Does any connector expose retraction status directly, or is Crossref required as a second lookup for every DOI? Answered by the aggregate of the five §3 sections; determines whether §6.4's retraction check costs one call or two.
+1. Does Europe PMC supersede a PubMed binding, or complement it? Answered by `04-europe-pmc.md` §4 and §7.
+2. Is APA PsycNET reachable by any programmatic route? A bounded check in `DECISION.md` §7.5, not a sixth dossier.
+3. Does any connector expose retraction status directly, or is Crossref a required second lookup per DOI? Answered by the aggregate of the five §3 sections; determines whether §6.2's retraction field costs one call or two.
+4. Can one gateway serve all five, or do rate limits force separate servers? Informs the §7.1 build order.
 
 ## 11. Acceptance criteria
 
 - [ ] `README.md` publishes all 12 queries verbatim, the cell-record schema, and the provenance note, and is approved before any API contact
 - [ ] All 60 cells populated; no cell blank or marked "not attempted"
 - [ ] C1 returns a hit for every connector, or the failure is diagnosed as a harness fault and fixed before that dossier is accepted
-- [ ] C2 produces no construct match for any connector, scored per the §4 table; any result presented as matching the fabricated construct or citation is recorded as a finding in that dossier's §7
-- [ ] Each dossier's §3 states, per connector, whether item-level venue classification is possible
-- [ ] Each dossier ends in an unambiguous bind / wrap / drop recommendation
-- [ ] `06-tier-model.md` contains no psychology-specific rule in Axes A or B, the resolution order, or the retraction and preprint handling
-- [ ] `DECISION.md` answers AGE-548 question 3 with a stated rationale
-- [ ] `DECISION.md` §7.4 gives applyable deltas — literal file content, not descriptions
-- [ ] `DECISION.md` §7.5 names every capability the plugin will still lack after the deltas are applied
-- [ ] No file outside `docs/research/connectors/` is modified by this effort
+- [ ] C2 produces no construct match for any connector, scored per the §4 table
+- [ ] Each dossier's §3 states which §6.3 registry keys and §6.2 fields that API actually returns
+- [ ] Each dossier's §5 and §6 state Fuzzy-to-Fact and FastMCP-wrapping feasibility explicitly
+- [ ] Each dossier ends in an unambiguous wrap / bind / drop recommendation
+- [ ] `06-literature-envelope.md` conforms to ADR-001 §4, §7, §8 and §9, and cites each
+- [ ] `06-literature-envelope.md` contains no consumer editorial policy — paradigm overrides stay at Layer 4
+- [ ] `DECISION.md` §7.1 gives a server roster with build order
+- [ ] `DECISION.md` §7.2 answers AGE-548 q3 from the first-party-gateway precedent
+- [ ] `DECISION.md` §7.4 gives an applyable interim delta — literal file content, every entry carrying `"type": "http"`
+- [ ] `DECISION.md` §7.5 names every capability still lacking after the interim delta
+- [ ] No file outside `docs/research/connectors/` is created or modified
 
 ---
 
 ## Appendix A — Verification basis
 
-Claims in §1 and §6.1 were verified by direct read on 2026-08-15:
+Verified by direct read on 2026-08-15:
 
-| Claim | Verified against |
+| Claim | Source |
 |---|---|
 | `.mcp.json` is `{"mcpServers": {}}` | `psychology-research/.mcp.json` (26 bytes) |
-| `bio-research` declares five HTTP servers | `bio-research/.mcp.json` |
-| `literature: []`, Tier-2 wires `[pubmed, semantic-scholar, ~~web]` | `skills/psychology-evidence-builder/SKILL.md:5` |
-| Semantic Scholar preferred for modality/qualitative/book canon | `skills/psychology-evidence-builder/SKILL.md:30`; `CONNECTORS.md:13`; `references/modality-canon.md` |
+| `bio-research` declares 5 servers, 2 first-party | `bio-research/.mcp.json`; `biosciences-program/README.md` repository table |
+| `literature: []`; Tier-2 wires `[pubmed, semantic-scholar, ~~web]` | `skills/psychology-evidence-builder/SKILL.md:5` |
+| Semantic Scholar preferred for modality/qualitative/book canon | `SKILL.md:30`; `CONNECTORS.md:13`; `references/modality-canon.md` |
 | `source-tiers.yaml` is a flat 31-entry domain map | `references/source-tiers.yaml` |
-| Six `UNRESOLVED` results; four of eight lenses ungrounded | `hci-canon` `research/vibrancy-runs/2026-08-14-don-lila/literature-grounding.md` |
-| Untiered-domain count; silent-skip behaviour; locator and paradigm failures | `docs/2026-08-13-diagnosis-counseling-findings-and-plugin-backlog.md` §3.4, citing `source_tiers_loader.py:43-44` and `source_tier_minimum.py:74-79` |
-| `bio-research` has no validators | `docs/2026-08-13-...md` appendix — recursive listing, no `scripts/` directory |
-| Consumer/producer source-list and lens-count contradictions | `hci-canon` `.claude/skills/relational-vibrancy/SKILL.md:70`, `:86`, frontmatter |
-| Version history of the empty connector surface | `hci-canon` `docs/superpowers/research/2026-08-14-age-542-premise-audit.md` §3 |
+| Six `UNRESOLVED`; four of eight lenses ungrounded | `hci-canon` `research/vibrancy-runs/2026-08-14-don-lila/literature-grounding.md` |
+| Untiered-domain count; silent-skip behaviour | `docs/2026-08-13-…-plugin-backlog.md` §3.4, citing `source_tiers_loader.py:43-44`, `source_tier_minimum.py:74-79` |
+| ADR mandates in §2.1 | `biosciences-mcp/docs/adr/accepted/adr-001-v1.4.md` §§2–9; adr-002 … adr-006 |
+| 12 servers + gateway; Python ≥3.11 with fastmcp/httpx/pydantic | `biosciences-mcp/src/biosciences_mcp/servers/`; `biosciences-mcp/pyproject.toml` |
+| Platform layer roles and migration lineage | `biosciences-program/README.md`; `open-biosciences.code-workspace` |
+| Plugin architecture: bundled code, dependency mechanisms, `${VAR}` expansion, `headersHelper`, `userConfig`, `url`-needs-`type` | `code.claude.com/docs/en/plugins-reference`; `code.claude.com/docs/en/mcp` |
+| Consumer/producer contradictions | `hci-canon` `.claude/skills/relational-vibrancy/SKILL.md:70`, `:86`, frontmatter |
 
-**Not verified.** Whether a public MCP server exists for any of the five candidates; whether Semantic Scholar, OpenAlex, Crossref, Europe PMC, or PsyArXiv/OSF is reachable keyless; whether APA PsycNET has any programmatic route. These are the research questions, not assumptions this specification rests on.
+**Not verified.** Whether a public MCP server exists for any of the five; whether each is reachable keyless; whether APA PsycNET has any programmatic route; the actual response shape of any candidate API. These are the research questions, not assumptions this spec rests on.
+
+## Appendix B — Deferred to the Layer-2 program
+
+Recorded so the discovery pass does not absorb them: the `psychology-mcp` repository creation and location (§3.4); per-API SpecKit specs under ADR-003; the gateway design and whether one server or several; deployment to fastmcp.app; the `psychology-research/.mcp.json` delta pointing at the deployed gateway; `bio-research` adoption of the literature envelope where it overlaps (PubMed, bioRxiv) under AGE-554.
+
+## Appendix C — Rev 1 errors
+
+Recorded because each came from inference rather than reading a source, and the pattern matters more than the individual mistakes.
+
+1. **Misread the `bio-research` precedent.** Rev 1 read all five declared servers as third-party and concluded "the plugin owns keyless public servers; the consumer owns credentialed." Two are first-party. The real pattern is first-party gateway plus selected public servers.
+2. **Invented a stdlib-only constraint** from the absence of `pyproject.toml` in the plugin repo. Plugins do not declare Python dependencies by design; the Layer-2 package has real ones.
+3. **Assumed plugins cannot bundle executable code.** `scripts/`, `bin/`, and `skills/*/scripts/` are documented features, which also means AGE-554's "expose validators via `bin/`" asks for an existing capability.
+4. **Placed venue classification at Layer 4.** ADR-001 §4 and §8 put schema normalization in the server envelope. The plugin was scraping URLs for signal a conformant server would supply.
