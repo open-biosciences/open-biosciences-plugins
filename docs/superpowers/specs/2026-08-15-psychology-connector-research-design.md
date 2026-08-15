@@ -91,15 +91,13 @@ All under `docs/research/connectors/`:
 | `06-literature-envelope.md` | The Layer-2 response contract (§6) |
 | `DECISION.md` | Server roster, build order, AGE-548 q3, interim binding, limitations (§7) |
 
-### 3.4 Open decision — where `psychology-mcp` lives
+### 3.4 Where `psychology-mcp` lives — decided
 
-Not settled by this spec, and it needs a maintainer answer before the Layer-2 program starts:
+**`/home/donbr/open-biosciences/psychology-mcp`** — sibling of `biosciences-mcp`, inside the workspace defined by `open-biosciences.code-workspace`. Created 2026-08-15 (empty). The earlier placeholder at `/home/donbr/hci/psychology-mcp`, which sat outside the workspace, has been deleted.
 
-- `/home/donbr/open-biosciences/psychology-mcp` — sibling of `biosciences-mcp`, consistent with the workspace file. Nothing exists there today.
-- `/home/donbr/hci/psychology-mcp` — an empty placeholder directory created 2026-04-27, outside the workspace.
-- A GitHub home under the `open-biosciences` org, matching the 13-repo table.
+Still open, and deferred to the Layer-2 program (Appendix B): whether it becomes a git repository under the `open-biosciences` GitHub org alongside the other 13, and whether it is added to the workspace file and the platform README's repository table.
 
-This specification and its deliverables **relocate into that repo** once it exists. Until then they live in `open-biosciences-plugins` on `feat/psychology-connector-research`.
+This specification and its deliverables **relocate into that repo** once it is initialised. Until then they live in `open-biosciences-plugins` on `feat/psychology-connector-research`. Note that repository is itself cloned into three roots — see [AGE-567]; the authoritative WSL checkout for this work is `/home/donbr/hci/open-biosciences-plugins`.
 
 ### 3.5 Candidate rationale
 
@@ -277,7 +275,7 @@ Steps 2–5 run inline. No agent fan-out for artefact production.
 | Q5 (1928 primary source) resolves in none of the five | Expected. Internet Archive / Open Library revisited in a second pass; the honest finding goes in `DECISION.md` §7.5 |
 | Rate limits make 60 cells slow or throttled | Dossier §1 establishes limits before probing; probes sequential per API, not parallel |
 | Scope drifts from discovery into building a server | §3.2 and §9 both name it; §8 step 6 is an explicit stop |
-| `psychology-mcp` location undecided, blocking relocation | §3.4 records it as a maintainer decision; deliverables live in the current worktree until answered |
+| Deliverables authored into the wrong checkout of a repo cloned three times | §3.4 names the authoritative WSL checkout; tracked as [AGE-567]. This already happened once during rev 1 |
 
 **Open questions carried into execution:**
 
@@ -328,7 +326,7 @@ Verified by direct read on 2026-08-15:
 
 ## Appendix B — Deferred to the Layer-2 program
 
-Recorded so the discovery pass does not absorb them: the `psychology-mcp` repository creation and location (§3.4); per-API SpecKit specs under ADR-003; the gateway design and whether one server or several; deployment to fastmcp.app; the `psychology-research/.mcp.json` delta pointing at the deployed gateway; `bio-research` adoption of the literature envelope where it overlaps (PubMed, bioRxiv) under AGE-554.
+Recorded so the discovery pass does not absorb them: initialising `psychology-mcp` as a git repository under the `open-biosciences` org, and adding it to `open-biosciences.code-workspace` and the platform README repository table (the directory exists per §3.4; the repo does not); per-API SpecKit specs under ADR-003; the gateway design and whether one server or several; deployment to fastmcp.app; the `psychology-research/.mcp.json` delta pointing at the deployed gateway; `bio-research` adoption of the literature envelope where it overlaps (PubMed, bioRxiv) under AGE-554.
 
 ## Appendix C — Rev 1 errors
 
