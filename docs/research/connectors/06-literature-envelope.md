@@ -204,6 +204,96 @@ Envelope field:
 costs **zero extra calls if OpenAlex is in the route**, and is **not available at any
 price** from Europe PMC or S2 alone.
 
+## 6a. Source precedence — whose assertion wins
+
+§5 records **which connector returns a field**. It does not say **whose answer wins when
+two disagree**, and ADR-001 §6 mandates triangulation across `cross_references` without
+specifying conflict resolution. That gap is closed here.
+
+The frame is adopted from [AGE-539], already accepted in this workspace:
+
+> **Authority selects the source. Volatility decides whether to re-verify it live.**
+
+Its two non-obvious consequences transfer intact:
+
+- **A lower tier can outrank a higher one within its own scope.** OpenAlex is not
+  authoritative for what Crossref registered, but it *is* authoritative for its own
+  `is_retracted` determination, which Crossref does not make.
+- **Conflicts resolve by scope first, then tier, then recency.** Most apparent conflicts
+  are scope mismatches, not contradictions.
+
+### 6a.1 Authority by field
+
+The biomedical analogue is `prior-art-api-patterns.md` §4.5, where Bioregistry and
+identifiers.org are the *authoritative registries* for identifier prefixes. **The
+literature equivalent is Crossref and DataCite as DOI registration agencies** — which is
+exactly why `classification_basis: registered` outranks `index-asserted`.
+
+| Field | Authority | Rationale |
+|---|---|---|
+| `type`, `publisher`, `venue`, `isbn`, `issn` | **Crossref** (registration agency) | The registrant declared it. Every index is repeating that declaration, sometimes lossily — OpenAlex reduced Crossref's six observed types to `article` in our sample |
+| `doi` | **Crossref**, normalised to bare form | Registration agency of record |
+| `retraction_status` | **OpenAlex** for a standing determination; **Crossref** for an affirmative notice | Scope split, not a tier conflict. Only OpenAlex answers "is this retracted?" always (§6) |
+| `pmid`, `pmcid` | **Europe PMC** | Sole source of `pmcid`; NLM-descended |
+| `openalex_id` | OpenAlex | Sole issuer |
+| `semantic_scholar_id` | Semantic Scholar | Sole issuer. **Its distinctive value is a stable id for records with no DOI** — 40% of its own observed sample |
+| `oa_status` | **OpenAlex** | Richest OA modelling; note Semantic Scholar's `openAccessPdf` is non-null even when `status: CLOSED` |
+| `venue_class` | **Derived, never fetched** | Computed from `type` + publisher per §3–§4. No connector supplies it |
+
+**Where an index disagrees with the registration agency, the registration agency wins and
+the disagreement is recorded** — `conflict: true` with both citations, per AGE-539. A
+documented disagreement is more useful than a confident wrong pick.
+
+**Unresolvable-by-anyone stays unresolvable.** No precedence rule rescues `guideline`,
+`institute-publication` or `commentary` (§3.2); precedence orders sources that *have* an
+answer.
+
+## 6b. Volatility and caching
+
+Bibliographic metadata is unusually cacheable — but **not uniformly**, and the exception
+is the field that matters most.
+
+| Volatility | Fields | Policy |
+|---|---|---|
+| **low** | `doi`, `title`, `authors`, `year`, `type`, `venue`, `publisher`, `isbn`, `issn`, all registry ids | Cache indefinitely. A published work's registration does not change |
+| **derived-low** | `venue_class`, `classification_basis` | Cache with the inputs. Recompute only if an input changes or §3–§4 changes |
+| **high** | **`retraction_status`**, `oa_status` | **Never cache.** Re-verify on read |
+
+**The asymmetry is the whole point.** A work becomes retracted *after* you cached it —
+that is the event the field exists to report. Caching `retraction_status` freezes the one
+signal that must stay live, on the one connector that supplies it as a standing
+determination. `oa_status` is milder but moves the same direction: embargoes lapse,
+publishers flip licences.
+
+**Practical shape:** cache the classification, re-verify the retraction. That is also
+where the cost actually is — `venue_class` is expensive to compute (it may need a DOI
+resolution) and stable once computed, while a retraction check is one field on a request
+already being made.
+
+**This is the sanctioned route around Semantic Scholar's rate limit.** Its distinctive
+contributions — the identifier crosswalk and CorpusIds for DOI-less records — are all
+`low` volatility, so they cache indefinitely. A throttled connector is far less
+constraining for permanent facts than for volatile ones. It does **not** rescue coverage:
+you cannot cache a search you were never able to run.
+
+### 6b.1 Batching is not currently a lever
+
+MEASURED across the five dossiers — batching is weak or absent, and every "maybe" is
+unverified:
+
+| Connector | Batch support |
+|---|---|
+| Semantic Scholar | `/paper/batch` POST **documented, not verified** (429 throughout) |
+| Crossref | **No true multi-DOI batch** in the public `/works` route |
+| OpenAlex | No batch exercised; a `filter=` OR-join is plausible, **unverified** |
+| Europe PMC | **None observed** — N works means N calls |
+| PsyArXiv/OSF | Not confirmed |
+
+Do not design a gateway assuming batch amortisation. A targeted verification pass against
+the three keyless connectors would settle it cheaply; until then, **caching is the only
+demonstrated lever** and the per-connector rate discipline in the constitution's Required
+Patterns is what keeps N-call fan-out survivable.
+
 ## 7. Slim mode (ADR-001 §7)
 
 ADR-001 §7 mandates `slim=True` on batch tools and specifies `id`/`name`/`score` for
@@ -299,3 +389,9 @@ policy — including `bio-research`, whose adoption is deferred to AGE-554.
 6. **Q3 (AEDP transformance) had no hit from any connector.** No envelope design fixes a
    retrieval gap; recorded here so §3.2's institute-publication problem is not mistaken
    for the whole of it.
+7. **Batch support is unverified for three connectors** (§6b.1). A cheap verification pass
+   against the keyless three would either enable batch amortisation or close the question.
+8. **Cache invalidation on registration change is unspecified.** §6b treats registered
+   metadata as immutable, which is true in practice but not absolutely — a registrant can
+   update a Crossref record. Crossref's `indexed.date-time` is a candidate freshness key;
+   not designed here.
