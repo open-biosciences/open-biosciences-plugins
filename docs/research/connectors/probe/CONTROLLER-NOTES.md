@@ -131,7 +131,59 @@ provenance-beats-DOI rule for repository-sourced records, or an explicit
 
 ---
 
-## 7. Crossref rate limit was initially exceeded
+## 7. "No DOI → `unverified`" discards registered type that IS present
+
+Surfaced while reconciling Europe PMC's miss rows.
+
+Europe PMC's Q2 top result carries a **registered `pubType` of `review-article`** but
+**no DOI**. Spec §6.2's resolution order is:
+
+1. DOI with registered metadata → classify from the item's own registered type
+2. No DOI → `unverified`
+3. Neither → `unverified`
+
+Applied literally — which the agent did, correctly — Q2 lands at `unverified` even
+though the API told us what kind of thing it is. The same happened on C2 (no DOI,
+`pubType` present but malformed: the literal string `"Abstract"`).
+
+**This is a genuine design question for Task 9, not an error.** The resolution order
+treats the DOI as the *anchor of trust*, so type without a DOI is discarded. That is
+defensible — an unregistered type is an assertion by the index rather than by a
+registration authority — but it is a decision the spec makes implicitly and never
+argues for. §6.2 should either:
+
+- **defend it explicitly** (registered-with-Crossref/DataCite is the trust boundary; an
+  index's self-reported type is not equivalent), or
+- **add a tier** distinguishing "registered type" from "index-asserted type", so a
+  no-DOI record with a usable type is not flattened into the same bucket as a record
+  with no type information at all.
+
+The distinction is not cosmetic: it changes how much of Europe PMC's PMC-sourced
+content (11% of its sampled results, frequently DOI-less) can be tiered at all.
+
+---
+
+## 8. Semantic Scholar throttles unauthenticated — a class difference, not a hiccup
+
+Controller-verified independently: a single-result unauthenticated call to
+`api.semanticscholar.org/graph/v1/paper/search` returned **HTTP 429**, body
+*"Too Many Requests. Please wait and try again or apply for a key for higher rate
+limits."*
+
+OpenAlex, Crossref, and Europe PMC each completed all 12 queries **keyless**.
+Semantic Scholar could not.
+
+**Consequence for `DECISION.md` §7.2.** This splits the candidate set along the axis
+AGE-548 question 3 is actually about. Keyless connectors can be declared in
+`.mcp.json` with nothing further. A credentialed connector is still declarable —
+`${VAR}` header expansion, `headersHelper`, or plugin `userConfig` with
+`sensitive: true` — but it obliges the consumer to obtain and supply a key, which is a
+real adoption cost and a different scope answer. Do not let the roster present
+Semantic Scholar as equivalent-but-slower.
+
+---
+
+## 9. Crossref rate limit was initially exceeded
 
 The Crossref agent found, from live `x-rate-limit-*` response headers, that the
 adapter's initial `RATE = 0.2` (5 req/s) was above Crossref's declared 3 req/s cap,
