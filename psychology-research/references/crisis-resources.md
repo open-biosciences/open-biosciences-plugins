@@ -1,6 +1,6 @@
 # Crisis Resources
 
-This file is included verbatim into every psychology-research skill's safety preamble at sync time. If user input or analysis indicates acute self-harm, suicide risk, active abuse, psychiatric crisis, or imminent danger, name these resources, encourage immediate use, and pause analytical work.
+This is the single copy of the crisis resources. Every psychology-research skill points here from its Safety Preflight section and reads it live — there is no build step and no copy to keep in sync. If user input or analysis indicates acute self-harm, suicide risk, active abuse, psychiatric crisis, or imminent danger, name these resources, encourage immediate use, and pause analytical work.
 
 ## United States — General
 

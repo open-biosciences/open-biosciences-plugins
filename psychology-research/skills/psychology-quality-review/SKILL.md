@@ -28,7 +28,7 @@ Quality review's primary outputs are reviewer findings — these are exempt from
 
 ## Safety Preflight
 
-{{include: ../../references/crisis-resources.md}}
+If user input or analysis indicates acute self-harm, suicide risk, active abuse, psychiatric crisis, or imminent danger, pause analytical work and name crisis resources to the user, encouraging immediate use. First-line US resources are the **988 Suicide and Crisis Lifeline** (call or text 988) and the **Crisis Text Line** (text HOME to 741741). Read [crisis-resources.md](../../references/crisis-resources.md) for the full list — population-specific lines (Veterans, LGBTQ+ youth, trans, sexual assault, child abuse), the caveats on calling 911 in a mental-health crisis, and non-US guidance.
 
 ## Required Reads
 
