@@ -38,10 +38,23 @@ Observed 2026-08-15, from two independent vantage points:
 |---|---|
 | Controller, isolated single call | HTTP 429 |
 | Controller, 4 calls spaced 25s over 75s | HTTP 429 × 4 |
+| Controller, 3 calls spaced 15s — **~1.5 h later, separate window** | HTTP 429 × 3 |
 | Harness run, `RATE = 10.0s` + retries at 20s / 40s / 70s | 429 on **cell 1**, all retries exhausted, run aborted |
 
 The harness spent 130 seconds of deliberate backoff on the first query alone and never
 got a 200. This is not a pacing defect on our side.
+
+**Three separate observation windows across ~1.5 hours all returned 429.** One 200 was
+obtained early in the first window (the C1 fixture, 21:15:38Z), so the pool clears
+intermittently — but not reliably, and not on any schedule a client can plan around.
+
+**An API key was requested and is pending.** Semantic Scholar's acknowledgement states
+that requests are prioritised for *"academic and research institutions, nonprofit
+organizations, and government entities"*, with no timeline, and adds that *"most
+endpoints are available to you as an unauthenticated user, with a lower rate limit."*
+**That last claim did not hold under measurement**: the unauthenticated tier is not
+merely slower, it failed to complete a single one of twelve queries across three windows.
+A wrapper cannot be built against a tier whose availability is this variable.
 
 **Consequence:** Semantic Scholar is a **credentialed connector**. OpenAlex, Crossref and
 Europe PMC each completed all twelve queries keyless in the same session. This one could
