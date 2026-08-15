@@ -14,7 +14,7 @@
 
 Every task's requirements implicitly include these. Values copied verbatim from the spec.
 
-- **Working directory:** `/home/donbr/hci/open-biosciences-plugins-connector-research`, branch `feat/psychology-connector-research`. This repo is cloned into three roots ([AGE-567]); do not author into `/home/donbr/open-biosciences/open-biosciences-plugins` or `/mnt/c/Users/donbr/codex/open-biosciences-plugins`.
+- **Working directory:** `/home/donbr/open-biosciences/open-biosciences-plugins-connector-research`, branch `feat/psychology-connector-research`. This repo is cloned into three roots ([AGE-567]). **`/home/donbr/open-biosciences/` is the authoritative root** — it is the one `open-biosciences.code-workspace` defines. Do not author into `/home/donbr/hci/open-biosciences-plugins` or `/mnt/c/Users/donbr/codex/open-biosciences-plugins`.
 - **"No file outside `docs/research/connectors/` is created or modified"** (spec §11), excepting this plan and the spec itself.
 - **The probe harness is disposable discovery tooling, not `psychology-mcp` code.** Building `psychology-mcp` is an explicit non-goal (spec §3.2, §9). Do not add abstractions, packaging, or protocol conformance to the harness in anticipation of Layer 2. It exists to fill 60 cells reproducibly and then to be read, not shipped.
 - **Stdlib only.** Not from an invented repo rule — this is a plugin repo with no Python dependency file, and adding one for throwaway tooling would be wrong. Five simple GET+JSON clients do not need `httpx`.
@@ -115,7 +115,7 @@ Each adapter splits `search()` (network) from `parse()` (pure). Only `parse()` i
 - [ ] **Step 1: Create the deliverable directory**
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research
 mkdir -p docs/research/connectors/probe/connectors docs/research/connectors/probe/tests \
          docs/research/connectors/probe/fixtures docs/research/connectors/probe/results
 ```
@@ -220,7 +220,7 @@ The 12 validated cell records per connector live in `probe/results/`.
 - [ ] **Step 3: Verify the queries match the spec exactly**
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research
 grep -c "^| Q[0-9]" docs/research/connectors/README.md    # expect 10
 grep -c "^| C[12]" docs/research/connectors/README.md     # expect 2
 ```
@@ -901,7 +901,7 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 The endpoint and field list below are from documentation knowledge and **must be verified**, per spec Appendix A's "not verified" list.
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research/docs/research/connectors
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0" \
   'https://api.semanticscholar.org/graph/v1/paper/search?query=emotionally+focused+therapy+couples+evidence-based+outcome&limit=5&fields=title,year,authors,externalIds,venue,publicationTypes,publicationVenue,openAccessPdf' \
   | python3 -m json.tool > probe/fixtures/semantic-scholar-C1.json
@@ -1085,7 +1085,7 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 1: Record the fixture**
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research/docs/research/connectors
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0 mailto:dwbranson@gmail.com" \
   'https://api.openalex.org/works?search=emotionally+focused+therapy+couples+evidence-based+outcome&per-page=5&mailto=dwbranson@gmail.com' \
   | python3 -m json.tool > probe/fixtures/openalex-C1.json
@@ -1255,7 +1255,7 @@ Crossref is structurally load-bearing, not merely another index: spec §6.2 reso
 - [ ] **Step 1: Record the fixture**
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research/docs/research/connectors
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0 mailto:dwbranson@gmail.com" \
   'https://api.crossref.org/works?query=emotionally+focused+therapy+couples+evidence-based+outcome&rows=5&mailto=dwbranson@gmail.com' \
   | python3 -m json.tool > probe/fixtures/crossref-C1.json
@@ -1457,7 +1457,7 @@ The open question here is **supersede vs. complement** (spec §10 q1): Europe PM
 - [ ] **Step 1: Record the fixture**
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research/docs/research/connectors
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0" \
   'https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=emotionally%20focused%20therapy%20couples%20evidence-based%20outcome&format=json&pageSize=5&resultType=core' \
   | python3 -m json.tool > probe/fixtures/europe-pmc-C1.json
@@ -1636,7 +1636,7 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 OSF uses JSON:API, so the shape differs from the other four — `data[]` with `attributes` and `relationships`.
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research/docs/research/connectors
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0" \
   'https://api.osf.io/v2/preprints/?filter%5Bprovider%5D=psyarxiv&filter%5Btitle%5D=emotionally%20focused%20therapy&page%5Bsize%5D=5' \
   | python3 -m json.tool > probe/fixtures/psyarxiv-osf-C1.json
@@ -1927,7 +1927,7 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 2: Verify every acceptance criterion in spec §11**
 
 ```bash
-cd /home/donbr/hci/open-biosciences-plugins-connector-research
+cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research
 git status --porcelain                                   # expect clean
 git diff --stat main -- . ':!docs/research/connectors' ':!docs/superpowers'
 ```

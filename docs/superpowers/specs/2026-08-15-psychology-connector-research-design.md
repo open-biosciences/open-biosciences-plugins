@@ -97,7 +97,11 @@ All under `docs/research/connectors/`:
 
 Still open, and deferred to the Layer-2 program (Appendix B): whether it becomes a git repository under the `open-biosciences` GitHub org alongside the other 13, and whether it is added to the workspace file and the platform README's repository table.
 
-This specification and its deliverables **relocate into that repo** once it is initialised. Until then they live in `open-biosciences-plugins` on `feat/psychology-connector-research`. Note that repository is itself cloned into three roots — see [AGE-567]; the authoritative WSL checkout for this work is `/home/donbr/hci/open-biosciences-plugins`.
+This specification and its deliverables **relocate into that repo** once it is initialised. Until then they live in `open-biosciences-plugins` on `feat/psychology-connector-research`.
+
+That repository is itself cloned into three roots ([AGE-567]). **The authoritative checkout is `/home/donbr/open-biosciences/open-biosciences-plugins`** — the one `open-biosciences.code-workspace` defines, alongside `biosciences-mcp` and the rest of the platform.
+
+*(Rev 2 asserted `/home/donbr/hci/open-biosciences-plugins` here. That was wrong: it recorded an early session instruction as settled policy, after the workspace architecture had already been established and AGE-567 had already been filed noting the authoritative root was undecided. Corrected 2026-08-15; all work relocated. Nothing was lost — both checkouts share one remote and everything was pushed.)*
 
 ### 3.5 Candidate rationale
 
