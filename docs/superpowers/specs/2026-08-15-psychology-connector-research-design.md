@@ -80,8 +80,8 @@ All under `docs/research/connectors/`:
 | **Semantic Scholar** | The plugin's own declared Tier-2 binding, named in `CONNECTORS.md`, `SKILL.md` (twice), and `modality-canon.md`. Broad disciplinary coverage. |
 | **OpenAlex** | Broadest open scholarly index; covers humanities, books, and non-biomedical psychology. Keyless. |
 | **Crossref** | DOI registry including monographs and book chapters. Supplies the item metadata the tier model needs, and exposes retraction/update notices. |
-| **Europe PMC** | Candidate **replacement** for the PubMed connector rather than an addition — superset scope (preprints, NCBI Bookshelf) and a richer API. Whether it supersedes PubMed is a research finding, not an assumption. |
-| **PsyArXiv / OSF Preprints** | The psychology preprint server. Occupies the slot bioRxiv was wrongly proposed for; bioRxiv is molecular and cell biology and returns near-nothing for this domain. |
+| **Europe PMC** | Candidate **replacement** for the PubMed connector rather than an addition. Its REST API exposes full-text XML, preprints, and NCBI Bookshelf monographs alongside PubMed records — so the supersede-vs-complement question is likely to be among the highest-value findings in `DECISION.md`. Whether it supersedes PubMed is a research finding, not an assumption. |
+| **PsyArXiv / OSF Preprints** | The psychology preprint server. Occupies the slot bioRxiv was wrongly proposed for; bioRxiv is molecular and cell biology and returns near-nothing for this domain. Preprints route through OSF API v2 as `/v2/preprints/?filter[provider]=psyarxiv`; where those preprints carry Crossref DOIs, cross-checking §3 metadata against `03-crossref.md` measures how well preprint metadata survives across indexers. |
 
 **Considered and deferred, with reasons recorded so they are not re-litigated:**
 
@@ -117,7 +117,17 @@ Queries span two independent axes. **Format** — does the connector index this 
 
 **C1 is scored separately from the coverage cells.** It validates the harness — an API that misses it has a broken client, not a coverage gap. It is not counted toward any connector's coverage score.
 
-**C2 is a fabricated construct with a fabricated citation.** The passing result is an explicit **zero hits or empty response**. Any non-empty, confident-looking result is a recorded finding against that connector or its wrapper. This control exists because fabricated citations have already reached a user-facing surface in this ecosystem (AGE-547); a connector that fuzzy-matches a plausible non-existent construct will reproduce that failure.
+**C2 is a fabricated construct with a fabricated citation.** This control exists because fabricated citations have already reached a user-facing surface in this ecosystem (AGE-547); a connector that fuzzy-matches a plausible non-existent construct will reproduce that failure.
+
+**Scoring C2 requires a distinction, because "zero results" is the wrong bar.** Token-relevance engines — Crossref and OpenAlex among them — will return topically adjacent work by matching individual words (`co-regulation`, `index`) even when the exact construct does not exist. That is normal retrieval behaviour, not a defect.
+
+| Outcome | Score | Record |
+|---|---|---|
+| Zero results | **pass** | `result: miss`, `n_results: 0` |
+| Non-empty, but no title/construct match — adjacent papers only | **pass** | `result: miss`, `n_results: N`, note *"token search returned adjacent papers; no construct match"* |
+| A result presented as matching the fabricated construct or its fabricated citation | **fail** | Recorded as a finding in that dossier's §7 |
+
+The failure mode under test is a **confident exact match for something that does not exist** — not breadth of recall.
 
 ### Cell record schema
 
@@ -257,7 +267,7 @@ Steps 2 through 5 run inline. No agent fan-out for artefact production.
 - [ ] `README.md` publishes all 12 queries verbatim, the cell-record schema, and the provenance note, and is approved before any API contact
 - [ ] All 60 cells populated; no cell blank or marked "not attempted"
 - [ ] C1 returns a hit for every connector, or the failure is diagnosed as a harness fault and fixed before that dossier is accepted
-- [ ] C2 returns zero hits for every connector, or the non-empty result is recorded as a finding in that dossier's §7
+- [ ] C2 produces no construct match for any connector, scored per the §4 table; any result presented as matching the fabricated construct or citation is recorded as a finding in that dossier's §7
 - [ ] Each dossier's §3 states, per connector, whether item-level venue classification is possible
 - [ ] Each dossier ends in an unambiguous bind / wrap / drop recommendation
 - [ ] `06-tier-model.md` contains no psychology-specific rule in Axes A or B, the resolution order, or the retraction and preprint handling
