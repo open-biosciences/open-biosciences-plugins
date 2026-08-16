@@ -10,7 +10,7 @@ The plugin is tool-agnostic. It describes workflows in terms of source categorie
 
 | Category | Placeholder | Default Binding (Tier-?) | Primary Uses |
 |----------|-------------|--------------------------|--------------|
-| Literature | `~~literature` | **`pubmed`** (declared in `.mcp.json`) | Biomedical, psychiatric and RCT-shaped research **only** — see "What is bound today" below |
+| Literature | `~~literature` | **`psychology-mcp`** + **`pubmed`** (both declared in `.mcp.json`) | `psychology-mcp` is the platform's first-party gateway: scholarly literature across psychology, behavioural and social science, with an explicit venue class and the basis for it. `pubmed` remains for biomedical, psychiatric and RCT-shaped work |
 | Web search/browser | `~~web` | (always: tier-capped at SUPPORTED) | Current provider pages, professional directories, official organizations, and public practice pages |
 | Licensing board | `~~licensing-board` | (Tier-3: per-state adapters) | State license lookup and disciplinary-status verification |
 | Certifying body | `~~certifying-body` | (Tier-3: AASECT, ICEEFT, AEDP, SE, EMDRIA, IFS, Gottman, PACT adapters) | AASECT, ICEEFT, AEDP Institute, SE International, EMDRIA, IFS Institute, and similar credential checks |
@@ -48,15 +48,48 @@ Every entry **must** carry `"type": "http"`. An entry with a `url` and no `type`
 
 ## What is bound today, and what is not
 
-`.mcp.json` declares **one** server:
+`.mcp.json` declares **two** literature servers:
 
 ```json
-{ "mcpServers": { "pubmed": { "type": "http", "url": "https://pubmed.mcp.claude.com/mcp" } } }
+{ "mcpServers": {
+    "psychology-mcp": { "type": "http", "url": "https://psychology-mcp.fastmcp.app/mcp" },
+    "pubmed":         { "type": "http", "url": "https://pubmed.mcp.claude.com/mcp" } } }
 ```
 
-**This closes the biomedical half of the literature category and nothing else.** PubMed's own scope note excludes non-medical psychology. A 2026-08-14 consumer run with PubMed bound still returned `UNRESOLVED` for IFS, Somatic Experiencing / Sensorimotor, AEDP transformance, the Heroine's Journey, Marston DISC, and secure-base research in established adult dyads.
+**The gap this plugin shipped with is closed.** PubMed's own scope note excludes non-medical
+psychology, and a 2026-08-14 consumer run with PubMed alone returned `UNRESOLVED` for IFS,
+Somatic Experiencing / Sensorimotor, AEDP transformance, the Heroine's Journey, Marston DISC,
+and secure-base research in established adult dyads.
 
-Claims in those paradigms fall through to `~~web` and stay tier-capped at `SUPPORTED`. **Say so in the report** rather than presenting a PubMed miss as evidence of absence.
+**All six now return classified results.** VERIFIED 2026-08-16 against the deployed gateway,
+5 results each:
+
+| 2026-08-14 gap | Top result via `psychology-mcp` |
+|---|---|
+| IFS | `book-chapter` / `registered` — *IFS and Neurodiversity: Appreciating Biology and Parts Work* |
+| Somatic Experiencing | `peer-reviewed-article` / `registered` — *Group Psychotherapy Informed by the Principles of Somatic Experiencing* |
+| AEDP transformance | `book-chapter` / `registered` — *The first session in AEDP: Harnessing transformance…* |
+| Heroine's Journey | `book-chapter` / `registered` — *The Heroine's Journey* |
+| Marston DISC | `book` / `registered` — *Emotions Of Normal People* (1928) |
+| secure base, adult dyads | `book-chapter` / `registered` — *Attachment Security in Adult Partnerships* |
+
+27 of the 30 returned works carried a real venue class; the remaining 3 carried `unverified`
+with `classification_basis: none`, which is the honest answer and not a miss — see below.
+
+### Two things this does NOT change
+
+**`unverified` still means unverified.** The gateway reports `venue_class` AND
+`classification_basis` as separate fields, and a work whose source supplied no classifiable
+metadata comes back `unverified` / `none`. That is a hit with an unknown class, not a
+failure to retrieve — treat it as a real result whose admissibility is undecided, and do not
+promote it to `VERIFIED` on the strength of having found it.
+
+**`retraction_status: unknown` is not `not-retracted`.** Only OpenAlex reports retraction in
+both directions; Crossref reports it only in the affirmative, and Semantic Scholar not at
+all. A work marked `unknown` has not been cleared — say `unknown`, never "not retracted".
+
+Paradigms still outside both servers' reach continue to fall through to `~~web` at
+`SUPPORTED`. **Say so in the report** rather than presenting a miss as evidence of absence.
 
 ### What closes the rest
 
@@ -67,10 +100,10 @@ A Layer-1 discovery pass measured five candidate APIs against a frozen 12-query 
 | **Crossref** | 8 hit / 2 partial / 0 miss | **Tier 0** — the only connector reaching book canon and historical primaries; sole source of `isbn` and registered `type` |
 | **OpenAlex** | 2 / 5 / 3 | **Tier 0** — the only source of standing retraction status |
 | Europe PMC | 2 / 2 / 6 | Tier 1 — sole source of `pmcid`; missed the modality queries entirely |
-| Semantic Scholar | *not measured* | Tier 2 — unauthenticated API returns sustained HTTP 429; needs a key |
+| Semantic Scholar | 5 / 4 / 1 | Tier 1 — **key issued, benchmark re-run authenticated**; second only to Crossref. The only route to DOI-less records, and the only connector answering AEDP transformance |
 | PsyArXiv / OSF | 0 / 0 / 10 | not scheduled — `filter[title]` is a substring match, not an index |
 | APA PsycNET | — | **removed** — no query API at any access level (SPA shell, `robots.txt` disallow, TDM rights reserved) |
 
-These arrive as first-party servers in **`psychology-mcp`**, the platform's Layer-2 gateway for psychology — the counterpart to `biosciences-mcp`, which `bio-research` declares. Until it is deployed, this plugin's literature reach is the single PubMed binding above.
+These arrive as first-party servers in **`psychology-mcp`**, the platform's Layer-2 gateway for psychology — the counterpart to `biosciences-mcp`, which `bio-research` declares. **It is deployed and declared** at `https://psychology-mcp.fastmcp.app/mcp`; Crossref, OpenAlex and Semantic Scholar reach this plugin through it.
 
 Full evidence, including the per-connector dossiers and the response-envelope design: `docs/research/connectors/` in this repository.
