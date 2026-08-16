@@ -3,6 +3,19 @@
 All notable changes to the `psychology-research` plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-08-16
+
+### Added
+- **`psychology-mcp` is declared in `.mcp.json`** — `https://psychology-mcp.fastmcp.app/mcp`, the platform's first-party Layer-2 gateway for psychology, the counterpart to `biosciences-mcp` in `bio-research`. It wraps Crossref, OpenAlex and Semantic Scholar behind two tools (`search_works`, `get_work`) and returns an explicit `venue_class` with the `classification_basis` that established it.
+
+### Changed
+- **The literature category is no longer PubMed-only.** `pubmed` is retained alongside for biomedical, psychiatric and RCT-shaped work; `psychology-mcp` is listed first, per the documented ordering (literature servers first, alphabetical within category).
+- **`CONNECTORS.md` "What is bound today" rewritten.** It described a gap that no longer exists: the six paradigms a 2026-08-14 consumer run returned `UNRESOLVED` for — IFS, Somatic Experiencing / Sensorimotor, AEDP transformance, the Heroine's Journey, Marston DISC, and secure-base research in established adult dyads — **all return classified results**, verified 2026-08-16 against the deployed gateway. Marston's *Emotions Of Normal People* (1928) resolves as `book` / `registered`, the historical-primary case Crossref was selected for.
+- **Semantic Scholar's roster row corrected.** It read *"not measured — Tier 2, unauthenticated API returns sustained HTTP 429, needs a key"*. The key was issued 2026-08-15 and the frozen benchmark re-run authenticated: **5 hit / 4 partial / 1 miss**, second only to Crossref (`DECISION.md` §1). It is Tier 1, and it is the only route to DOI-less records.
+
+### Notes
+- Two reading rules added to `CONNECTORS.md`, because more coverage makes over-claiming easier, not harder: `unverified` is a hit with an undecided class and must not be promoted to `VERIFIED`; and `retraction_status: unknown` means **not cleared**, never "not retracted".
+
 ## [0.2.1] - 2026-08-14
 
 ### Fixed

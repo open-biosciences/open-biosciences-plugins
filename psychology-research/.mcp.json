@@ -1,5 +1,9 @@
 {
   "mcpServers": {
+    "psychology-mcp": {
+      "type": "http",
+      "url": "https://psychology-mcp.fastmcp.app/mcp"
+    },
     "pubmed": {
       "type": "http",
       "url": "https://pubmed.mcp.claude.com/mcp"
