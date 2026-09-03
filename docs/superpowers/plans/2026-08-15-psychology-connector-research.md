@@ -14,7 +14,7 @@
 
 Every task's requirements implicitly include these. Values copied verbatim from the spec.
 
-- **Working directory:** `$OB_ROOT/open-biosciences-plugins-connector-research` (`$OB_ROOT` is the directory holding `open-biosciences.code-workspace`), branch `feat/psychology-connector-research`. This repo is cloned into three roots ([AGE-567]). **`$OB_ROOT/` is the authoritative root** — it is the one `open-biosciences.code-workspace` defines. Do not author into `/home/donbr/hci/open-biosciences-plugins` or `/mnt/c/Users/donbr/codex/open-biosciences-plugins`.
+- **Working directory:** `$OB_ROOT/open-biosciences-plugins-connector-research` (`$OB_ROOT` is the directory holding `open-biosciences.code-workspace`), branch `feat/psychology-connector-research`. This repo is cloned into three roots ([AGE-567]). **`$OB_ROOT/` is the authoritative root** — it is the one `open-biosciences.code-workspace` defines. Do not author into `<a clone outside the workspace>` or `<a Windows clone>`.
 - **"No file outside `docs/research/connectors/` is created or modified"** (spec §11), excepting this plan and the spec itself.
 - **The probe harness is disposable discovery tooling, not `psychology-mcp` code.** Building `psychology-mcp` is an explicit non-goal (spec §3.2, §9). Do not add abstractions, packaging, or protocol conformance to the harness in anticipation of Layer 2. It exists to fill 60 cells reproducibly and then to be read, not shipped.
 - **Stdlib only.** Not from an invented repo rule — this is a plugin repo with no Python dependency file, and adding one for throwaway tooling would be wrong. Five simple GET+JSON clients do not need `httpx`.
