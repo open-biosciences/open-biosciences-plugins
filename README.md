@@ -67,7 +67,7 @@ Ask a competency question with `/ob-research` to resolve entities across databas
 
 ## Psychology Research
 
-`psychology-research` adapts the same grounding discipline to psychology, therapy, and provider-fit workflows. It is a Markdown-only v1: commands, skills, and references, with no bundled MCP servers or runtime services.
+`psychology-research` adapts the same grounding discipline to psychology, therapy, and provider-fit workflows. It ships commands, skills, and references plus a publish gate with eight validators. It bundles no MCP servers; connectors come from the session.
 
 ### Skills
 
@@ -86,6 +86,7 @@ Ask a competency question with `/ob-research` to resolve entities across databas
 | `/psy-provider` | Verify therapist/provider fit, credentials, modality claims, and gaps |
 | `/psy-report` | Format a sourced report from an evidence packet |
 | `/psy-review` | Quality-review a report and evidence packet |
+| `/psy-publish` | Run the publish gate and emit a bundle (report + evidence packet + manifest + content hash) |
 
 ### Safety
 
