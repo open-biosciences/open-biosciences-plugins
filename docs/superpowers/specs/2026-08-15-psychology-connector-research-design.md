@@ -76,7 +76,7 @@ Read from `biosciences-mcp/docs/adr/accepted/`. A `psychology-mcp` inherits thes
 - Creating the `psychology-mcp` repository (§3.4 records the open decision).
 - Changes to `psychology-research` skills, commands, or validators.
 - Changes to `bio-research` or `biosciences-mcp`.
-- Changes to `hci-canon`. Contradictions found there (§7.3) are recorded, not fixed.
+- Changes to the downstream consumer repo. Contradictions found there (§7.3) are recorded, not fixed.
 - Applying any delta. `DECISION.md` proposes; a separate PR applies.
 
 ### 3.3 Deliverables
@@ -93,15 +93,15 @@ All under `docs/research/connectors/`:
 
 ### 3.4 Where `psychology-mcp` lives — decided
 
-**`/home/donbr/open-biosciences/psychology-mcp`** — sibling of `biosciences-mcp`, inside the workspace defined by `open-biosciences.code-workspace`. Created 2026-08-15 (empty). The earlier placeholder at `/home/donbr/hci/psychology-mcp`, which sat outside the workspace, has been deleted.
+**`$OB_ROOT/psychology-mcp`** (`$OB_ROOT` is the directory holding `open-biosciences.code-workspace`) — sibling of `biosciences-mcp`, inside the workspace defined by `open-biosciences.code-workspace`. Created 2026-08-15 (empty). The earlier placeholder outside the workspace, which sat outside the workspace, has been deleted.
 
 Still open, and deferred to the Layer-2 program (Appendix B): whether it becomes a git repository under the `open-biosciences` GitHub org alongside the other 13, and whether it is added to the workspace file and the platform README's repository table.
 
 This specification and its deliverables **relocate into that repo** once it is initialised. Until then they live in `open-biosciences-plugins` on `feat/psychology-connector-research`.
 
-That repository is itself cloned into three roots ([AGE-567]). **The authoritative checkout is `/home/donbr/open-biosciences/open-biosciences-plugins`** — the one `open-biosciences.code-workspace` defines, alongside `biosciences-mcp` and the rest of the platform.
+That repository is itself cloned into three roots ([AGE-567]). **The authoritative checkout is `$OB_ROOT/open-biosciences-plugins`** — the one `open-biosciences.code-workspace` defines, alongside `biosciences-mcp` and the rest of the platform.
 
-*(Rev 2 asserted `/home/donbr/hci/open-biosciences-plugins` here. That was wrong: it recorded an early session instruction as settled policy, after the workspace architecture had already been established and AGE-567 had already been filed noting the authoritative root was undecided. Corrected 2026-08-15; all work relocated. Nothing was lost — both checkouts share one remote and everything was pushed.)*
+*(Rev 2 asserted a checkout outside the workspace here. That was wrong: it recorded an early session instruction as settled policy, after the workspace architecture had already been established and AGE-567 had already been filed noting the authoritative root was undecided. Corrected 2026-08-15; all work relocated. Nothing was lost — both checkouts share one remote and everything was pushed.)*
 
 ### 3.5 Candidate rationale
 
@@ -242,8 +242,8 @@ ADR-001 §7 mandates `slim=True` on batch tools and specifies `id`/`name`/`score
 
 **7.3 Producer/consumer contradictions found during research.** Recorded, not fixed:
 
-- `hci-canon` `.claude/skills/relational-vibrancy/SKILL.md:70` names `pubmed-database / OpenAlex / Europe PMC`; `psychology-research` names `pubmed, semantic-scholar`. Consumer and producer disagree.
-- The same file's frontmatter enumerates seven modalities plus an eighth lens, `SKILL.md:86` says *"omit to run all seven"*, and the 2026-08-14 run report says *"four of the eight lenses."*
+- The downstream consumer skill names `pubmed-database / OpenAlex / Europe PMC`; `psychology-research` names `pubmed, semantic-scholar`. Consumer and producer disagree.
+- The same file's frontmatter enumerates seven modalities plus an eighth lens, its body says *"omit to run all seven"*, and the 2026-08-14 run report says *"four of the eight lenses."*
 
 **7.4 Interim plugin binding.** The concrete `.mcp.json` delta for what can be declared **today**, before `psychology-mcp` exists. **Written out, not applied.** Every entry must carry `"type": "http"` — an entry with a `url` and no `type` is read as stdio, skipped, and warned about. Note that `psychology-research/` is mirrored downstream into `psychology-research-plugins` by `rsync --delete`; deltas must be authored upstream and reach the mirror by that sync, never hand-edited there.
 
@@ -269,7 +269,7 @@ Parallel dispatch is conditional on **artefact-level verification, not agent rep
 - Building `psychology-mcp` or any FastMCP server.
 - Creating the `psychology-mcp` repository.
 - Reconciling `bio-research` or `biosciences-mcp` to anything here.
-- Fixing the `hci-canon` contradictions in §7.3.
+- Fixing the downstream consumer contradictions in §7.3.
 - Applying any delta to `.mcp.json`, `CONNECTORS.md`, or `source-tiers.yaml`.
 - Re-opening AGE-548 beyond its question 3.
 - Any change to `psychology-research`'s crisis-safety surface, evidence-label vocabulary, or `local_context` tier rule. These are settled and reusable as-is.
@@ -322,13 +322,13 @@ Verified by direct read on 2026-08-15:
 | `literature: []`; Tier-2 wires `[pubmed, semantic-scholar, ~~web]` | `skills/psychology-evidence-builder/SKILL.md:5` |
 | Semantic Scholar preferred for modality/qualitative/book canon | `SKILL.md:30`; `CONNECTORS.md:13`; `references/modality-canon.md` |
 | `source-tiers.yaml` is a flat 31-entry domain map | `references/source-tiers.yaml` |
-| Six `UNRESOLVED`; four of eight lenses ungrounded | `hci-canon` `research/vibrancy-runs/2026-08-14-don-lila/literature-grounding.md` |
+| Six `UNRESOLVED`; four of eight lenses ungrounded | internal consumer run, 2026-08-14 (record kept privately) |
 | Untiered-domain count; silent-skip behaviour | `docs/2026-08-13-…-plugin-backlog.md` §3.4, citing `source_tiers_loader.py:43-44`, `source_tier_minimum.py:74-79` |
 | ADR mandates in §2.1 | `biosciences-mcp/docs/adr/accepted/adr-001-v1.4.md` §§2–9; adr-002 … adr-006 |
 | 12 servers + gateway; Python ≥3.11 with fastmcp/httpx/pydantic | `biosciences-mcp/src/biosciences_mcp/servers/`; `biosciences-mcp/pyproject.toml` |
 | Platform layer roles and migration lineage | `biosciences-program/README.md`; `open-biosciences.code-workspace` |
 | Plugin architecture: bundled code, dependency mechanisms, `${VAR}` expansion, `headersHelper`, `userConfig`, `url`-needs-`type` | `code.claude.com/docs/en/plugins-reference`; `code.claude.com/docs/en/mcp` |
-| Consumer/producer contradictions | `hci-canon` `.claude/skills/relational-vibrancy/SKILL.md:70`, `:86`, frontmatter |
+| Consumer/producer contradictions | the downstream consumer skill (private) |
 
 **Not verified.** Whether a public MCP server exists for any of the five; whether each is reachable keyless; whether APA PsycNET has any programmatic route; the actual response shape of any candidate API. These are the research questions, not assumptions this spec rests on.
 

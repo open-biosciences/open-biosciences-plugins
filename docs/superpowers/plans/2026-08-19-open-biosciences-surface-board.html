@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>open-biosciences — plugin surface, connectors, workspace template</title>
+<style>
+  .viz-root{
+    color-scheme: light;
+    --surface-0:#f4f3f0; --surface-1:#fcfcfb; --surface-2:#efeeea;
+    --line:#dddcd6; --line-strong:#c4c3bc;
+    --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#77756f;
+    --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --neutral:#8a8880;
+    --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:where(:not([data-theme="light"])) .viz-root{
+      color-scheme: dark;
+      --surface-0:#121211; --surface-1:#1a1a19; --surface-2:#242422;
+      --line:#35352f; --line-strong:#4c4c45;
+      --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#94938a;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --neutral:#7d7b74;
+    }
+  }
+  :root[data-theme="dark"] .viz-root{
+    color-scheme: dark;
+    --surface-0:#121211; --surface-1:#1a1a19; --surface-2:#242422;
+    --line:#35352f; --line-strong:#4c4c45;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#94938a;
+    --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --neutral:#7d7b74;
+  }
+  *{box-sizing:border-box} html,body{margin:0;padding:0} body{background:var(--surface-0)}
+  .viz-root{background:var(--surface-0);color:var(--text-primary);
+    font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100vh;padding:28px 22px 64px}
+  .wrap{max-width:1140px;margin:0 auto}
+  h1{font-size:23px;letter-spacing:-.01em;margin:0 0 4px}
+  h2{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);
+     margin:38px 0 12px;font-weight:600}
+  .sub{color:var(--text-secondary);font-size:13.5px;margin:0}
+  .prov{color:var(--text-muted);font-size:12.5px;margin:8px 0 0}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em}
+  header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+  button.toggle{background:var(--surface-1);color:var(--text-secondary);border:1px solid var(--line-strong);
+    border-radius:7px;padding:7px 12px;font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap}
+  button.toggle:hover{border-color:var(--text-muted);color:var(--text-primary)}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:12px;margin-top:20px}
+  .tile{background:var(--surface-1);border:1px solid var(--line);border-radius:11px;padding:15px 16px}
+  .tile .n{font-size:29px;font-weight:640;letter-spacing:-.02em;line-height:1.1}
+  .tile .lab{font-size:12.5px;color:var(--text-secondary);margin-top:5px}
+  .tile .note{font-size:11.5px;color:var(--text-muted);margin-top:7px}
+  .callout{background:var(--surface-1);border:1px solid var(--line);border-left:4px solid var(--warning);
+    border-radius:11px;padding:17px 19px;margin-top:14px}
+  .callout h3{margin:0 0 9px;font-size:15.5px;display:flex;align-items:center;gap:9px}
+  .callout p{margin:0 0 10px;color:var(--text-secondary);font-size:13.4px}
+  .callout p:last-child{margin-bottom:0}
+  table{width:100%;border-collapse:collapse;margin-top:4px;font-size:13.2px}
+  caption{text-align:left;color:var(--text-muted);font-size:12.5px;padding-bottom:9px}
+  th{text-align:left;font-weight:600;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+     color:var(--text-muted);padding:0 11px 8px 0;border-bottom:1px solid var(--line-strong)}
+  td{padding:10px 11px 10px 0;border-bottom:1px solid var(--line);vertical-align:top;color:var(--text-secondary)}
+  td.b{color:var(--text-primary)}
+  tbody tr:hover td{background:var(--surface-1)}
+  .verdict{display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:12.5px;white-space:nowrap}
+  .ic{width:14px;height:14px;flex:none}
+  .pill{display:inline-block;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+    padding:2px 7px;border-radius:999px;border:1px solid var(--line-strong);color:var(--text-muted);
+    background:var(--surface-2);margin-left:6px;vertical-align:1px}
+  .layers{display:grid;gap:9px;margin-top:6px}
+  .layer{display:grid;grid-template-columns:190px 1fr;background:var(--surface-1);
+    border:1px solid var(--line);border-radius:11px;overflow:hidden}
+  .layer .name{padding:13px 15px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:3px}
+  .layer .name .t{font-weight:640;font-size:14px;display:flex;align-items:center;gap:8px}
+  .layer .name .r{font-size:11.5px;color:var(--text-muted)}
+  .swatch{width:11px;height:11px;border-radius:3px;flex:none;box-shadow:0 0 0 2px var(--surface-1)}
+  .layer .body{padding:12px 15px;display:flex;flex-direction:column;gap:8px;min-width:0}
+  .carries{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font-size:11.5px;padding:3px 8px;border-radius:999px;border:1px solid var(--line-strong);
+    color:var(--text-secondary);background:var(--surface-2);white-space:nowrap}
+  .chip.no{color:var(--text-muted);text-decoration:line-through;opacity:.72}
+  .layer .why{font-size:12.5px;color:var(--text-secondary);margin:0}
+  td .why{font-size:11.8px;color:var(--text-muted);margin:0}
+  .arrow{text-align:center;color:var(--text-muted);font-size:12px;letter-spacing:.06em;margin:-2px 0}
+  .seq{display:grid;gap:8px;margin-top:4px}
+  .seqrow{display:grid;grid-template-columns:74px 1fr;gap:14px;background:var(--surface-1);
+    border:1px solid var(--line);border-radius:10px;padding:12px 15px}
+  .seqn{font-variant-numeric:tabular-nums;font-weight:640;color:var(--text-muted);font-size:11.5px;
+    letter-spacing:.04em;text-transform:uppercase;padding-top:2px}
+  .seqrow .h{font-weight:620;font-size:13.5px;margin:0 0 4px;color:var(--text-primary)}
+  .seqrow p{margin:0;font-size:12.8px;color:var(--text-secondary)}
+  .cmd{margin-top:8px;background:var(--surface-2);border:1px solid var(--line);border-radius:7px;
+    padding:9px 11px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:11.8px;color:var(--text-primary);overflow-x:auto;white-space:pre}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--text-muted);font-size:12px}
+  @media (max-width:720px){
+    .layer,.seqrow{grid-template-columns:1fr}
+    .layer .name{border-right:none;border-bottom:1px solid var(--line)}
+    table{font-size:12.5px}
+  }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+
+<header class="top">
+  <div>
+    <h1>open-biosciences — plugin surface, connectors, workspace template</h1>
+    <p class="sub">Two shipped plugins with a working marketplace. One workspace template that has not caught up.</p>
+    <p class="prov">Read from the 14 repos under <span class="mono">codex/</span> · connectors called live · skill sizes measured against the published 500-line guidance · 2026-08-19</p>
+  </div>
+  <button class="toggle" id="themeBtn" type="button">Dark mode</button>
+</header>
+
+<div class="tiles">
+  <div class="tile">
+    <div class="n" style="color:var(--good)">2</div>
+    <div class="lab">plugins shipping from one marketplace</div>
+    <div class="note">15 skills · 11 commands · valid <span class="mono">marketplace.json</span></div>
+  </div>
+  <div class="tile">
+    <div class="n" style="color:var(--good)">2 / 2</div>
+    <div class="lab">first-party connectors answered live</div>
+    <div class="note">gateway + edge called directly · 3 more installed but toggled off</div>
+  </div>
+  <div class="tile">
+    <div class="n" style="color:var(--warning)">3 / 11</div>
+    <div class="lab">bio-research skills over the 500-line guidance</div>
+    <div class="note">909 · 685 · 521 lines; psychology's four are 88–123</div>
+  </div>
+  <div class="tile">
+    <div class="n" style="color:var(--critical)">0 / 5</div>
+    <div class="lab">template invariants present in biosciences-workspace-template</div>
+    <div class="note">and 72 files of run data committed into <span class="mono">output/</span></div>
+  </div>
+</div>
+
+<h2>The short answer</h2>
+
+<div class="callout" style="border-left-color:var(--good)">
+  <h3>Plugins: yes, and ahead of the private relational plugin</h3>
+  <p><span class="mono">open-biosciences-plugins</span> is the pattern the private relational plugin is still trying to reach. It already has a valid <span class="mono">.claude-plugin/marketplace.json</span> listing two plugins, each with its own <span class="mono">plugin.json</span>, <span class="mono">.mcp.json</span>, <span class="mono">CONNECTORS.md</span>, <span class="mono">commands/</span>, <span class="mono">skills/</span> and <span class="mono">references/</span>, plus two GitHub Actions workflows. Nothing structural is missing.</p>
+</div>
+
+<div class="callout" style="border-left-color:var(--critical)">
+  <h3>Workspace template: no — and there is direct evidence it is not trusted</h3>
+  <p><span class="mono">biosciences-workspace-template</span> has none of the five invariants the other two templates enforce, and it carries 72 tracked files of run output — 2.5 MB across 11 run directories, 7 of which its own README never mentions.</p>
+  <p>The proof is not the checklist, it is the behaviour: a private research instance was generated from <strong>a private workspace template</strong> instead. Its instantiation commit says why, in its own words — an earlier build was abandoned because generating from the predecessor <em>"carried its committed run corpus into this history."</em> That is precisely the defect the biosciences template still has.</p>
+</div>
+
+<h2>Workspace template — the five invariants</h2>
+<table>
+  <caption>Checked by file presence on disk and by <span class="mono">git ls-files output</span>, 2026-08-19.</caption>
+  <thead><tr><th style="width:31%">Template</th><th><span class="mono">.claude/rules/</span></th><th><span class="mono">check-layer.sh</span></th><th><span class="mono">.githooks/</span></th><th><span class="mono">.gitattributes</span></th><th><span class="mono">output/</span> clean</th></tr></thead>
+  <tbody>
+    <tr><td class="b"><span class="mono">(private workspace template)</span><p class="why" style="margin-top:5px">The reference implementation. Instances inherit rules verbatim.</p></td>
+      <td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td></tr>
+    <tr><td class="b"><span class="mono">(private sibling template)</span><p class="why" style="margin-top:5px">Same shape. Now also carries <span class="mono">scripts/wsl-sweep.sh</span>.</p></td>
+      <td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td><td><span class="verdict" style="color:var(--good)">yes</span></td></tr>
+    <tr><td class="b"><span class="mono">biosciences-workspace-template</span><p class="why" style="margin-top:5px">Has <span class="mono">.claude/skills/pipeline-lessons-learned</span> and a good README, but no enforcement layer at all. Last commit message: <span class="mono">temp cleanup</span>.</p></td>
+      <td><span class="verdict" style="color:var(--critical)">no</span></td><td><span class="verdict" style="color:var(--critical)">no</span></td><td><span class="verdict" style="color:var(--critical)">no</span></td><td><span class="verdict" style="color:var(--critical)">no</span></td><td><span class="verdict" style="color:var(--critical)">no — 72 files</span></td></tr>
+  </tbody>
+</table>
+
+<p class="prov" style="margin-top:12px">The committed run directories: <span class="mono">cc-tyrosine-kinase</span>, <span class="mono">cq14</span>, <span class="mono">cq14edgefix</span>, <span class="mono">fabry-disease-gb3-accumulation</span> are referenced by the README and are arguably deliberate worked examples. <span class="mono">fabry-disease-mar2</span>, <span class="mono">methods-pharm</span>, <span class="mono">quickstart-walkthrough</span>, <span class="mono">qw</span>, <span class="mono">qw3</span>, <span class="mono">qw4</span>, <span class="mono">sl-system-approach</span> are not referenced anywhere — that is accumulation, and two of the names are keystrokes.</p>
+
+<h2>Plugin surface</h2>
+<table>
+  <caption>Read from <span class="mono">plugin.json</span>, <span class="mono">.mcp.json</span> and the on-disk trees — not inferred from directory names.</caption>
+  <thead><tr><th style="width:19%">Plugin</th><th style="width:9%">Skills</th><th style="width:11%">Commands</th><th style="width:24%">Declared connectors</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="b"><span class="mono">bio-research</span><span class="pill">v1.0.0</span></td>
+      <td>11</td><td>6 <span class="mono">ob-*</span></td>
+      <td><span class="mono">biosciences-mcp</span>, <span class="mono">biosciences-mcp-edge</span>, <span class="mono">synapse</span>, <span class="mono">pubmed</span>, <span class="mono">biorxiv</span></td>
+      <td>The mature half. Skill bodies untouched since 2026-03-06. Three exceed the published 500-line guidance and have no <span class="mono">references/</span> to spill into, though the plugin already uses that pattern at its own level.</td>
+    </tr>
+    <tr>
+      <td class="b"><span class="mono">psychology-research</span></td>
+      <td>4</td><td>5 <span class="mono">psy-*</span></td>
+      <td><span class="mono">psychology-mcp</span>, <span class="mono">pubmed</span></td>
+      <td>The active half — its gateway was declared in the most recent merge (PR #17, AGE-587). Ships real <span class="mono">scripts/</span>: a publish gate, validators and tests. Its skills are 88–123 lines, a quarter the density of bio-research's.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Skills against the published guidance</h2>
+<p class="sub" style="margin-bottom:10px">Anthropic's skill-authoring guidance is <strong>body under 500 lines</strong>, description <strong>max 1,024 characters</strong>. Measured in lines, not words — long prose lines make the two diverge sharply.</p>
+<table>
+  <thead><tr><th style="width:34%">Skill</th><th style="width:10%">Lines</th><th style="width:12%">Desc chars</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <tr><td class="b"><span class="mono">biosciences-cq-runner</span></td><td>909</td><td>353</td><td><span class="verdict" style="color:var(--critical)">1.8× the guidance — split first</span></td></tr>
+    <tr><td class="b"><span class="mono">biosciences-graph-builder</span></td><td>685</td><td>370</td><td><span class="verdict" style="color:var(--serious)">over — the Fuzzy-to-Fact phases are reference material</span></td></tr>
+    <tr><td class="b"><span class="mono">biosciences-reporting</span></td><td>521</td><td>347</td><td><span class="verdict" style="color:var(--warning)">marginally over</span></td></tr>
+    <tr><td class="b">the other 8 bio-research skills</td><td>219–432</td><td>308–361</td><td><span class="verdict" style="color:var(--good)">inside</span></td></tr>
+    <tr><td class="b">all 4 psychology-research skills</td><td>88–123</td><td>226–298</td><td><span class="verdict" style="color:var(--good)">inside, with room</span></td></tr>
+  </tbody>
+</table>
+<p class="prov" style="margin-top:10px">No description anywhere in either plugin exceeds 370 characters against the 1,024 ceiling. The constraint that bites is body length, and only in three files.</p>
+
+<h2>Connectors</h2>
+<table>
+  <caption>Liveness established by calling each server during this review, not by reading config.</caption>
+  <thead><tr><th style="width:26%">Server</th><th style="width:17%">This session</th><th>Evidence</th></tr></thead>
+  <tbody>
+    <tr><td class="b"><span class="mono">biosciences-mcp</span></td><td><span class="verdict" style="color:var(--good)">live</span></td><td><span class="mono">hgnc_search_genes("TP53")</span> → <span class="mono">HGNC:11998</span>, 22 results. Gateway over 12 databases.</td></tr>
+    <tr><td class="b"><span class="mono">biosciences-mcp-edge</span></td><td><span class="verdict" style="color:var(--good)">live</span></td><td><span class="mono">get_orcs_essentiality(7157)</span> → 98 CRISPR screens.</td></tr>
+    <tr><td class="b"><span class="mono">psychology-mcp</span></td><td><span class="verdict" style="color:var(--good)">connected</span></td><td>Two-phase <span class="mono">search_works</span> / <span class="mono">get_work</span> contract present.</td></tr>
+    <tr><td class="b"><span class="mono">pubmed</span></td><td><span class="verdict" style="color:var(--good)">connected</span></td><td>Shared by both plugins.</td></tr>
+    <tr><td class="b"><span class="mono">synapse</span> · <span class="mono">biorxiv</span></td><td><span class="verdict" style="color:var(--warning)">installed, off</span></td><td><strong>Resolved.</strong> Both are installed in the account but carry <span class="mono">enabledInChat: false</span> — toggled off for this session, not missing. Turn them on from the <span class="mono">+</span> menu before running <span class="mono">/ob-publish</span>, which names Synapse grounding as an output.</td></tr>
+    <tr><td class="b"><span class="mono">Hugging Face</span></td><td><span class="verdict" style="color:var(--warning)">installed, off</span></td><td>Connected at account level, disabled in this chat — while <span class="mono">biosciences-cq-discover</span> reads its 15-question catalog from a HuggingFace dataset. Same one-toggle fix.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <h3>Two things that look like defects and are not</h3>
+  <p><span class="mono">~~literature</span>, <span class="mono">~~data repository</span> and friends read like broken markup. They are a documented convention: <span class="mono">CONNECTORS.md</span> defines <span class="mono">~~category</span> as a placeholder so workflows stay tool-agnostic and any MCP server in that category works. Leave them alone.</p>
+  <p>The <span class="mono">ob-*</span> commands and <span class="mono">biosciences-*</span> skills are not duplicates of each other. Commands are thin orchestration entry points that name the skill they drive; the skills hold the procedure. 6 + 11 is the real surface.</p>
+</div>
+
+<div class="callout" style="border-left-color:var(--serious)">
+  <h3>One thing that looks fine and is not</h3>
+  <p><span class="mono">biosciences-skills</span> holds nine skills with the same names as the plugin's. All nine differ substantively — not whitespace. The plugin copies are newer, uniformly: <span class="mono">2026-03-06</span> against <span class="mono">2026-02-28</span>. So this is a stale predecessor rather than a live parallel tree, and the fix is to archive or redirect it, not to build a drift gate.</p>
+  <p>But the drift is not purely additive. The plugin's <span class="mono">biosciences-clinical</span> <em>dropped</em> the block explaining when to use <span class="mono">slim=true</span> versus <span class="mono">slim=false</span>, which the older copy still carries — while <span class="mono">ob-research.md</span> still tells the user the pipeline handles <span class="mono">slim</span> automatically. Worth reading before deleting anything.</p>
+</div>
+
+<h2>Gaps worth closing</h2>
+<div class="seq">
+  <div class="seqrow"><div class="seqn">Now</div><div>
+    <p class="h"><span class="mono">/start</span> is referenced five times and does not exist</p>
+    <p>Two commands and one skill tell the user to run <span class="mono">/start</span> to check connectivity — <span class="mono">ob-cq-run.md</span> even aborts and suggests it. No <span class="mono">start.md</span> exists in either plugin. This is the same gap a private plugin's <span class="mono">start</span> skill was drafted to fill; the connectivity-probe half of that draft ports directly.</p>
+  </div></div>
+
+  <div class="seqrow"><div class="seqn">Now</div><div>
+    <p class="h">Give <span class="mono">biosciences-workspace-template</span> the enforcement layer</p>
+    <p>Copy the shape from the private workspace template: <span class="mono">.claude/rules/</span>, <span class="mono">scripts/check-layer.sh</span>, <span class="mono">.githooks/</span>, <span class="mono">.gitattributes</span>, and an <span class="mono">output/*/</span> ignore rule with the TEMPLATE-ONLY block instances delete on instantiation. Until then <span class="mono">check-layer</span> cannot run, so nothing stops the next instance inheriting the run corpus.</p>
+  </div></div>
+
+  <div class="seqrow"><div class="seqn">Now</div><div>
+    <p class="h">Decide the fate of the 11 committed run directories</p>
+    <p>Four are cited by the README and can stay as worked examples if that is the intent — but then say so, in the README and in the layer rules, so <span class="mono">check-layer</span> can whitelist them rather than fail. The seven unreferenced ones, including <span class="mono">qw</span>, <span class="mono">qw3</span> and <span class="mono">qw4</span>, belong in an instance.</p>
+  </div></div>
+
+  <div class="seqrow"><div class="seqn">Next</div><div>
+    <p class="h">Split the three oversized skills</p>
+    <p><span class="mono">biosciences-cq-runner</span> first at 909 lines. The plugin already has a <span class="mono">references/</span> convention holding <span class="mono">fuzzy-to-fact.md</span> and <span class="mono">token-budgeting.md</span> — the phase tables and gold-standard comparisons are exactly what progressive disclosure is for.</p>
+  </div></div>
+
+  <div class="seqrow"><div class="seqn">Next</div><div>
+    <p class="h"><span class="mono">.gitattributes</span> across the estate</p>
+    <p>13 of the 14 biosciences repos lack it. The one that has it — the private research instance — inherited it from the template it was generated from. The symptom is already visible: <span class="mono">open-biosciences-plugins</span> currently shows <span class="mono">marketplace.json</span> as modified when every line is byte-identical.</p>
+  </div></div>
+
+  <div class="seqrow"><div class="seqn">Then</div><div>
+    <p class="h">Reconcile <span class="mono">biosciences-skills</span> with the plugin</p>
+    <p>Read the <span class="mono">slim</span> divergence first, port anything still true, then make the repo either a proxy tree or an archive. Nine forks with no generator is the failure mode the private plugin plan was written to avoid.</p>
+  </div></div>
+</div>
+
+<h2>The estate</h2>
+<div class="layers">
+  <div class="layer">
+    <div class="name"><span class="t"><span class="swatch" style="background:var(--series-1)"></span>Plugin</span><span class="r">open-biosciences-plugins</span></div>
+    <div class="body">
+      <div class="carries"><span class="chip">marketplace — <span class="mono">.claude-plugin/</span></span><span class="chip">2 plugins</span><span class="chip">connectors — <span class="mono">.mcp.json</span> ×2</span><span class="chip">CI — 2 workflows</span><span class="chip no">run data</span></div>
+      <p class="why">The distribution surface, and the healthiest layer. Skills are vendored as real bodies, which is correct for a plugin — but with no generator, so <span class="mono">biosciences-skills</span> has already fallen behind it.</p>
+    </div>
+  </div>
+  <div class="arrow">▼ queries</div>
+  <div class="layer">
+    <div class="name"><span class="t"><span class="swatch" style="background:var(--series-2)"></span>Connectors</span><span class="r">biosciences-mcp · -edge · psychology-mcp</span></div>
+    <div class="body">
+      <div class="carries"><span class="chip">12 databases behind one gateway</span><span class="chip">FastMCP Cloud</span><span class="chip">ORCS + MoA edge tools</span><span class="chip no">credentials in the package</span></div>
+      <p class="why">Both first-party servers answered live during this review. <span class="mono">lifesciences-research</span> and <span class="mono">biosciences-temporal</span> sit behind this layer as the platform and durable-execution story.</p>
+    </div>
+  </div>
+  <div class="arrow">▼ <em>should be</em> Use this template → Private</div>
+  <div class="layer">
+    <div class="name"><span class="t"><span class="swatch" style="background:var(--series-3)"></span>Workspace template</span><span class="r">biosciences-workspace-template</span></div>
+    <div class="body">
+      <div class="carries"><span class="chip">README with three personas</span><span class="chip"><span class="mono">.claude/skills/pipeline-lessons-learned</span></span><span class="chip no">rules</span><span class="chip no">layer check</span><span class="chip no">hooks</span><span class="chip no">clean output/</span></div>
+      <p class="why">The weak link. Good documentation, no enforcement, and 2.5 MB of run data in the layer that is supposed to hold none.</p>
+    </div>
+  </div>
+  <div class="arrow">▼ instantiates as</div>
+  <div class="layer">
+    <div class="name"><span class="t"><span class="swatch" style="background:var(--neutral)"></span>Instance</span><span class="r">private research instance</span></div>
+    <div class="body">
+      <div class="carries"><span class="chip">3 rules in <span class="mono">.claude/rules/</span></span><span class="chip"><span class="mono">run-manifest</span> skill</span><span class="chip"><span class="mono">check-layer.sh</span></span><span class="chip"><span class="mono">output/</span> — README only</span></div>
+      <p class="why">The one that works — and it came from the private workspace template, not from the biosciences one. It still carries a workspace file from its origin, which is a small tell about where the good pattern lives.</p>
+    </div>
+  </div>
+</div>
+<footer>
+  Read-only review. Nothing in any biosciences repo was modified to produce this board. Every count came from the files on disk or from a live connector call; skill sizes are measured against Anthropic's published skill-authoring guidance (body under 500 lines, description under 1,024 characters), not against a remembered number.<br>
+  Scope caveat: read from the Windows checkouts under <span class="mono">codex/</span>. WSL copies may differ, and the <span class="mono">marketplace</span> repo under <span class="mono">~/open-biosciences</span> was not reachable from this session.
+</footer>
+
+</div>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  function label(){ btn.textContent = root.getAttribute('data-theme')==='dark' ? 'Light mode' : 'Dark mode'; }
+  btn.addEventListener('click',function(){
+    root.setAttribute('data-theme', root.getAttribute('data-theme')==='dark' ? 'light' : 'dark'); label();
+  });
+  label();
+})();
+</script>
+</body>
+</html>
