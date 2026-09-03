@@ -61,6 +61,16 @@ def run_gate(report_path: Path, out_dir: Path,
     for v in REGISTRY:
         try:
             results.append(v(report_path))
+        except UnicodeDecodeError as exc:
+            results.append(ValidatorResult(
+                name=getattr(v, "__name__", "unknown"),
+                severity=Severity.BLOCK,
+                findings=[
+                    f"{report_path} is not valid UTF-8 (byte "
+                    f"{exc.object[exc.start]:#04x} at position {exc.start}). "
+                    "Re-save the report as UTF-8 and re-run the gate."
+                ],
+            ))
         except Exception as exc:
             results.append(ValidatorResult(
                 name=getattr(v, "__name__", "unknown"),

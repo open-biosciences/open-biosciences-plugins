@@ -1,4 +1,4 @@
-"""Validator registry. Tier-1a registers seven validators with locked severities."""
+"""Validator registry. Registers eight validators with locked severities."""
 
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ REGISTRY: list = []
 
 
 def populate_registry() -> None:
-    """Populate REGISTRY with the Tier-1a seven validators."""
+    """Populate REGISTRY with the eight gate validators."""
     REGISTRY.clear()
 
     # Imports here to avoid circular imports at module load.
@@ -43,6 +43,7 @@ def populate_registry() -> None:
         validate_bibliography_integrity,
     )
     from scripts.validators.template_conformance import validate_template_conformance
+    from scripts.validators.no_citations_found import validate_no_citations_found
 
     REGISTRY.extend([
         citation_entry(_REFS / "source-tiers.yaml"),
@@ -52,6 +53,7 @@ def populate_registry() -> None:
         validate_evidence_label_coverage,
         validate_bibliography_integrity,
         validate_template_conformance,
+        validate_no_citations_found,
     ])
 
 
