@@ -53,11 +53,11 @@ class TestOrchestratorSkeleton(unittest.TestCase):
             data = json.loads(paths.manifest.read_text())
             self.assertEqual(data["overall"], "BLOCK")
 
-    def test_registry_contains_seven_validators_after_populate(self):
+    def test_registry_contains_eight_validators_after_populate(self):
         from scripts.validators import populate_registry, REGISTRY
         REGISTRY.clear()
         populate_registry()
-        self.assertEqual(len(REGISTRY), 7)
+        self.assertEqual(len(REGISTRY), 8)
 
 
 if __name__ == "__main__":
