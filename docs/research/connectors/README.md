@@ -18,7 +18,7 @@ These 12 queries were **frozen on 2026-08-15, before any candidate API was conta
 That is what makes the coverage matrix citable evidence rather than connector shopping.
 
 - **Q1–Q6** are the six `UNRESOLVED` results recorded by an independent run on
-  2026-08-14 (`hci-canon` `research/vibrancy-runs/2026-08-14-don-lila/literature-grounding.md`),
+  2026-08-14 (an internal consumer run; record kept privately),
   written down before any connector was under consideration.
 - **Q7–Q8** extend that to one query per modality in the consuming framework.
 - **Q9–Q10** were added during spec design to close a subject-axis blind spot: Q1–Q8

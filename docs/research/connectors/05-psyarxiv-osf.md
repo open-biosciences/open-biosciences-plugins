@@ -195,7 +195,7 @@ preprint whenever OSF has back-filled the published DOI into that field.
 across indexers.** Five real PsyArXiv-preprint DOIs (surfaced via the
 supplementary `filter[title]` searches above, not the 12 formal misses, since
 none of the 12 formal cells returned a DOI to check) were queried against
-`https://api.crossref.org/works/{doi}` live, 1 req/sec, `mailto=dwbranson@gmail.com`:
+`https://api.crossref.org/works/{doi}` live, 1 req/sec, `mailto=$PROBE_CONTACT_EMAIL`:
 
 | PsyArXiv DOI (from `attributes.doi`) | Crossref `type` | Crossref `container-title` | Crossref `publisher` | `relation.has-preprint`? |
 |---|---|---|---|---|

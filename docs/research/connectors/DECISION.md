@@ -124,16 +124,16 @@ adoption cost and belongs in the scope decision, but it is not a packaging barri
 
 ## 3. Producer/consumer contradictions found during research
 
-Recorded, **not fixed** — both are in `hci-canon`, outside this effort's scope.
+Recorded, **not fixed** — both are in the downstream consumer repo, outside this effort's scope.
 
-1. **Literature source list disagrees.** `hci-canon`
-   `.claude/skills/relational-vibrancy/SKILL.md:70` names `pubmed-database / OpenAlex /
+1. **Literature source list disagrees.** The downstream consumer skill
+   names `pubmed-database / OpenAlex /
    Europe PMC`; `psychology-research` names `pubmed, semantic-scholar`. The consumer and
    the producer disagree about which non-PubMed source is intended. **This research
    supports the consumer's list**: OpenAlex and Europe PMC both measured; Semantic
    Scholar could not be measured.
 2. **Lens count disagrees with itself.** The same file's frontmatter enumerates seven
-   modalities plus an eighth lens; `SKILL.md:86` says *"omit to run all seven"*; the
+   modalities plus an eighth lens; its body says *"omit to run all seven"*; the
    2026-08-14 run report says *"four of the eight lenses."*
 
 ## 4. Interim plugin binding — proposed, NOT applied
@@ -296,9 +296,9 @@ connector.
    candidate set (§5.1). The follow-on is the `source-tiers.yaml` comment change in §5.1a,
    which folds into the interim binding PR.
 4. **Layer-2 SpecKit program** — initialise `psychology-mcp` at
-   `/home/donbr/open-biosciences/psychology-mcp`, register it in
+   `$OB_ROOT/psychology-mcp`, register it in
    `open-biosciences.code-workspace` and the platform README, then one
    `/speckit.specify` per server in §1 build order.
 5. **`source-tiers.yaml` redesign** — follows the envelope, needs `psychology-mcp`.
 6. **`bio-research` envelope adoption** where it overlaps (PubMed, bioRxiv) — AGE-554.
-7. **`hci-canon` contradictions** (§3) — separate, in that repo.
+7. **Downstream consumer contradictions** (§3) — separate, in that repo.

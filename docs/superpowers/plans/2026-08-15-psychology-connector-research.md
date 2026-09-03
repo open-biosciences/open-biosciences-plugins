@@ -14,7 +14,7 @@
 
 Every task's requirements implicitly include these. Values copied verbatim from the spec.
 
-- **Working directory:** `/home/donbr/open-biosciences/open-biosciences-plugins-connector-research`, branch `feat/psychology-connector-research`. This repo is cloned into three roots ([AGE-567]). **`/home/donbr/open-biosciences/` is the authoritative root** — it is the one `open-biosciences.code-workspace` defines. Do not author into `/home/donbr/hci/open-biosciences-plugins` or `/mnt/c/Users/donbr/codex/open-biosciences-plugins`.
+- **Working directory:** `$OB_ROOT/open-biosciences-plugins-connector-research` (`$OB_ROOT` is the directory holding `open-biosciences.code-workspace`), branch `feat/psychology-connector-research`. This repo is cloned into three roots ([AGE-567]). **`$OB_ROOT/` is the authoritative root** — it is the one `open-biosciences.code-workspace` defines. Do not author into `/home/donbr/hci/open-biosciences-plugins` or `/mnt/c/Users/donbr/codex/open-biosciences-plugins`.
 - **"No file outside `docs/research/connectors/` is created or modified"** (spec §11), excepting this plan and the spec itself.
 - **The probe harness is disposable discovery tooling, not `psychology-mcp` code.** Building `psychology-mcp` is an explicit non-goal (spec §3.2, §9). Do not add abstractions, packaging, or protocol conformance to the harness in anticipation of Layer 2. It exists to fill 60 cells reproducibly and then to be read, not shipped.
 - **Stdlib only.** Not from an invented repo rule — this is a plugin repo with no Python dependency file, and adding one for throwaway tooling would be wrong. Five simple GET+JSON clients do not need `httpx`.
@@ -115,7 +115,7 @@ Each adapter splits `search()` (network) from `parse()` (pure). Only `parse()` i
 - [ ] **Step 1: Create the deliverable directory**
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research
+cd $OB_ROOT/open-biosciences-plugins-connector-research
 mkdir -p docs/research/connectors/probe/connectors docs/research/connectors/probe/tests \
          docs/research/connectors/probe/fixtures docs/research/connectors/probe/results
 ```
@@ -136,7 +136,7 @@ These 12 queries were **frozen on 2026-08-15, before any candidate API was conta
 That is what makes the coverage matrix citable evidence rather than connector shopping.
 
 - **Q1–Q6** are the six `UNRESOLVED` results recorded by an independent run on
-  2026-08-14 (`hci-canon` `research/vibrancy-runs/2026-08-14-don-lila/literature-grounding.md`),
+  2026-08-14 (an internal consumer run; record kept privately),
   written down before any connector was under consideration.
 - **Q7–Q8** extend that to one query per modality in the consuming framework.
 - **Q9–Q10** were added during spec design to close a subject-axis blind spot: Q1–Q8
@@ -220,7 +220,7 @@ The 12 validated cell records per connector live in `probe/results/`.
 - [ ] **Step 3: Verify the queries match the spec exactly**
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research
+cd $OB_ROOT/open-biosciences-plugins-connector-research
 grep -c "^| Q[0-9]" docs/research/connectors/README.md    # expect 10
 grep -c "^| C[12]" docs/research/connectors/README.md     # expect 2
 ```
@@ -901,7 +901,7 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 The endpoint and field list below are from documentation knowledge and **must be verified**, per spec Appendix A's "not verified" list.
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
+cd $OB_ROOT/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0" \
   'https://api.semanticscholar.org/graph/v1/paper/search?query=emotionally+focused+therapy+couples+evidence-based+outcome&limit=5&fields=title,year,authors,externalIds,venue,publicationTypes,publicationVenue,openAccessPdf' \
   | python3 -m json.tool > probe/fixtures/semantic-scholar-C1.json
@@ -1024,7 +1024,7 @@ Expected: PASS, 5 tests
 
 ```bash
 cd docs/research/connectors
-export PROBE_CONTACT_EMAIL="dwbranson@gmail.com"
+export PROBE_CONTACT_EMAIL="you@example.com"
 python3 -m probe.run --connector semantic-scholar
 ```
 
@@ -1085,9 +1085,9 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 1: Record the fixture**
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
-curl -s -A "open-biosciences-connector-probe/1.0 mailto:dwbranson@gmail.com" \
-  'https://api.openalex.org/works?search=emotionally+focused+therapy+couples+evidence-based+outcome&per-page=5&mailto=dwbranson@gmail.com' \
+cd $OB_ROOT/open-biosciences-plugins-connector-research/docs/research/connectors
+curl -s -A "open-biosciences-connector-probe/1.0 mailto:${PROBE_CONTACT_EMAIL}" \
+  "https://api.openalex.org/works?search=emotionally+focused+therapy+couples+evidence-based+outcome&per-page=5&mailto=${PROBE_CONTACT_EMAIL}" \
   | python3 -m json.tool > probe/fixtures/openalex-C1.json
 head -60 probe/fixtures/openalex-C1.json
 ```
@@ -1255,9 +1255,9 @@ Crossref is structurally load-bearing, not merely another index: spec §6.2 reso
 - [ ] **Step 1: Record the fixture**
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
-curl -s -A "open-biosciences-connector-probe/1.0 mailto:dwbranson@gmail.com" \
-  'https://api.crossref.org/works?query=emotionally+focused+therapy+couples+evidence-based+outcome&rows=5&mailto=dwbranson@gmail.com' \
+cd $OB_ROOT/open-biosciences-plugins-connector-research/docs/research/connectors
+curl -s -A "open-biosciences-connector-probe/1.0 mailto:${PROBE_CONTACT_EMAIL}" \
+  "https://api.crossref.org/works?query=emotionally+focused+therapy+couples+evidence-based+outcome&rows=5&mailto=${PROBE_CONTACT_EMAIL}" \
   | python3 -m json.tool > probe/fixtures/crossref-C1.json
 head -60 probe/fixtures/crossref-C1.json
 ```
@@ -1457,7 +1457,7 @@ The open question here is **supersede vs. complement** (spec §10 q1): Europe PM
 - [ ] **Step 1: Record the fixture**
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
+cd $OB_ROOT/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0" \
   'https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=emotionally%20focused%20therapy%20couples%20evidence-based%20outcome&format=json&pageSize=5&resultType=core' \
   | python3 -m json.tool > probe/fixtures/europe-pmc-C1.json
@@ -1636,7 +1636,7 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 OSF uses JSON:API, so the shape differs from the other four — `data[]` with `attributes` and `relationships`.
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research/docs/research/connectors
+cd $OB_ROOT/open-biosciences-plugins-connector-research/docs/research/connectors
 curl -s -A "open-biosciences-connector-probe/1.0" \
   'https://api.osf.io/v2/preprints/?filter%5Bprovider%5D=psyarxiv&filter%5Btitle%5D=emotionally%20focused%20therapy&page%5Bsize%5D=5' \
   | python3 -m json.tool > probe/fixtures/psyarxiv-osf-C1.json
@@ -1917,8 +1917,8 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 **§7.2 AGE-548 question 3.** Answer from the correctly-read `bio-research` precedent: it declares its own program's gateway (`biosciences-mcp`, `biosciences-mcp-edge`) plus selected public third-party servers (`pubmed`, `biorxiv`, `synapse`). The pattern is *"the plugin declares the platform's first-party gateway, and public third-party servers where they exist."* Credentialed access is not the boundary — `${VAR}` header expansion, `headersHelper`, and `userConfig`/`sensitive` all exist.
 
 **§7.3 Producer/consumer contradictions.** Recorded, not fixed:
-- `hci-canon` `.claude/skills/relational-vibrancy/SKILL.md:70` names `pubmed-database / OpenAlex / Europe PMC`; `psychology-research` names `pubmed, semantic-scholar`.
-- The same file's frontmatter enumerates seven modalities plus an eighth lens, `:86` says *"omit to run all seven"*, and the 2026-08-14 run report says *"four of the eight lenses."*
+- The downstream consumer skill names `pubmed-database / OpenAlex / Europe PMC`; `psychology-research` names `pubmed, semantic-scholar`.
+- The same file's frontmatter enumerates seven modalities plus an eighth lens, its body says *"omit to run all seven"*, and the 2026-08-14 run report says *"four of the eight lenses."*
 
 **§7.4 Interim plugin binding.** The literal `.mcp.json` content declarable **today**, before `psychology-mcp` exists. Every entry carries `"type": "http"` — an entry with a `url` and no `type` is read as stdio, skipped, and warned about. Note the `psychology-research-plugins` `rsync --delete` mirror: deltas are authored upstream and reach the mirror by that sync, never hand-edited there. **Proposed, not applied.**
 
@@ -1927,7 +1927,7 @@ Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
 - [ ] **Step 2: Verify every acceptance criterion in spec §11**
 
 ```bash
-cd /home/donbr/open-biosciences/open-biosciences-plugins-connector-research
+cd $OB_ROOT/open-biosciences-plugins-connector-research
 git status --porcelain                                   # expect clean
 git diff --stat main -- . ':!docs/research/connectors' ':!docs/superpowers'
 ```
@@ -1944,7 +1944,7 @@ git commit -m "docs(connectors): DECISION - psychology-mcp roster and interim bi
 
 Terminal artefact of the Layer-1 discovery pass. Server roster and build
 order from the five dossiers; AGE-548 q3 answered from the first-party
-gateway precedent; both hci-canon producer/consumer contradictions
+gateway precedent; both downstream producer/consumer contradictions
 recorded; the interim .mcp.json delta written out but not applied; and the
 capabilities that remain unsatisfiable stated plainly.
 
@@ -1962,5 +1962,5 @@ Spec §8 step 6: the Layer-2 build is a separate SpecKit program, and applying t
 Once `DECISION.md` is approved, three separate pieces of work follow, none of them in this plan:
 
 1. **The interim `.mcp.json` delta** — a PR against AGE-552 applying §7.4.
-2. **The Layer-2 SpecKit program** — initialise `psychology-mcp` at `/home/donbr/open-biosciences/psychology-mcp`, register it in `open-biosciences.code-workspace` and the platform README table, then one `/speckit.specify` per server from the §7.1 roster.
+2. **The Layer-2 SpecKit program** — initialise `psychology-mcp` at `$OB_ROOT/psychology-mcp`, register it in `open-biosciences.code-workspace` and the platform README table, then one `/speckit.specify` per server from the §7.1 roster.
 3. **`bio-research` adoption** of the literature envelope where it overlaps (PubMed, bioRxiv), under AGE-554.

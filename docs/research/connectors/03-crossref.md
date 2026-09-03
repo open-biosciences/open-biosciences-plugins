@@ -16,7 +16,7 @@ metadata, and §3 below is the direct evidence base for that design decision.
   `https://api.crossref.org/works/{doi}` (single-work strict lookup — verified live, §5).
 - **Auth model**: none. Fully keyless. The "polite pool" is opt-in via a `mailto` query
   parameter or a `mailto:` token in the `User-Agent` header — both were set on every call
-  in this probe (`PROBE_CONTACT_EMAIL=dwbranson@gmail.com`).
+  in this probe (`PROBE_CONTACT_EMAIL=<your contact address>`).
 - **Key requirement**: none, ever. This is a genuine no-credential connector, unlike
   Semantic Scholar's unauthenticated-but-throttled posture.
 - **Published + observed rate limits**: response headers on every call in this session

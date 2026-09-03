@@ -29,7 +29,7 @@ Extract:
 - Location and telehealth scope
 - User fit criteria
 
-Default jurisdiction is California only when the input or local HCI docs imply California. Otherwise ask for jurisdiction before verifying license facts.
+Ask for jurisdiction before verifying license facts unless the input states it.
 
 ### Step 2: Safety Preflight
 
