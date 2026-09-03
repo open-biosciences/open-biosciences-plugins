@@ -2,7 +2,7 @@
 
 Run evidence-grounded psychology research and therapist/provider fit assessment with source hierarchy, claim provenance, clinical-safety guardrails, and evidence-graded reports.
 
-This plugin adapts the Open Biosciences Fuzzy-to-Fact discipline to psychology, therapy, and provider-fit workflows. It is intentionally a Markdown-only v1: commands, skills, and references, with no bundled MCP servers, scripts, validators, or runtime services.
+This plugin adapts the Open Biosciences Fuzzy-to-Fact discipline to psychology, therapy, and provider-fit workflows. It ships commands, skills, and references plus a publish gate (`scripts/`) with eight validators. It bundles no MCP servers; connectors come from the session.
 
 ## What's Included
 
@@ -36,6 +36,7 @@ This plugin adapts the Open Biosciences Fuzzy-to-Fact discipline to psychology, 
 | `/psy-provider` | Verify therapist/provider fit, credentials, modality claims, and gaps |
 | `/psy-report` | Format a sourced report from an evidence packet |
 | `/psy-review` | Quality-review a report and evidence packet |
+| `/psy-publish` | Run the publish gate and emit a bundle (report + evidence packet + manifest + content hash) |
 
 ## Common Workflows
 

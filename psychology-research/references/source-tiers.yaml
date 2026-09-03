@@ -17,6 +17,18 @@ nice.org.uk: 1
 nimh.nih.gov: 1
 nih.gov: 1
 who.int: 1
+journals.plos.org: 1
+plos.org: 1
+journals.sagepub.com: 1
+sciencedirect.com: 1
+psycnet.apa.org: 1
+link.springer.com: 1
+onlinelibrary.wiley.com: 1
+tandfonline.com: 1
+jamanetwork.com: 1
+bmj.com: 1
+pcsp.libraries.rutgers.edu: 1
+pcsp.nationalregister.org: 1
 
 ## Tier 2 — modality-institute / certifying-body
 aasect.org: 2
@@ -29,11 +41,21 @@ gottman.com: 2
 thepactinstitute.com: 2
 isst-d.org: 2
 aamft.org: 2
+iasp.info: 2
 
 ## Tier 1 guidelines
 samhsa.gov: 1
 va.gov/healthpartnerships/clinical-practice-guidelines: 1
 healthquality.va.gov: 1
+
+## Tier 3 — preprints / unrefereed scholarly
+# Scholarly but not peer-reviewed. Prefer the published version when one exists;
+# a preprint alone never carries a high-stakes claim.
+medrxiv.org: 3
+biorxiv.org: 3
+psyarxiv.com: 3
+arxiv.org: 3
+osf.io: 3
 
 ## Tier 4 — directories / commercial
 psychologytoday.com: 4
@@ -41,6 +63,10 @@ therapyden.com: 4
 zencare.co: 4
 growtherapy.com: 4
 goodtherapy.org: 4
+everythingdisc.com: 4
+discprofile.com: 4
+interdisc.org: 4
+athleteassessments.com: 4
 
 ## Tier 5 — commentary / blogs / consumer media
 substack.com: 5
@@ -48,6 +74,14 @@ medium.com: 5
 podcasts.apple.com: 5
 chadd.org: 5
 additudemag.com: 5
+clevelandclinic.org: 5
+mayoclinic.org: 5
+webmd.com: 5
+healthline.com: 5
+neurodivergentinsights.com: 5
+addrc.org: 5
+therapistndc.org: 5
+adhdwise.uk: 5
 
 ## Tier 6 — unverified / structurally rejected
 scribd.com: 6
