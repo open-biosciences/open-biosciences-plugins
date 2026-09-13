@@ -3,6 +3,23 @@
 All notable changes to the `psychology-research` plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-09-12
+
+### Removed
+- **The Tier-1a banner is retired.** `/psy-report` prefaced every report with `PLUGIN VERSION NOTICE: literature MCP not yet wired; claims grounded in web search and local context only. Citation tiers above SUPPORTED unavailable for literature claims.` That was accurate when it was written (2026-04-28, commit `52f5b17`) and became false on 2026-08-15 when `psychology-mcp` was declared in `.mcp.json` (commit `2dfb829`, AGE-587). `commands/psy-report.md` was not touched by that PR, so for four months every report **understated its own provenance** — telling readers that DOI-resolved, `classification_basis: registered` results were web-grounded, and that tiers above `SUPPORTED` were unavailable when they were not. The banner's own text said it would be removed "once the `~~literature` MCP wiring lands"; the wiring landed and the removal did not.
+
+### Added
+- **`template_conformance` now checks the report's status lines**, the gap that let the banner drift unnoticed for four months. The validator's canonical-pass fixture had carried neither banner nor watermark and still passed, so nothing in the suite could observe either line. It now BLOCKs on:
+  - a **retired provenance banner** reappearing in a report (`RETIRED_BANNERS`, each entry annotated with the commit that made it true and the commit that falsified it);
+  - a **missing unvalidated-draft watermark**;
+  - a watermark that is **not the final line** — a footer a reader scrolls past warns nobody.
+- **`scripts/tests/test_report_status_line.py`** and **`scripts/tests/test_publish_status_footer.py`** (12 tests) covering the above and the derived footer below.
+
+### Changed
+- **The publish gate derives the bundled report's status footer instead of copying it.** `run_gate` previously did `shutil.copyfile`, so a validated bundle's `report.md` still read `STATUS: UNVALIDATED DRAFT — ... Run /psy-publish to validate and persist` after `/psy-publish` had already run. The bundle copy now carries `STATUS: VALIDATED` / `VALIDATED WITH WARNINGS` / `BLOCKED` derived from the manifest's `overall`. A status line computed at the moment the state is known cannot go stale the way an authored one does — which is the root cause of this release's bug, fixed at the mechanism rather than at the symptom. The draft on disk is left untouched, a report carrying no watermark is not given one, and the rewrite precedes hashing so `content-hash.txt` covers the report as bundled.
+- **`psychology-provider-fit` no longer points at the retired banner.** `SKILL.md` told the model to accompany unbound `certifying-body` / `licensing-board` output with "the Tier-1a banner notice". Those categories are genuinely still unbound, so the disclosure is warranted — but the banner it named described the *literature* category. The skill now states the limitation in its own words.
+- **`/psy-publish` documents eight validators, not seven.** The list had not been updated when `no_citations_found` was added in 0.3.0; `README.md` was corrected then, this command surface was not.
+
 ## [0.3.0] - 2026-08-16
 
 ### Added

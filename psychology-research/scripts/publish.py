@@ -52,6 +52,47 @@ def _hash_bundle(paths: list[Path]) -> str:
     return h.hexdigest()
 
 
+# Status footers for the bundled report copy.
+#
+# `/psy-report` emits the unvalidated-draft watermark, which is true of its
+# output and false the moment this gate finishes. The bundle copy therefore
+# carries a footer derived from the gate result rather than one asserted by
+# the report's author: a computed status line cannot go stale.
+#
+# Edit the wording here; it is the single source for all three outcomes.
+_DRAFT_WATERMARK_MARKER = "STATUS: UNVALIDATED DRAFT"
+
+_STATUS_FOOTERS = {
+    Severity.PASS: (
+        "STATUS: VALIDATED \u2014 publish gate passed. See manifest.json for "
+        "per-validator results and content-hash.txt for the bundle digest."
+    ),
+    Severity.WARN: (
+        "STATUS: VALIDATED WITH WARNINGS \u2014 publish gate returned WARN. "
+        "Review the findings in manifest.json before distributing."
+    ),
+    Severity.BLOCK: (
+        "STATUS: BLOCKED \u2014 publish gate returned BLOCK. This report is "
+        "not for distribution; see manifest.json for the blocking findings."
+    ),
+}
+
+
+def _apply_status_footer(text: str, overall: Severity) -> str:
+    """Replace the draft watermark with the footer the gate result warrants.
+
+    A report carrying no watermark is returned unchanged: the gate reports
+    status, it does not invent one for a report that never claimed any.
+    """
+    lines = text.splitlines(keepends=True)
+    for i, line in enumerate(lines):
+        if _DRAFT_WATERMARK_MARKER in line:
+            trailing = "\n" if line.endswith("\n") else ""
+            lines[i] = _STATUS_FOOTERS[overall] + trailing
+            return "".join(lines)
+    return text
+
+
 def run_gate(report_path: Path, out_dir: Path,
              evidence_packet_path: Path | None = None) -> BundlePaths:
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -78,9 +119,15 @@ def run_gate(report_path: Path, out_dir: Path,
                 findings=[f"validator raised: {exc!r}"],
             ))
 
-    # Assemble bundle artifacts.
+    overall = _overall_severity(results)
+
+    # Assemble bundle artifacts. The report is rewritten rather than copied so
+    # its status footer reflects this gate run (see _apply_status_footer).
     bundle_report = out_dir / "report.md"
-    shutil.copyfile(report_path, bundle_report)
+    bundle_report.write_text(
+        _apply_status_footer(report_path.read_text(encoding="utf-8"), overall),
+        encoding="utf-8",
+    )
 
     bundle_packet = out_dir / "evidence-packet.json"
     if evidence_packet_path and evidence_packet_path.exists():
@@ -88,7 +135,6 @@ def run_gate(report_path: Path, out_dir: Path,
     else:
         bundle_packet.write_text("{}", encoding="utf-8")
 
-    overall = _overall_severity(results)
     manifest = {
         "schema_version": 1,
         "generated_at": datetime.now(timezone.utc).isoformat(),
