@@ -31,7 +31,7 @@ Use the bindings declared in this file's frontmatter, in priority order. If a hi
 
 Consult `references/modality-canon.md` to identify the claim's paradigm **before** choosing a source, and say plainly in the report when a claim's paradigm has no bound connector.
 
-Coverage for those paradigms arrives with `psychology-mcp` (Crossref + OpenAlex). See `CONNECTORS.md`.
+Coverage for those paradigms landed on 2026-08-15, when `psychology-mcp` (Crossref + OpenAlex) was declared in `.mcp.json`. See `CONNECTORS.md`. Note that its records supply registration metadata — DOI, `venue_class`, `classification_basis`, `retraction_status` — not claim content; which tier a metadata-only route may support is a separate question from whether the route exists.
 
 If a claim is grounded only in `~~web`, the resulting claim cannot be labeled `VERIFIED` regardless of the URL's apparent authority — see CLASSIFY for the demotion rule.
 
