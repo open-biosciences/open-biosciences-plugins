@@ -13,6 +13,8 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   - a **retired provenance banner** reappearing in a report (`RETIRED_BANNERS`, each entry annotated with the commit that made it true and the commit that falsified it);
   - a **missing unvalidated-draft watermark**;
   - a watermark that is **not the final line** — a footer a reader scrolls past warns nobody.
+- **`scripts/publish.py` is runnable as documented.** `commands/psy-publish.md` has always specified `python3 scripts/publish.py <report> --out <bundle-dir>` from the plugin root, and that has never worked: running a file directly puts its own directory on `sys.path`, so the module-level `from scripts.validators import …` raised `ModuleNotFoundError: No module named 'scripts'`. The unit suite could not see it — pytest inserts the rootdir, so the import succeeded under test and failed for every real caller, which is how 40 tests passed over a CLI that could not start. Fixed with the same plugin-root bootstrap `scripts/validators/graph_memory_fragment.py` has carried since 0.2.0, rather than a second pattern.
+- **`scripts/tests/test_cli_invocation.py`** (4 tests) runs both documented command lines as a subprocess with the plugin root as cwd and `PYTHONPATH` removed — the conditions a real caller has, and the only conditions under which this class of defect is visible. It pins the `graph_memory_fragment` bootstrap too, so the working sibling cannot silently regress.
 - **`scripts/tests/test_report_status_line.py`** and **`scripts/tests/test_publish_status_footer.py`** (12 tests) covering the above and the derived footer below.
 
 ### Changed

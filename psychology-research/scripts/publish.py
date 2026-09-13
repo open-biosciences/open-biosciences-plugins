@@ -4,7 +4,7 @@ Loads the validator registry, runs each validator against the input report,
 assembles a bundle (report.md + evidence-packet.json + manifest.json + content-hash.txt),
 and writes it to the output directory.
 
-Usage:
+Usage (runnable directly from the plugin root; exits non-zero on BLOCK):
   python3 scripts/publish.py <report-path> --out <bundle-dir>
 
 The orchestrator does not block on publish itself; it records the overall severity
@@ -23,7 +23,16 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from scripts.validators import REGISTRY, Severity, ValidatorResult
+try:
+    from scripts.validators import REGISTRY, Severity, ValidatorResult
+except ModuleNotFoundError:
+    # Allow direct execution from the plugin root:
+    # `python3 scripts/publish.py <report> --out <bundle-dir>`, the invocation
+    # documented in commands/psy-publish.md. Running a file directly puts its
+    # own directory on sys.path, not the plugin root.
+    # parents[1] == the plugin root (psychology-research/).
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    from scripts.validators import REGISTRY, Severity, ValidatorResult
 
 
 @dataclass(frozen=True)
