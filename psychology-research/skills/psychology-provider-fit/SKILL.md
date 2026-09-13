@@ -24,7 +24,7 @@ clinicians or generate in-character therapist responses from provider profiles.
 
 Use the bindings declared in this file's frontmatter, in priority order. If a higher-priority binding returns no usable result, fall back to the next.
 
-During Tier-1a (current version), `certifying-body` and `licensing-board` are unbound (`~~category` placeholders). Provider verification claims that depend on these categories must be labeled `UNRESOLVED` rather than guessed; the Tier-1a banner notice should accompany any provider-fit output that hits this state.
+`certifying-body` and `licensing-board` are still unbound (`~~category` placeholders — `.mcp.json` declares literature servers only). Provider verification claims that depend on these categories must be labeled `UNRESOLVED` rather than guessed, and the output must say plainly which categories were unavailable and what that leaves unverified. State that limitation in the report's own words; do not reach for a `PLUGIN VERSION NOTICE` banner, which was retired in 0.4.0 and described the literature category in any case.
 
 Once Tier-3 wires real adapters, this section gains the cert-body / licensing-board priority text. Until then, treat all certification and licensure claims as `SELF_REPORTED` unless the user supplies an official verification source manually.
 

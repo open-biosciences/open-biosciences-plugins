@@ -61,17 +61,15 @@ Include:
 
 Do not add new facts during reporting. Use only the evidence packet. If the report needs missing data, mark it `UNRESOLVED`.
 
-## Required output preamble and footer
+## Required output footer
 
-Every `/psy-report` output begins with the **Tier-1a banner**:
-
-> `PLUGIN VERSION NOTICE: literature MCP not yet wired; claims grounded in web search and local context only. Citation tiers above SUPPORTED unavailable for literature claims.`
-
-Every `/psy-report` output ends with the **unvalidated-draft watermark**:
+Every `/psy-report` output ends with the **unvalidated-draft watermark**, emitted verbatim as the final line:
 
 > `STATUS: UNVALIDATED DRAFT — citation tiers, evidence labels, and language filters not yet checked. Run /psy-publish to validate and persist.`
 
-Both lines are emitted verbatim. The Tier-1a banner is removed in a future plugin version once the `~~literature` MCP wiring lands; the watermark footer remains in all versions.
+`/psy-report` runs none of the publish-gate validators, so this line is the only thing distinguishing a rendered draft from a validated one. Do not write a validated-sounding status here: `/psy-publish` replaces this line in the bundle copy with a footer derived from the gate result.
+
+Do **not** emit a `PLUGIN VERSION NOTICE` banner. The Tier-1a banner declaring the literature MCP unwired was retired in 0.4.0 — `psychology-mcp` has been declared in `.mcp.json` since 0.3.0, and the banner had been understating the plugin's own provenance since. `template_conformance` BLOCKs any report that reintroduces it.
 
 If the report's primary modality is identified during analysis and is **not** present in `references/modality-canon.md`, also emit the **Tier-1b banner** before the watermark footer:
 
