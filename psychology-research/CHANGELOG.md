@@ -3,6 +3,31 @@
 All notable changes to the `psychology-research` plugin are documented here.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Added
+- `scripts/tests/test_declaration_consistency.py` — asserts that `.mcp.json` and the
+  skills' frontmatter `bindings` agree, in both directions: a declared server must be
+  bound by some skill or explicitly exempt, and no skill may bind a server the runtime
+  does not declare. Also fails if a skill's prose describes an already-declared
+  connector as pending. Fourth instance of declaration drift (AGE-723); first guard
+  that catches the class rather than an instance.
+
+### Decided
+- `psychology-mcp` is **deliberately not bound** in any skill's `bindings.literature`,
+  and is recorded in that module's `INTENTIONALLY_UNBOUND` with the reason and date.
+  It supplies registration metadata (DOI, `venue_class`, `classification_basis`,
+  `retraction_status`), not claim content, and whether a metadata-only route may raise
+  a claim's evidence tier is an open design question. Binding it alongside a
+  claim-content connector would pre-decide that by flattening the distinction.
+  The exemption and the binding are now enforced to change together.
+
+### Fixed
+- `psychology-evidence-builder/SKILL.md` no longer describes `psychology-mcp` coverage
+  as pending ("arrives with"), nor — as a first correction did — as landed, which
+  contradicted the same section's "there is currently no bound connector". It now
+  states the actual state: declared in `.mcp.json`, not bound in this skill.
+
 ## [0.4.0] - 2026-09-12
 
 ### Removed
