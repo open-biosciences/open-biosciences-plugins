@@ -23,8 +23,7 @@ All MCP tools support `slim=true` for token-efficient LOCATE queries (~20 tokens
 
 PRIMARY (MCP tool):
 ```
-Call `uniprot_search_proteins` with: {"query": "TP53", "organism": "9606"}
-→ Claude Code name: mcp__biosciences-mcp__uniprot_search_proteins
+Call `biosciences-mcp:uniprot_search_proteins` with: {"query": "TP53", "organism": "9606"}
 → Returns protein accessions, names, gene names
 ```
 
@@ -38,8 +37,7 @@ curl -s "https://rest.uniprot.org/uniprotkb/search?query=gene:TP53+AND+organism_
 
 PRIMARY (MCP tool):
 ```
-Call `uniprot_get_protein` with: {"uniprot_id": "P04637"}
-→ Claude Code name: mcp__biosciences-mcp__uniprot_get_protein
+Call `biosciences-mcp:uniprot_get_protein` with: {"uniprot_id": "P04637"}
 → Returns: accession, gene, function text, cross-references
 → Parse function text for interactor mentions and pathway clues
 ```
@@ -76,8 +74,7 @@ curl -s "https://rest.uniprot.org/idmapping/results/$JOB_ID" | jq '.results'
 
 PRIMARY (MCP tool):
 ```
-Call `string_search_proteins` with: {"query": "TP53", "species": 9606}
-→ Claude Code name: mcp__biosciences-mcp__string_search_proteins
+Call `biosciences-mcp:string_search_proteins` with: {"query": "TP53", "species": 9606}
 → Returns: 9606.ENSP00000269305
 ```
 
@@ -91,8 +88,7 @@ curl -s "https://string-db.org/api/json/get_string_ids?identifiers=TP53&species=
 
 PRIMARY (MCP tool):
 ```
-Call `string_get_interactions` with: {"string_id": "9606.ENSP00000269305", "species": 9606, "required_score": 700}
-→ Claude Code name: mcp__biosciences-mcp__string_get_interactions
+Call `biosciences-mcp:string_get_interactions` with: {"string_id": "9606.ENSP00000269305", "species": 9606, "required_score": 700}
 → Returns: interaction partners with confidence scores
 ```
 
@@ -120,8 +116,7 @@ curl -s "https://string-db.org/api/json/enrichment?identifiers=9606.ENSP00000269
 
 PRIMARY (MCP tool):
 ```
-Call `string_get_network_image_url` with: {"identifiers": ["TP53", "MDM2", "ATM"], "species": 9606}
-→ Claude Code name: mcp__biosciences-mcp__string_get_network_image_url
+Call `biosciences-mcp:string_get_network_image_url` with: {"identifiers": ["TP53", "MDM2", "ATM"], "species": 9606}
 → Returns URL for network image
 ```
 
@@ -136,8 +131,7 @@ echo "https://string-db.org/api/highres_image/network?identifiers=TP53%0dMDM2%0d
 
 PRIMARY (MCP tool):
 ```
-Call `biogrid_search_genes` with: {"query": "TP53"}
-→ Claude Code name: mcp__biosciences-mcp__biogrid_search_genes
+Call `biosciences-mcp:biogrid_search_genes` with: {"query": "TP53"}
 → Returns BioGRID gene entries
 ```
 
@@ -145,8 +139,7 @@ Call `biogrid_search_genes` with: {"query": "TP53"}
 
 PRIMARY (MCP tool):
 ```
-Call `biogrid_get_interactions` with: {"gene_id": "TP53", "organism": 9606}
-→ Claude Code name: mcp__biosciences-mcp__biogrid_get_interactions
+Call `biosciences-mcp:biogrid_get_interactions` with: {"gene_id": "TP53", "organism": 9606}
 → Returns: interaction partners, experimental systems
 ```
 
@@ -162,8 +155,7 @@ curl -s "https://webservice.thebiogrid.org/interactions?geneList=TP53&taxId=9606
 
 ```
 # Step 1: Gene symbol → STRING ID (MCP LOCATE)
-Call `string_search_proteins` with: {"query": "TP53", "species": 9606}
-→ Claude Code name: mcp__biosciences-mcp__string_search_proteins
+Call `biosciences-mcp:string_search_proteins` with: {"query": "TP53", "species": 9606}
 → "9606.ENSP00000269305"
 
 # Step 2: STRING ID → UniProt (curl RETRIEVE via Ensembl xrefs)

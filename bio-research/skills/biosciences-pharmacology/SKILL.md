@@ -23,8 +23,7 @@ All MCP tools support `slim=true` for token-efficient LOCATE queries (~20 tokens
 
 PRIMARY (MCP tool):
 ```
-Call `chembl_search_compounds` with: {"query": "venetoclax"}
-→ Claude Code name: mcp__biosciences-mcp__chembl_search_compounds
+Call `biosciences-mcp:chembl_search_compounds` with: {"query": "venetoclax"}
 → Returns: ChEMBL IDs, preferred names, max phase
 ```
 
@@ -38,8 +37,7 @@ curl -s "https://www.ebi.ac.uk/chembl/api/data/molecule/search?q=venetoclax&form
 
 PRIMARY (MCP tool):
 ```
-Call `chembl_get_compound` with: {"chembl_id": "CHEMBL3137309"}
-→ Claude Code name: mcp__biosciences-mcp__chembl_get_compound
+Call `biosciences-mcp:chembl_get_compound` with: {"chembl_id": "CHEMBL3137309"}
 → May return 500 error (common for detail endpoints) — fall back to Open Targets
 ```
 
@@ -55,8 +53,7 @@ curl -s "https://www.ebi.ac.uk/chembl/api/data/molecule/CHEMBL3137309?format=jso
 
 PRIMARY (MCP tool):
 ```
-Call `opentargets_get_target` with: {"ensembl_id": "ENSG00000171791"}
-→ Claude Code name: mcp__biosciences-mcp__opentargets_get_target
+Call `biosciences-mcp:opentargets_get_target` with: {"ensembl_id": "ENSG00000171791"}
 → Returns: knownDrugs with drug name, mechanismOfAction, phase in one call
 ```
 
@@ -81,8 +78,7 @@ curl -s -X POST "https://api.platform.opentargets.org/api/v4/graphql" \
 
 PRIMARY (MCP tool):
 ```
-Call `get_mechanism` with: {"chembl_id": "CHEMBL:3137309"}
-→ Claude Code name: mcp__biosciences-mcp-edge__get_mechanism
+Call `biosciences-mcp-edge:get_mechanism` with: {"chembl_id": "CHEMBL:3137309"}
 → Returns: PaginationEnvelope with MechanismResult items (mechanism_of_action, target_name, action_type, max_phase)
 → Accepts CURIE format (CHEMBL:NNNNN) or raw format (CHEMBLNNNNN)
 ```
@@ -146,8 +142,7 @@ curl -s "https://www.ebi.ac.uk/chembl/api/data/target/search?q=BCL2&format=json"
 
 PRIMARY (MCP tool):
 ```
-Call `pubchem_search_compounds` with: {"query": "aspirin"}
-→ Claude Code name: mcp__biosciences-mcp__pubchem_search_compounds
+Call `biosciences-mcp:pubchem_search_compounds` with: {"query": "aspirin"}
 → Returns: CID, molecular formula, properties
 ```
 
@@ -161,8 +156,7 @@ curl -s "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/aspirin/JSON" \
 
 PRIMARY (MCP tool):
 ```
-Call `pubchem_get_compound` with: {"cid": "2244"}
-→ Claude Code name: mcp__biosciences-mcp__pubchem_get_compound
+Call `biosciences-mcp:pubchem_get_compound` with: {"cid": "2244"}
 → Returns: molecular formula, weight, IUPAC name
 ```
 
@@ -178,8 +172,7 @@ curl -s "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2244/property/Mo
 
 PRIMARY (MCP tool):
 ```
-Call `iuphar_search_ligands` with: {"query": "ibuprofen"}
-→ Claude Code name: mcp__biosciences-mcp__iuphar_search_ligands
+Call `biosciences-mcp:iuphar_search_ligands` with: {"query": "ibuprofen"}
 → Returns: ligand ID, name, type, approved status
 ```
 
@@ -193,8 +186,7 @@ curl -s "https://www.guidetopharmacology.org/services/ligands?name=ibuprofen" \
 
 PRIMARY (MCP tool):
 ```
-Call `iuphar_get_ligand` with: {"ligand_id": "2713"}
-→ Claude Code name: mcp__biosciences-mcp__iuphar_get_ligand
+Call `biosciences-mcp:iuphar_get_ligand` with: {"ligand_id": "2713"}
 → Returns: target interactions, action types, affinities
 ```
 
@@ -217,7 +209,7 @@ curl -s "https://api.drugbank.com/v1/drugs?q=venetoclax" \
 
 ```
 # Step 1: LOCATE — Find target for known drug (MCP — preferred)
-mcp__biosciences-mcp-edge__get_mechanism(chembl_id="CHEMBL:3137309")
+biosciences-mcp-edge:get_mechanism(chembl_id="CHEMBL:3137309")
 → target_chembl_id from first MechanismResult item
 ```
 

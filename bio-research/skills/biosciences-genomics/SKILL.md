@@ -23,8 +23,7 @@ All MCP tools support `slim=true` for token-efficient LOCATE queries (~20 tokens
 
 PRIMARY (MCP tool):
 ```
-Call `hgnc_search_genes` with: {"query": "TP53"}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_search_genes
+Call `biosciences-mcp:hgnc_search_genes` with: {"query": "TP53"}
 → Returns candidates with HGNC IDs, symbols, names
 ```
 
@@ -38,8 +37,7 @@ curl -s "https://rest.genenames.org/search/symbol/TP53" \
 
 PRIMARY (MCP tool):
 ```
-Call `hgnc_get_gene` with: {"hgnc_id": "HGNC:11998"}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_get_gene
+Call `biosciences-mcp:hgnc_get_gene` with: {"hgnc_id": "HGNC:11998"}
 → Returns: symbol, name, cross-references (UniProt, Ensembl, Entrez)
 ```
 
@@ -55,8 +53,7 @@ curl -s "https://rest.genenames.org/fetch/hgnc_id/11998" \
 
 PRIMARY (MCP tool):
 ```
-Call `ensembl_search_genes` with: {"query": "TP53", "species": "homo_sapiens"}
-→ Claude Code name: mcp__biosciences-mcp__ensembl_search_genes
+Call `biosciences-mcp:ensembl_search_genes` with: {"query": "TP53", "species": "homo_sapiens"}
 → Returns Ensembl gene ID (ENSG...)
 ```
 
@@ -70,8 +67,7 @@ curl -s "https://rest.ensembl.org/lookup/symbol/homo_sapiens/TP53?content-type=a
 
 PRIMARY (MCP tool):
 ```
-Call `ensembl_get_gene` with: {"ensembl_id": "ENSG00000141510"}
-→ Claude Code name: mcp__biosciences-mcp__ensembl_get_gene
+Call `biosciences-mcp:ensembl_get_gene` with: {"ensembl_id": "ENSG00000141510"}
 → Returns: biotype, description, location, transcripts
 ```
 
@@ -85,8 +81,7 @@ curl -s "https://rest.ensembl.org/lookup/id/ENSG00000141510?expand=1&content-typ
 
 PRIMARY (MCP tool):
 ```
-Call `ensembl_get_transcript` with: {"transcript_id": "ENST00000269305"}
-→ Claude Code name: mcp__biosciences-mcp__ensembl_get_transcript
+Call `biosciences-mcp:ensembl_get_transcript` with: {"transcript_id": "ENST00000269305"}
 → Returns: transcript biotype, exons, protein ID, canonical flag
 ```
 
@@ -156,8 +151,7 @@ curl -s "https://rest.ensembl.org/ld/human/region/17:7668421..7687490/1000GENOME
 
 PRIMARY (MCP tool):
 ```
-Call `entrez_search_genes` with: {"query": "TP53", "organism": "human"}
-→ Claude Code name: mcp__biosciences-mcp__entrez_search_genes
+Call `biosciences-mcp:entrez_search_genes` with: {"query": "TP53", "organism": "human"}
 → Returns Entrez gene IDs
 ```
 
@@ -171,8 +165,7 @@ curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=gene&term
 
 PRIMARY (MCP tool):
 ```
-Call `entrez_get_gene` with: {"gene_id": "7157"}
-→ Claude Code name: mcp__biosciences-mcp__entrez_get_gene
+Call `biosciences-mcp:entrez_get_gene` with: {"gene_id": "7157"}
 → Returns gene name, description, chromosome location
 ```
 
@@ -186,8 +179,7 @@ curl -s "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=gene&id=
 
 PRIMARY (MCP tool):
 ```
-Call `entrez_get_pubmed_links` with: {"gene_id": "7157"}
-→ Claude Code name: mcp__biosciences-mcp__entrez_get_pubmed_links
+Call `biosciences-mcp:entrez_get_pubmed_links` with: {"gene_id": "7157"}
 → Returns linked PubMed article IDs
 ```
 

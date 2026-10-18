@@ -55,7 +55,7 @@ The `biosciences-mcp` gateway provides 34 tools across 12 databases. **Use MCP t
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                          GRAPH CONSTRUCTION KIT                               │
 │         34 MCP tools via biosciences-mcp gateway (PRIMARY)                   │
-│         Claude Code name: mcp__biosciences-mcp__<tool_name>                  │
+│         Tool reference: biosciences-mcp:<tool_name>                          │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │  TIER 1: GENE/PROTEIN FOUNDATION                                             │
 │  ├── HGNC: hgnc_search_genes (LOCATE), hgnc_get_gene (RETRIEVE)             │
@@ -127,13 +127,11 @@ ALL 34 MCP tools support a `slim` parameter for phase-specific token budgeting:
 **Example (Phase 1 ANCHOR):**
 ```
 # LOCATE: Find gene candidates with slim=true
-Call `hgnc_search_genes` with: {"query": "ACVR", "slim": true, "page_size": 5}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_search_genes
+Call `biosciences-mcp:hgnc_search_genes` with: {"query": "ACVR", "slim": true, "page_size": 5}
 → Returns 5 candidates at ~20 tokens each = 100 tokens total
 
 # RETRIEVE: Get full record for selected candidate
-Call `hgnc_get_gene` with: {"hgnc_id": "HGNC:171"}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_get_gene
+Call `biosciences-mcp:hgnc_get_gene` with: {"hgnc_id": "HGNC:171"}
 → Returns complete metadata (~115 tokens)
 ```
 
@@ -183,8 +181,7 @@ Use `PREFIX:LOCAL_ID` format for persistence:
 
 PRIMARY (MCP tool):
 ```
-Call `hgnc_search_genes` with: {"query": "TP53"}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_search_genes
+Call `biosciences-mcp:hgnc_search_genes` with: {"query": "TP53"}
 → Returns candidates with HGNC IDs → select best match: HGNC:11998
 ```
 
@@ -198,8 +195,7 @@ curl -s "https://rest.genenames.org/search/symbol/TP53" \
 
 PRIMARY (MCP tool):
 ```
-Call `hgnc_get_gene` with: {"hgnc_id": "HGNC:11998"}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_get_gene
+Call `biosciences-mcp:hgnc_get_gene` with: {"hgnc_id": "HGNC:11998"}
 → Returns: symbol, name, UniProt cross-ref, Ensembl cross-ref, Entrez cross-ref
 ```
 
@@ -213,8 +209,7 @@ curl -s "https://rest.genenames.org/fetch/hgnc_id/11998" \
 
 PRIMARY (MCP tool):
 ```
-Call `chembl_search_compounds` with: {"query": "Venetoclax"}
-→ Claude Code name: mcp__biosciences-mcp__chembl_search_compounds
+Call `biosciences-mcp:chembl_search_compounds` with: {"query": "Venetoclax"}
 → If 500 error: note it, move on — drugs resolved in Phase 4a via Open Targets
 ```
 
@@ -222,8 +217,7 @@ Call `chembl_search_compounds` with: {"query": "Venetoclax"}
 
 PRIMARY (MCP tool):
 ```
-Call `clinicaltrials_search_trials` with: {"query": "fibrodysplasia ossificans progressiva"}
-→ Claude Code name: mcp__biosciences-mcp__clinicaltrials_search_trials
+Call `biosciences-mcp:clinicaltrials_search_trials` with: {"query": "fibrodysplasia ossificans progressiva"}
 ```
 
 **Output**: JSON with resolved entities:
@@ -245,8 +239,7 @@ Call `clinicaltrials_search_trials` with: {"query": "fibrodysplasia ossificans p
 
 PRIMARY (MCP tool):
 ```
-Call `hgnc_get_gene` with: {"hgnc_id": "HGNC:11998"}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_get_gene
+Call `biosciences-mcp:hgnc_get_gene` with: {"hgnc_id": "HGNC:11998"}
 → Extract: uniprot_id="P04637", ensembl_id="ENSG00000141510", entrez_id="7157"
 ```
 
@@ -254,8 +247,7 @@ Call `hgnc_get_gene` with: {"hgnc_id": "HGNC:11998"}
 
 PRIMARY (MCP tool):
 ```
-Call `uniprot_get_protein` with: {"uniprot_id": "P04637"}
-→ Claude Code name: mcp__biosciences-mcp__uniprot_get_protein
+Call `biosciences-mcp:uniprot_get_protein` with: {"uniprot_id": "P04637"}
 → Parse function text for interactor mentions: BAX, BCL2, FAS, MDM2
 ```
 
@@ -263,8 +255,7 @@ Call `uniprot_get_protein` with: {"uniprot_id": "P04637"}
 
 PRIMARY (MCP tool):
 ```
-Call `chembl_get_compound` with: {"chembl_id": "CHEMBL3137309"}
-→ Claude Code name: mcp__biosciences-mcp__chembl_get_compound
+Call `biosciences-mcp:chembl_get_compound` with: {"chembl_id": "CHEMBL3137309"}
 → May return 500 — note failure, continue
 ```
 
@@ -272,8 +263,7 @@ Call `chembl_get_compound` with: {"chembl_id": "CHEMBL3137309"}
 
 PRIMARY (MCP tool):
 ```
-Call `opentargets_get_associations` with: {"ensembl_id": "ENSG00000115170"}
-→ Claude Code name: mcp__biosciences-mcp__opentargets_get_associations
+Call `biosciences-mcp:opentargets_get_associations` with: {"ensembl_id": "ENSG00000115170"}
 → Returns diseases with MONDO/EFO/Orphanet IDs + association scores
 → Pick the highest-scoring disease matching the user's query
 → Record disease CURIE (e.g., MONDO:0007606 for FOP) for Phase 4a/4b
@@ -305,8 +295,7 @@ curl -s -X POST "https://api.platform.opentargets.org/api/v4/graphql" \
 
 PRIMARY (MCP tool):
 ```
-Call `string_search_proteins` with: {"query": "TP53", "species": 9606}
-→ Claude Code name: mcp__biosciences-mcp__string_search_proteins
+Call `biosciences-mcp:string_search_proteins` with: {"query": "TP53", "species": 9606}
 → Returns: 9606.ENSP00000269305
 ```
 
@@ -314,8 +303,7 @@ Call `string_search_proteins` with: {"query": "TP53", "species": 9606}
 
 PRIMARY (MCP tool):
 ```
-Call `string_get_interactions` with: {"string_id": "9606.ENSP00000269305", "species": 9606, "required_score": 700}
-→ Claude Code name: mcp__biosciences-mcp__string_get_interactions
+Call `biosciences-mcp:string_get_interactions` with: {"string_id": "9606.ENSP00000269305", "species": 9606, "required_score": 700}
 → Returns: MDM2 (0.999), SIRT1 (0.999), ATM (0.995), BCL2
 ```
 
@@ -323,16 +311,14 @@ Call `string_get_interactions` with: {"string_id": "9606.ENSP00000269305", "spec
 
 PRIMARY (MCP tool):
 ```
-Call `wikipathways_get_pathways_for_gene` with: {"gene_id": "TP53"}
-→ Claude Code name: mcp__biosciences-mcp__wikipathways_get_pathways_for_gene
+Call `biosciences-mcp:wikipathways_get_pathways_for_gene` with: {"gene_id": "TP53"}
 ```
 
 **RETRIEVE** gene-disease associations (Open Targets):
 
 PRIMARY (MCP tool):
 ```
-Call `opentargets_get_associations` with: {"ensembl_id": "ENSG00000141510"}
-→ Claude Code name: mcp__biosciences-mcp__opentargets_get_associations
+Call `biosciences-mcp:opentargets_get_associations` with: {"ensembl_id": "ENSG00000141510"}
 → Returns associated diseases with scores
 ```
 
@@ -375,8 +361,7 @@ This ensures ALL nodes in the final KG have:
 
 PRIMARY (MCP tool):
 ```
-Call `opentargets_get_target` with: {"ensembl_id": "ENSG00000171791"}
-→ Claude Code name: mcp__biosciences-mcp__opentargets_get_target
+Call `biosciences-mcp:opentargets_get_target` with: {"ensembl_id": "ENSG00000171791"}
 → Returns knownDrugs with drug name, mechanismOfAction, phase
 ```
 
@@ -397,8 +382,7 @@ curl -s -X POST "https://api.platform.opentargets.org/api/v4/graphql" \
 
 PRIMARY (MCP tool):
 ```
-Call `chembl_search_compounds` with: {"query": "BCL2 inhibitor"}
-→ Claude Code name: mcp__biosciences-mcp__chembl_search_compounds
+Call `biosciences-mcp:chembl_search_compounds` with: {"query": "BCL2 inhibitor"}
 → Search endpoint is generally reliable
 ```
 
@@ -426,8 +410,7 @@ Check the "mechanismOfAction" field from Open Targets:
 
 PRIMARY (MCP tool):
 ```
-Call `clinicaltrials_search_trials` with: {"query": "venetoclax AND leukemia"}
-→ Claude Code name: mcp__biosciences-mcp__clinicaltrials_search_trials
+Call `biosciences-mcp:clinicaltrials_search_trials` with: {"query": "venetoclax AND leukemia"}
 → Returns trials with NCT IDs, phases, statuses
 ```
 
@@ -465,8 +448,7 @@ curl -s "https://clinicaltrials.gov/api/v2/studies?query.cond=fibrodysplasia+oss
 
 PRIMARY (MCP tool):
 ```
-Call `clinicaltrials_get_trial` with: {"nct_id": "NCT03312634"}
-→ Claude Code name: mcp__biosciences-mcp__clinicaltrials_get_trial
+Call `biosciences-mcp:clinicaltrials_get_trial` with: {"nct_id": "NCT03312634"}
 → If "Entity Not Found" → mark as INVALID
 ```
 
@@ -682,4 +664,4 @@ Short gene symbols (GLA, GAA, SI, etc.) generate high false-positive rates in te
 ### MCP Server Reference
 
 All 34 tools are available via the `biosciences-mcp` gateway.
-Claude Code tool prefix: `mcp__biosciences-mcp__<tool_name>`
+Tool reference format: `biosciences-mcp:<tool_name>`
