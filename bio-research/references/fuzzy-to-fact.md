@@ -11,11 +11,11 @@ The Fuzzy-to-Fact protocol is a bi-modal discipline for grounding life sciences 
 
 ```
 # LOCATE: fuzzy search returns candidates
-Call hgnc_search_genes with: {"query": "BRCA1", "slim": true, "page_size": 5}
+Call biosciences-mcp:hgnc_search_genes with: {"query": "BRCA1", "slim": true, "page_size": 5}
   → Returns candidates → select best match: HGNC:1100
 
 # RETRIEVE: strict lookup by resolved CURIE
-Call hgnc_get_gene with: {"hgnc_id": "HGNC:1100"}
+Call biosciences-mcp:hgnc_get_gene with: {"hgnc_id": "HGNC:1100"}
   → Returns verified metadata: symbol, name, UniProt, Ensembl cross-refs
 ```
 

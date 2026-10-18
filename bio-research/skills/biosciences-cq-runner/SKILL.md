@@ -180,7 +180,7 @@ Ready to execute 6 workflow steps.
 
 ### Preflight Logic
 
-1. **Test MCP gateway**: Call `hgnc_search_genes` with `{"query": "TP53", "slim": true, "page_size": 1}`. If this fails, abort with guidance.
+1. **Test MCP gateway**: Call `biosciences-mcp:hgnc_search_genes` with `{"query": "TP53", "slim": true, "page_size": 1}`. If this fails, abort with guidance.
 2. **Check HF_TOKEN**: If not set, note that Step 7 (PUBLISH) will be skipped.
 3. **Parse required tools**: Extract unique tool names from the CQ's `workflow_steps`. Verify each is callable via the gateway.
 4. **Report readiness**: Show pass/warn/fail for each check. Proceed if gateway is available. Abort only if gateway is down.
