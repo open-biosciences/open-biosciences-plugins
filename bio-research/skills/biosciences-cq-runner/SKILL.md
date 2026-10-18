@@ -180,7 +180,7 @@ Ready to execute 6 workflow steps.
 
 ### Preflight Logic
 
-1. **Test MCP gateway**: Call `hgnc_search_genes` with `{"query": "TP53", "slim": true, "page_size": 1}`. If this fails, abort with guidance.
+1. **Test MCP gateway**: Call `biosciences-mcp:hgnc_search_genes` with `{"query": "TP53", "slim": true, "page_size": 1}`. If this fails, abort with guidance.
 2. **Check HF_TOKEN**: If not set, note that Step 7 (PUBLISH) will be skipped.
 3. **Parse required tools**: Extract unique tool names from the CQ's `workflow_steps`. Verify each is callable via the gateway.
 4. **Report readiness**: Show pass/warn/fail for each check. Proceed if gateway is available. Abort only if gateway is down.
@@ -197,13 +197,13 @@ For each `workflow_step` in the CQ definition:
 
 ```
 Step 1/6: ANCHOR - chembl_search_compounds("palovarotene")
-  Calling mcp__biosciences-mcp__chembl_search_compounds...
+  Calling biosciences-mcp:chembl_search_compounds...
   Result: CHEMBL:2105648 (Palovarotene, Max Phase 4)
   Status: SUCCESS
   Duration: 1.2s
 
 Step 2/6: ENRICH - chembl_get_compound("CHEMBL:2105648")
-  Calling mcp__biosciences-mcp__chembl_get_compound...
+  Calling biosciences-mcp:chembl_get_compound...
   Result: MW=414.55, Indications=[Dry Eye Syndromes, Myositis Ossificans, ...]
   Status: SUCCESS
   Duration: 0.8s
@@ -215,13 +215,13 @@ Step 3/6: MECHANISM - curl ChEMBL /mechanism
   Duration: 0.6s
 
 Step 4/6: ANCHOR - hgnc_get_gene("HGNC:171")
-  Calling mcp__biosciences-mcp__hgnc_get_gene...
+  Calling biosciences-mcp:hgnc_get_gene...
   Result: ACVR1, activin A receptor type 1, 2q24.1
   Status: SUCCESS
   Duration: 0.4s
 
 Step 5/6: EXPAND - opentargets_get_associations("ENSG00000115170")
-  Calling mcp__biosciences-mcp__opentargets_get_associations...
+  Calling biosciences-mcp:opentargets_get_associations...
   Result: FOP (MONDO:0007606, score=0.816)
   Status: SUCCESS
   Duration: 1.1s
@@ -237,42 +237,42 @@ Map each workflow step's `tool` field to the correct MCP call:
 
 | Workflow Step Tool | MCP Call |
 |--------------------|----------|
-| `hgnc_search_genes` | `mcp__biosciences-mcp__hgnc_search_genes` |
-| `hgnc_get_gene` | `mcp__biosciences-mcp__hgnc_get_gene` |
-| `uniprot_search_proteins` | `mcp__biosciences-mcp__uniprot_search_proteins` |
-| `uniprot_get_protein` | `mcp__biosciences-mcp__uniprot_get_protein` |
-| `chembl_search_compounds` | `mcp__biosciences-mcp__chembl_search_compounds` |
-| `chembl_get_compound` | `mcp__biosciences-mcp__chembl_get_compound` |
-| `chembl_get_compounds_batch` | `mcp__biosciences-mcp__chembl_get_compounds_batch` |
-| `opentargets_search_targets` | `mcp__biosciences-mcp__opentargets_search_targets` |
-| `opentargets_get_target` | `mcp__biosciences-mcp__opentargets_get_target` |
-| `opentargets_get_associations` | `mcp__biosciences-mcp__opentargets_get_associations` |
-| `string_search_proteins` | `mcp__biosciences-mcp__string_search_proteins` |
-| `string_get_interactions` | `mcp__biosciences-mcp__string_get_interactions` |
-| `string_get_network_image_url` | `mcp__biosciences-mcp__string_get_network_image_url` |
-| `biogrid_search_genes` | `mcp__biosciences-mcp__biogrid_search_genes` |
-| `biogrid_get_interactions` | `mcp__biosciences-mcp__biogrid_get_interactions` |
-| `ensembl_search_genes` | `mcp__biosciences-mcp__ensembl_search_genes` |
-| `ensembl_get_gene` | `mcp__biosciences-mcp__ensembl_get_gene` |
-| `ensembl_get_transcript` | `mcp__biosciences-mcp__ensembl_get_transcript` |
-| `entrez_search_genes` | `mcp__biosciences-mcp__entrez_search_genes` |
-| `entrez_get_gene` | `mcp__biosciences-mcp__entrez_get_gene` |
-| `entrez_get_pubmed_links` | `mcp__biosciences-mcp__entrez_get_pubmed_links` |
-| `pubchem_search_compounds` | `mcp__biosciences-mcp__pubchem_search_compounds` |
-| `pubchem_get_compound` | `mcp__biosciences-mcp__pubchem_get_compound` |
-| `iuphar_search_ligands` | `mcp__biosciences-mcp__iuphar_search_ligands` |
-| `iuphar_get_ligand` | `mcp__biosciences-mcp__iuphar_get_ligand` |
-| `iuphar_search_targets` | `mcp__biosciences-mcp__iuphar_search_targets` |
-| `iuphar_get_target` | `mcp__biosciences-mcp__iuphar_get_target` |
-| `wikipathways_search_pathways` | `mcp__biosciences-mcp__wikipathways_search_pathways` |
-| `wikipathways_get_pathway` | `mcp__biosciences-mcp__wikipathways_get_pathway` |
-| `wikipathways_get_pathways_for_gene` | `mcp__biosciences-mcp__wikipathways_get_pathways_for_gene` |
-| `wikipathways_get_pathway_components` | `mcp__biosciences-mcp__wikipathways_get_pathway_components` |
-| `clinicaltrials_search_trials` | `mcp__biosciences-mcp__clinicaltrials_search_trials` |
-| `clinicaltrials_get_trial` | `mcp__biosciences-mcp__clinicaltrials_get_trial` |
-| `clinicaltrials_get_trial_locations` | `mcp__biosciences-mcp__clinicaltrials_get_trial_locations` |
-| `biogrid_get_orcs_essentiality` | `mcp__biosciences-mcp-edge__get_orcs_essentiality` |
-| `chembl_get_mechanism` | `mcp__biosciences-mcp-edge__get_mechanism` |
+| `hgnc_search_genes` | `biosciences-mcp:hgnc_search_genes` |
+| `hgnc_get_gene` | `biosciences-mcp:hgnc_get_gene` |
+| `uniprot_search_proteins` | `biosciences-mcp:uniprot_search_proteins` |
+| `uniprot_get_protein` | `biosciences-mcp:uniprot_get_protein` |
+| `chembl_search_compounds` | `biosciences-mcp:chembl_search_compounds` |
+| `chembl_get_compound` | `biosciences-mcp:chembl_get_compound` |
+| `chembl_get_compounds_batch` | `biosciences-mcp:chembl_get_compounds_batch` |
+| `opentargets_search_targets` | `biosciences-mcp:opentargets_search_targets` |
+| `opentargets_get_target` | `biosciences-mcp:opentargets_get_target` |
+| `opentargets_get_associations` | `biosciences-mcp:opentargets_get_associations` |
+| `string_search_proteins` | `biosciences-mcp:string_search_proteins` |
+| `string_get_interactions` | `biosciences-mcp:string_get_interactions` |
+| `string_get_network_image_url` | `biosciences-mcp:string_get_network_image_url` |
+| `biogrid_search_genes` | `biosciences-mcp:biogrid_search_genes` |
+| `biogrid_get_interactions` | `biosciences-mcp:biogrid_get_interactions` |
+| `ensembl_search_genes` | `biosciences-mcp:ensembl_search_genes` |
+| `ensembl_get_gene` | `biosciences-mcp:ensembl_get_gene` |
+| `ensembl_get_transcript` | `biosciences-mcp:ensembl_get_transcript` |
+| `entrez_search_genes` | `biosciences-mcp:entrez_search_genes` |
+| `entrez_get_gene` | `biosciences-mcp:entrez_get_gene` |
+| `entrez_get_pubmed_links` | `biosciences-mcp:entrez_get_pubmed_links` |
+| `pubchem_search_compounds` | `biosciences-mcp:pubchem_search_compounds` |
+| `pubchem_get_compound` | `biosciences-mcp:pubchem_get_compound` |
+| `iuphar_search_ligands` | `biosciences-mcp:iuphar_search_ligands` |
+| `iuphar_get_ligand` | `biosciences-mcp:iuphar_get_ligand` |
+| `iuphar_search_targets` | `biosciences-mcp:iuphar_search_targets` |
+| `iuphar_get_target` | `biosciences-mcp:iuphar_get_target` |
+| `wikipathways_search_pathways` | `biosciences-mcp:wikipathways_search_pathways` |
+| `wikipathways_get_pathway` | `biosciences-mcp:wikipathways_get_pathway` |
+| `wikipathways_get_pathways_for_gene` | `biosciences-mcp:wikipathways_get_pathways_for_gene` |
+| `wikipathways_get_pathway_components` | `biosciences-mcp:wikipathways_get_pathway_components` |
+| `clinicaltrials_search_trials` | `biosciences-mcp:clinicaltrials_search_trials` |
+| `clinicaltrials_get_trial` | `biosciences-mcp:clinicaltrials_get_trial` |
+| `clinicaltrials_get_trial_locations` | `biosciences-mcp:clinicaltrials_get_trial_locations` |
+| `biogrid_get_orcs_essentiality` | `biosciences-mcp-edge:get_orcs_essentiality` |
+| `chembl_get_mechanism` | `biosciences-mcp-edge:get_mechanism` |
 | `curl` | Execute via bash (for Open Targets GraphQL, STRING enrichment) |
 
 ### Chaining Step Outputs

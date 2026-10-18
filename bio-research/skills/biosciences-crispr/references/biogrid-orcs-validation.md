@@ -174,7 +174,7 @@ awk 'BEGIN{FS="\t"} {print "Screen " $1 ": score=" $6 ", FDR=" $18}'
 The `get_orcs_essentiality` tool in the `biosciences-mcp-edge` server provides a structured MCP interface for ORCS queries, eliminating the need for curl + manual parsing:
 
 ```
-mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=1723, hit_only=true)
+biosciences-mcp-edge:get_orcs_essentiality(entrez_id=1723, hit_only=true)
 ```
 
 This returns a `PaginationEnvelope[OrcsScreenResult]` with typed fields (`screen_id`, `score`, `hit`). Use this as the primary method for CQ validation; fall back to curl only if the edge server is unavailable.

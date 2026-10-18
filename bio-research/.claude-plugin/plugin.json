@@ -1,6 +1,6 @@
 {
   "name": "bio-research",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Investigate biological targets, map protein interactions, and evaluate drug candidates using 12 curated life sciences APIs. Generate evidence-graded reports and BioRxiv-ready manuscripts from a single research question.",
   "license": "Apache-2.0",
   "author": {

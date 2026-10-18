@@ -11,8 +11,8 @@ Validate synthetic lethality hypotheses using BioGRID ORCS CRISPR screen data vi
 
 | Task | Primary (MCP) | Fallback (curl) |
 |------|---------------|-----------------|
-| Get essential screens only | `mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=N, hit_only=true)` | `/gene/{entrez_id}?hit=yes` |
-| Get all gene screens | `mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=N, hit_only=false)` | `/gene/{entrez_id}` |
+| Get essential screens only | `biosciences-mcp-edge:get_orcs_essentiality(entrez_id=N, hit_only=true)` | `/gene/{entrez_id}?hit=yes` |
+| Get all gene screens | `biosciences-mcp-edge:get_orcs_essentiality(entrez_id=N, hit_only=false)` | `/gene/{entrez_id}` |
 | Get screen annotations | (curl only) | `/screens/?screenID=1\|2\|3` |
 | Find cell line screens | (curl only) | `/screens/?cellLine={name}` |
 
@@ -75,8 +75,7 @@ Use Life Sciences MCPs to get Entrez IDs:
 
 **PRIMARY (MCP tool):**
 ```
-Call `get_orcs_essentiality` with: {"entrez_id": 7298, "hit_only": true}
-→ Claude Code name: mcp__biosciences-mcp-edge__get_orcs_essentiality
+Call `biosciences-mcp-edge:get_orcs_essentiality` with: {"entrez_id": 7298, "hit_only": true}
 → Returns: PaginationEnvelope with OrcsScreenResult items (screen_id, score, hit)
 ```
 
@@ -287,13 +286,13 @@ print(f"TYMS: {essential}/{total} screens ({rate:.1f}%) show essentiality")
 **Example (MCP-first workflow):**
 ```
 # Phase 1: Resolve gene symbol to Entrez ID
-mcp__biosciences-mcp__hgnc_search_genes(query="DHODH")
+biosciences-mcp:hgnc_search_genes(query="DHODH")
 → hgnc_id = "HGNC:2867"
-mcp__biosciences-mcp__hgnc_get_gene(hgnc_id="HGNC:2867")
+biosciences-mcp:hgnc_get_gene(hgnc_id="HGNC:2867")
 → cross_references.entrez = "1723"
 
 # Phase 2: Query ORCS essentiality (MCP — preferred)
-mcp__biosciences-mcp-edge__get_orcs_essentiality(entrez_id=1723, hit_only=true)
+biosciences-mcp-edge:get_orcs_essentiality(entrez_id=1723, hit_only=true)
 → PaginationEnvelope with OrcsScreenResult items
 
 # Phase 3-5: Screen annotations still require curl (see workflow above)

@@ -18,13 +18,11 @@ All MCP tools in the biosciences gateway support a `slim` parameter for token-ef
 
 ```
 # LOCATE: Find top 10 gene candidates (slim=true for speed)
-Call `hgnc_search_genes` with: {"query": "TNF", "slim": true, "page_size": 10}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_search_genes
+Call `biosciences-mcp:hgnc_search_genes` with: {"query": "TNF", "slim": true, "page_size": 10}
 → Returns minimal fields: ID, symbol, name only (~20 tokens each)
 
 # RETRIEVE: Get full record for validation (slim=false, default)
-Call `hgnc_get_gene` with: {"hgnc_id": "HGNC:11892"}
-→ Claude Code name: mcp__biosciences-mcp__hgnc_get_gene
+Call `biosciences-mcp:hgnc_get_gene` with: {"hgnc_id": "HGNC:11892"}
 → Returns complete metadata with cross-references (~115 tokens)
 ```
 

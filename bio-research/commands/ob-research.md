@@ -51,7 +51,7 @@ If the CQ is vague, ask the user to refine it before proceeding.
 Verify the biosciences-mcp gateway is connected by testing a lightweight call:
 
 ```
-Call hgnc_search_genes with: {"query": "TP53", "slim": true, "page_size": 1}
+Call biosciences-mcp:hgnc_search_genes with: {"query": "TP53", "slim": true, "page_size": 1}
 ```
 
 If the gateway is unavailable, check for partner MCPs as fallbacks:
