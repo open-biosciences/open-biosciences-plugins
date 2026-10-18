@@ -8,7 +8,7 @@ Plugins are **tool-agnostic** — they describe workflows in terms of categories
 
 The `biosciences-mcp` gateway is an exception — it provides a unified API across 12 life sciences databases (HGNC, UniProt, STRING, BioGRID, ChEMBL, Open Targets, PubChem, IUPHAR, WikiPathways, ClinicalTrials.gov, Ensembl, Entrez) and is referenced by name rather than by placeholder. The `biosciences-mcp-edge` server extends the gateway with additional tools (ORCS CRISPR essentiality, ChEMBL mechanism-of-action) and is also referenced by name. The biosciences domain skills use these servers alongside the partner connectors listed below.
 
-Skills name these servers' tools as `ServerName:tool_name`, for example `biosciences-mcp:hgnc_search_genes`. Claude Code's full tool name depends on which configuration provides the server: `mcp__plugin_bio-research_<server>__<tool>` when this plugin does, or `mcp__<server-key>__<tool>` when a user, project or local entry for the same URL takes precedence. Match on `<tool>`.
+Skills name these servers' tools as `ServerName:tool_name`, for example `biosciences-mcp:hgnc_search_genes`. Claude Code's full tool name depends on which configuration provides the server: `mcp__plugin_bio-research_<server>__<tool>` when this plugin does, or `mcp__<server-key>__<tool>` when a user, project or local entry for the same URL takes precedence. Match on `<tool>`. Use the short form only in instruction text: permission rules, a skill's `allowed-tools`, a subagent's `tools` and hook matchers need full names, so list both forms there.
 
 ## Connectors for this plugin
 
